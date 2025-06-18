@@ -1,0 +1,61 @@
+/auth/login/email:
+  post:
+    summary: "Login using email and password"
+    description: "Allows a user to log in by providing their email and password hash. If credentials are valid, returns the user's role and timestamp."
+    tags:
+      - Auth
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: object
+          required:
+            - email
+            - passwordHash
+          properties:
+            email:
+              type: string
+              example: "user@example.com"
+            passwordHash:
+              type: string
+              example: "5f4dcc3b5aa765d61d8327deb882cf99"
+    responses:
+      200:
+        description: "Login successful"
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "Successful"
+            role:
+              type: string
+              example: "user"
+            timestamp:
+              type: string
+              example: "2025-05-16 15:30:00"
+      400:
+        description: "Missing required fields"
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "Missing 'email' or 'passwordHash' in request body"
+      401:
+        description: "Invalid email or password"
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "Invalid email or password"
+      500:
+        description: "Database connection or internal error"
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: "MySQL database not responding, please check the database service"

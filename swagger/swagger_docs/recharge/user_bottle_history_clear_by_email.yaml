@@ -1,0 +1,65 @@
+/user/bottle-history/clear/by-email:
+  post:
+    summary: "Clear User's Bottle History by Email"
+    description: "Deletes all bottle history records associated with a user, identified by their email address."
+    tags: ["User"]
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+              description: "Email of the user whose bottle history is to be cleared"
+              example: "user@example.com"
+          required:
+            - email
+    responses:
+      '200':
+        description: "Successfully cleared the user's bottle history"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "1 bottle history record(s) cleared for user"
+                email:
+                  type: "string"
+                  example: "user@example.com"
+                uniqueId:
+                  type: "string"
+                  example: "abc123"
+      '400':
+        description: "Missing required 'email' field in the request body"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Missing required field: 'email'"
+      '404':
+        description: "User not found with the provided email"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "User not found"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding"

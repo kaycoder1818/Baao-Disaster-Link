@@ -1,0 +1,26 @@
+/admin/total-bottles:
+  get:
+    summary: "Get total bottle count for all users across all stations"
+    description: "Fetches the total number of bottles accumulated by all users across different stations."
+    tags: ["Admin"]
+    responses:
+      '200':
+        description: "Total bottle count fetched successfully"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                totalBottles:
+                  type: "integer"
+                  example: 15000
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"

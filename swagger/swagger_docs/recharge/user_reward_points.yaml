@@ -1,0 +1,64 @@
+/user/reward-points/email:
+  post:
+    summary: "Get User Reward Points by Email"
+    description: "Retrieves the total reward points for a user based on their email by querying the 'users_recharge' and 'store_recharge' tables. The points are summed from multiple stations and returned as a total."
+    tags: ["User"]
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+              description: "Email of the user whose reward points are to be fetched"
+              example: "user@example.com"
+          required:
+            - email
+    responses:
+      '200':
+        description: "Successfully retrieved user reward points"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                uniqueId:
+                  type: "string"
+                  description: "The unique ID of the user"
+                  example: "user_001"
+                totalPoints:
+                  type: "integer"
+                  description: "The total reward points for the user"
+                  example: 150
+      '400':
+        description: "Missing 'email' in request body"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Missing 'email' in request body"
+      '404':
+        description: "User not found or no store_recharge record for the user"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "User not found with the provided email"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"

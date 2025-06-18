@@ -1,0 +1,70 @@
+/user/notification/marked:
+  post:
+    summary: "Mark a notification as read for a user"
+    description: "Marks a specific notification as read for the user based on email and notification ID."
+    tags: ["User"]
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+              description: "The user's email address."
+              example: "user@example.com"
+            id:
+              type: "integer"
+              description: "The notification ID to be marked as read."
+              example: 123
+    responses:
+      '200':
+        description: "Successfully marked the notification as read"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "Notification marked as read"
+                email:
+                  type: "string"
+                  example: "user@example.com"
+                uniqueId:
+                  type: "string"
+                  example: "12345"
+                notificationId:
+                  type: "integer"
+                  example: 123
+      '400':
+        description: "Missing required field: 'email' or 'id'"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Missing required field: 'email' or 'id'"
+      '404':
+        description: "User or notification not found"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "User not found"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding"

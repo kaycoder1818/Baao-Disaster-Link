@@ -1,0 +1,90 @@
+/user/bottle-history:
+  post:
+    summary: "Get User's Bottle History"
+    description: "Retrieves the bottle history of a user based on their email address, including bottle count, notes, status, and timestamp of each record."
+    tags: ["User"]
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+              description: "Email of the user whose bottle history is being fetched"
+              example: "user@example.com"
+          required:
+            - email
+    responses:
+      '200':
+        description: "Successfully retrieved the user's bottle history"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                bottleHistory:
+                  type: "array"
+                  items:
+                    type: "object"
+                    properties:
+                      id:
+                        type: "integer"
+                        description: "ID of the bottle history record"
+                        example: 123
+                      uniqueId:
+                        type: "string"
+                        description: "Unique ID of the user"
+                        example: "abc123"
+                      bottleCount:
+                        type: "integer"
+                        description: "Number of bottles in the transaction"
+                        example: 10
+                      bottleNotes:
+                        type: "string"
+                        description: "Notes related to the transaction"
+                        example: "First batch of bottles"
+                      fromStation:
+                        type: "string"
+                        description: "Station where the bottles were recorded from"
+                        example: "Station1"
+                      bottleStatus:
+                        type: "string"
+                        description: "Status of the bottles (e.g., 'used', 'returned')"
+                        example: "returned"
+                      timestamp:
+                        type: "string"
+                        format: "date-time"
+                        description: "Timestamp of the bottle transaction"
+                        example: "2025-03-01T15:30:00Z"
+      '400':
+        description: "Missing 'email' in the request body"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Missing 'email' in request body"
+      '404':
+        description: "User not found with the provided email, or no bottle history found for the user"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "User not found with the provided email"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"

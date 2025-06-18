@@ -1,0 +1,72 @@
+/user/redeem-rewards:
+  post:
+    summary: "Redeem Rewards for a User"
+    description: "Allows a user to redeem rewards based on their points and updates the store with the new reward points and time left."
+    tags: ["User"]
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+              description: "Email of the user redeeming the reward"
+              example: "user@example.com"
+            rewardId:
+              type: "string"
+              description: "ID of the reward being redeemed"
+              example: "ADD15"
+          required:
+            - email
+            - rewardId
+    responses:
+      '200':
+        description: "Successfully redeemed reward and updated store with new points and time"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "Reward redeemed successfully"
+                remainingPoints:
+                  type: "integer"
+                  description: "Remaining reward points after redemption"
+                  example: 150
+                newTimeLeft:
+                  type: "string"
+                  description: "New time left in the format HH:MM:SS"
+                  example: "02:15:30"
+      '400':
+        description: "Missing 'email' or 'rewardId' in the request body"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Missing 'email' or 'rewardId'"
+      '404':
+        description: "User or reward not found, or store data not available for the user"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "User not found"  # Or could be: "Reward not found" or "Store data not found for user"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"

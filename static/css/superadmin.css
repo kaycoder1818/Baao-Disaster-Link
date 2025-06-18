@@ -1,0 +1,581 @@
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* Reset & General */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: whitesmoke;
+    color: #333;
+    display: flex;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #ffffff;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.sidebar-logo {
+    width: 140px;
+    height: auto;
+}
+
+.sidebar-nav {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    color: #666;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-item i {
+    margin-right: 12px;
+    font-size: 18px;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-item:hover {
+    background-color: #e4f0a0;
+    color: #349e00;
+}
+
+.nav-item.active {
+    background-color: #e4f0a0;
+    color: #349e00;
+    border-right: 4px solid #6faf3b;
+}
+
+.nav-item.logout {
+    margin-top: auto;
+    border-top: 1px solid #e0e0e0;
+    color: #666;
+}
+
+.nav-item.logout:hover {
+    background-color: #fff0f0;
+    color: #dc3545;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    margin-left: 250px;
+    padding: 20px;
+    min-height: 100vh;
+    background-color: whitesmoke;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Dashboard Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+/* Buttons */
+.primary-button {
+    background-color: #e4f0a0;
+    color: #349e00;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.primary-button:hover {
+    background-color: #6faf3b;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.secondary-button {
+    background-color: #6faf3b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.secondary-button:hover {
+    background-color: #5a9230;
+    transform: translateY(-2px);
+}
+
+/* Table Container */
+.table-container {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+th {
+    font-weight: 600;
+    color: #666;
+    background-color: #f8f8f8;
+}
+
+td {
+    color: #333;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal.active {
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.close-add-user,
+.close-edit-user {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #666;
+}
+
+.close-add-user:hover,
+.close-edit-user:hover {
+    color: #333;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+    font-size: 14px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #6faf3b;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(111, 175, 59, 0.1);
+}
+
+.form-group input::placeholder {
+    color: #999;
+}
+
+/* Modal title */
+.modal h3 {
+    color: #333;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+/* Submit button spacing */
+.modal form button[type="submit"] {
+    margin-top: 10px;
+    width: 100%;
+}
+
+.action-btn {
+    padding: 5px 10px;
+    margin: 0 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.edit-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.action-btn:hover {
+    opacity: 0.8;
+}
+
+.role-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.role-admin {
+    background-color: #007bff;
+    color: white;
+}
+
+.role-user {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-verified {
+    background-color: #c8f3c8;
+    color: #2e7d32;
+}
+
+.status-unverified {
+    background-color: #ffe0e0;
+    color: #c62828;
+}
+
+/* Hamburger Menu Button */
+.hamburger-menu {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    background: #6faf3b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    opacity: 1;
+    visibility: visible;
+}
+
+.hamburger-menu:hover {
+    background: #349e00;
+}
+
+.hamburger-menu i {
+    font-size: 20px;
+}
+
+/* Close Sidebar Button */
+.close-sidebar {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: #666;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.close-sidebar:hover {
+    color: #349e00;
+}
+
+/* Overlay */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    opacity: 1;
+}
+
+/* Media Query for Mobile Devices */
+@media screen and (max-width: 768px) {
+    .hamburger-menu {
+        display: block;
+    }
+
+    .close-sidebar {
+        display: block;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay {
+        display: block;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding-top: 70px; /* Space for hamburger button */
+    }
+
+    /* Adjust sidebar width for mobile */
+    .sidebar {
+        width: 280px;
+    }
+
+    /* Prevent scrolling when sidebar is open */
+    body.sidebar-open {
+        overflow: hidden;
+    }
+
+    /* Adjust dashboard container for mobile */
+    .dashboard-container {
+        padding: 15px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    /* Table responsive styles */
+    .table-container {
+        margin: 0 -15px;
+        border-radius: 0;
+        padding: 10px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    th, td {
+        padding: 12px;
+    }
+
+    /* Modal responsive styles */
+    .modal-content {
+        margin: 10% auto;
+        padding: 25px 20px;
+        width: 85%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    .modal h3 {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+
+    /* Add touch-friendly tap states */
+    .action-btn:active {
+        transform: scale(0.98);
+    }
+
+    /* Ensure modal appears above sidebar */
+    .modal {
+        z-index: 1100;
+    }
+}
+
+/* Media Query for smaller phones */
+@media screen and (max-width: 380px) {
+    .modal-content {
+        margin: 5% auto;
+        padding: 20px 15px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 24px;
+    }
+
+    .action-btn {
+        padding: 6px 10px;
+    }
+}
+
+/* Animation for sidebar */
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+/* Notification Styles */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1100;
+    transform: translateX(120%);
+    transition: transform 0.3s ease;
+    font-size: 14px;
+}
+
+.notification.show {
+    transform: translateX(0);
+}
+
+.notification.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+.notification.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+}
+
+.notification.info {
+    background-color: #cce5ff;
+    color: #004085;
+    border-left: 4px solid #007bff;
+}

@@ -1,0 +1,57 @@
+/user/timeleft:
+  post:
+    summary: "Get the TimeLeft for a user by email"
+    description: "Fetches the TimeLeft for a user from the store_recharge table using their email."
+    tags: ["User"]
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          required:
+            - email
+          properties:
+            email:
+              type: "string"
+              description: "The user's email address."
+              example: "user@example.com"
+    responses:
+      200:
+        description: "Successfully fetched the TimeLeft for the user"
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+              example: "user@example.com"
+            uniqueId:
+              type: "string"
+              example: "12345"
+            TimeLeft:
+              type: "string"
+              example: "12:34:56"
+      400:
+        description: "Missing required field: 'email'"
+        schema:
+          type: "object"
+          properties:
+            error:
+              type: "string"
+              example: "Missing required field: 'email'"
+      404:
+        description: "User not found or store data not found"
+        schema:
+          type: "object"
+          properties:
+            error:
+              type: "string"
+              example: "User not found"
+      500:
+        description: "Internal Server Error due to database or connection issues"
+        schema:
+          type: "object"
+          properties:
+            error:
+              type: "string"
+              example: "MySQL database not responding"

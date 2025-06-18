@@ -1,0 +1,26 @@
+/admin/reset-bottle-count:
+  get:
+    summary: "Reset all bottle counts to zero"
+    description: "Resets the bottle count for all users across all stations (station1, station2, and station3) to zero."
+    tags: ["Admin"]
+    responses:
+      '200':
+        description: "Successfully reset all bottle counts to zero"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "All bottle counts have been reset to 0"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"

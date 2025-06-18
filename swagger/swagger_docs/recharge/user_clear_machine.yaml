@@ -1,0 +1,26 @@
+/user/clear-machine/all:
+  get:
+    summary: "Clear All Station Unique IDs"
+    description: "Sets all 'uniqueId' fields in the 'station_recharge' table to an empty string. Ensures database connectivity before performing the update."
+    tags: ["User"]
+    responses:
+      '200':
+        description: "All station uniqueId values cleared successfully"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "All station uniqueId values set to empty string"
+      '500':
+        description: "Internal Server Error if the database is unavailable"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"

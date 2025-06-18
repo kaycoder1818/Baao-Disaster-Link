@@ -1,0 +1,66 @@
+/user/assign-machine:
+  post:
+    summary: "Assign a Station to a User"
+    description: "Assigns a station to a user by linking their uniqueId to a station in the 'station_recharge' table. Defaults to 'Station1' if no station name is provided. Validates email and checks for database availability."
+    tags: ["User"]
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+              description: "Email of the user to assign a station to"
+              example: "user@example.com"
+            stationName:
+              type: "string"
+              description: "Name of the station to assign (defaults to 'Station1' if not provided)"
+              example: "Station1"
+          required:
+            - email
+    responses:
+      '200':
+        description: "Station assigned to user successfully"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "Station 'Station1' assigned to user with email 'user@example.com'"
+                uniqueId:
+                  type: "string"
+                  example: "user_003"
+      '400':
+        description: "Bad Request if required field 'email' is missing"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Missing required field: 'email'"
+      '404':
+        description: "User or station not found"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "No station found with the name 'Station1'"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"

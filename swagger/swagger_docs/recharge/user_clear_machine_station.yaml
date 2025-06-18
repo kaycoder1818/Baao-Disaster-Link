@@ -1,0 +1,59 @@
+/user/clear-machine/station-name:
+  post:
+    summary: "Clear Station Unique ID by Station Name"
+    description: "Clears the 'uniqueId' field in the 'station_recharge' table for the specified station name. Validates the station name and ensures MySQL availability."
+    tags: ["User"]
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            stationName:
+              type: "string"
+              description: "The name of the station to clear the uniqueId for"
+              example: "Station1"
+          required:
+            - stationName
+    responses:
+      '200':
+        description: "UniqueId cleared for the specified station"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "UniqueId cleared for station 'Station1'"
+      '400':
+        description: "Bad Request if required field 'stationName' is missing"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Missing required field: 'stationName'"
+      '404':
+        description: "Station not found with the specified name"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "No station found with name 'Station1'"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"

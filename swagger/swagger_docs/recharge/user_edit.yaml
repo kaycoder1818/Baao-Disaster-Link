@@ -1,0 +1,74 @@
+/user/edit:
+  post:
+    summary: "Edit Existing User in users_recharge"
+    description: "Updates a user's email, username, and role based on the current email. Validates all required fields and checks for MySQL availability. Returns appropriate messages for missing fields, non-existent user, or DB issues."
+    tags: ["User"]
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            new_email:
+              type: "string"
+              description: "The new email to update for the user"
+              example: "new_email@example.com"
+            userName:
+              type: "string"
+              description: "Updated username of the user"
+              example: "updated_user"
+            role:
+              type: "string"
+              description: "Updated role of the user"
+              example: "admin"
+            email:
+              type: "string"
+              description: "Current email of the user to identify the record"
+              example: "old_email@example.com"
+          required:
+            - new_email
+            - userName
+            - role
+            - email
+    responses:
+      '200':
+        description: "User details updated successfully"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "User details updated successfully"
+      '400':
+        description: "Bad Request if required fields are missing"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Missing required fields: 'new_email', 'userName', 'role', or 'email'"
+      '404':
+        description: "User not found with the provided email"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "User not found with the provided email"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"

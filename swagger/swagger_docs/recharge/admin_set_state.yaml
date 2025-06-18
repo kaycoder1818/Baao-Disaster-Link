@@ -1,0 +1,64 @@
+/admin/set-state-machine:
+  post:
+    summary: "Set the state of a specific station in the state machine"
+    description: "Updates the status of a specified station in the state machine within the store_recharge table."
+    tags: ["Admin"]
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            stationName:
+              type: "string"
+              description: "The name of the station to update"
+              example: "Station1"
+            stationStatus:
+              type: "string"
+              description: "The status to set for the station"
+              example: "active"
+          required:
+            - stationName
+            - stationStatus
+    responses:
+      '200':
+        description: "Successfully updated the station status"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "Station 'station1' status updated to 'active'"
+      '400':
+        description: "Bad Request due to missing 'stationName' or 'stationStatus'"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Missing required fields: 'stationName' or 'stationStatus'"
+      '404':
+        description: "Not Found when the specified station is not found in the database"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Station 'station1' not found"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"

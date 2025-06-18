@@ -1,0 +1,47 @@
+/user/leaderboard:
+  get:
+    summary: "Get the top 10 users in the leaderboard for the last 7 days"
+    description: "Fetches the leaderboard for users based on their total bottle activity in the last 7 days."
+    tags: ["User"]
+    responses:
+      '200':
+        description: "Leaderboard fetched successfully"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                leaderboard:
+                  type: "array"
+                  items:
+                    type: "object"
+                    properties:
+                      uniqueId:
+                        type: "string"
+                        example: "12345"
+                      email:
+                        type: "string"
+                        example: "user@example.com"
+                      totalBottles:
+                        type: "integer"
+                        example: 100
+      '404':
+        description: "No bottle activity found in the last 7 days"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "No bottle activity found in the last 7 days"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding"

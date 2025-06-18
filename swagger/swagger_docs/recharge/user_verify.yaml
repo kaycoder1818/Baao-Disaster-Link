@@ -1,0 +1,57 @@
+/user/verify:
+  get:
+    summary: "Verify a User by Token"
+    description: "Verifies a user in the 'users_recharge' table by token. Checks for token presence, validates it, updates status to 'verified', and confirms MySQL availability."
+    tags: ["User"]
+    parameters:
+      - name: "token"
+        in: "query"
+        required: true
+        schema:
+          type: "string"
+        description: "The token used to verify the user"
+        example: "abc123def456"
+    responses:
+      '200':
+        description: "User successfully verified"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "User successfully verified"
+                token:
+                  type: "string"
+                  example: "abc123def456"
+      '400':
+        description: "Missing required query parameter"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Missing required query parameter: 'token'"
+      '404':
+        description: "Invalid or expired token"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Invalid or expired token"
+      '500':
+        description: "Internal Server Error due to DB issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding"

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- <link rel="icon" type="image/x-icon" href="assets/ReChargeLOGO (2).ico"> -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/flaticon.png') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- <link rel="stylesheet" href="userdashboard.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/userdashboard.css') }}">
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger-menu" id="hamburgerBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <!-- <img src="assets/flaticon.png" alt="Logo" class="sidebar-logo"> -->
+            <img src="{{ url_for('static', filename='images/flaticon.png') }}" class="sidebar-logo">
+            <button class="close-sidebar" id="closeSidebarBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+
+<!--    <a href="/user-dashboard" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="/history" class="nav-item">
+            <i class="fas fa-history"></i>
+            <span>History</span>
+        </a>
+        <a href="/rewards" class="nav-item">
+            <i class="fas fa-gift"></i>
+            <span>Rewards</span>
+        </a>
+        <a href="/leaderboards" class="nav-item">
+            <i class="fas fa-trophy"></i>
+            <span>Leaderboards</span>
+        </a> -->
+
+        <a href="javascript:void(0)" class="nav-item active" onclick="navigateToDashboard()">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="javascript:void(0)" class="nav-item" onclick="navigateToHistory()">
+            <i class="fas fa-history"></i>
+            <span>History</span>
+        </a>
+        <a href="javascript:void(0)" class="nav-item" onclick="navigateToRewards()">
+            <i class="fa-brands fa-rocketchat"></i>
+            <span>AI Chatbot</span>
+        </a>
+        <a href="javascript:void(0)" class="nav-item" onclick="navigateToLeaderboards()">
+            <i class="fa-solid fa-bullhorn"></i>
+            <span>Announcement</span>
+        </a>
+            <a href="#" id="logout_btn" class="nav-item logout" onclick="handleLogout(event)">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Exit</span>
+            </a>
+
+    </nav>
+    </div>
+
+<script>
+    function navigateToDashboard() {
+        console.log("Navigating to /user-dashboard");
+        updateActiveNavItem('navigateToDashboard');
+        window.location.href = window.location.origin + "/user-dashboard";
+    }
+
+    function navigateToHistory() {
+        console.log("Navigating to /history");
+        updateActiveNavItem('navigateToHistory');
+        window.location.href = window.location.origin + "/history";
+    }
+
+    function navigateToRewards() {
+        console.log("Navigating to /rewards");
+        updateActiveNavItem('navigateToRewards');
+        window.location.href = window.location.origin + "/rewards";
+    }
+
+    function navigateToLeaderboards() {
+        console.log("Navigating to /leaderboards");
+        updateActiveNavItem('navigateToLeaderboards');
+        window.location.href = window.location.origin + "/leaderboards";
+    }
+
+    function updateActiveNavItem(navigationFunction) {
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('onclick')?.includes(navigationFunction)) {
+                item.classList.add('active');
+            }
+        });
+    }
+
+    function logoutUser() {
+        console.log("Logout button clicked");
+    }
+</script>
+
+
+
+    <!-- Overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Dashboard Content -->
+        <main class="dashboard-container">
+            <h1>Hi <span id="user-name">User</span>!</h1>
+
+            <div class="bottles-box">
+                <div class="box-header">
+                    <h3>Friday!</h3>
+                    <span class="box-date"></span></span>
+                </div>
+                <div class="box-content">
+                    <span class="big-number" id="total-bottles">22°C</span>
+                    <span class="label">June 18, 2025</span>
+                </div>
+            </div>
+
+            <div class="bottles-box points-box">
+                <div class="box-header">
+                    <h3>Storm Signal</h3>
+                    <span class="box-date">Windspeed</span>
+                </div>
+                <div class="box-content">
+                    <span class="big-number" id="total-points">Not Found</span>
+                    <span class="label">Signal</span>
+                    <i class="fas fa-star points-star"></i>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <!-- Stat Card -->
+                <div class="stat-card-assign">
+                    <button class="station-select-button" id="stationCard">
+                        <h4>Sunrise</h4>
+                        <span class="status available" id="current-station">9:00AM</span>
+                    </button>
+                </div>
+                <div class="stat-card">
+                    <h4>Sunset</h4>
+                    <span class="status active" id="machine-status">6:45PM</span>
+                </div>
+            </div>
+
+            <!-- Confirmation Message -->
+            <p id="station-message" style="margin-top: 10px;"></p>
+
+            <!-- Insert Bottle Button
+            <div id="insert-bottle-container" style="display: none; text-align: center; margin-top: 20px;">
+                <button id="insert-bottle-btn" class="insert-bottle-button">
+                    <i class="fas fa-plus-circle"></i>
+                    Insert Bottle
+                </button>
+            </div> -->
+
+            <!-- Modal -->
+            <div id="stationModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Select a Station</h3>
+                        <button class="close" id="closeModalBtn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="station-grid">
+                        <button class="station-button" data-station="Station 1">
+                            <div class="station-icon">
+                                <i class="fas fa-charging-station"></i>
+                            </div>
+                            <div class="station-info">
+                                <span class="station-name">Station 1</span>
+                                <span class="station-status">Available</span>
+                            </div>
+                        </button>
+                        <button class="station-button" data-station="Station 2">
+                            <div class="station-icon">
+                                <i class="fas fa-charging-station"></i>
+                            </div>
+                            <div class="station-info">
+                                <span class="station-name">Station 2</span>
+                                <span class="station-status">Available</span>
+                            </div>
+                        </button>
+                        <button class="station-button" data-station="Station 3">
+                            <div class="station-icon">
+                                <i class="fas fa-charging-station"></i>
+                            </div>
+                            <div class="station-info">
+                                <span class="station-name">Station 3</span>
+                                <span class="station-status">Available</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="modal-drag-indicator"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- <script type="module" src="auth.js"></script> -->
+    <!-- <script type="module" src="{{ url_for('static', filename='js/auth.js') }}"></script> -->
+
+    <!-- <script type="module" src="user_dashboard.js"></script> -->
+    <!-- <script type="module" src="{{ url_for('static', filename='js/user_dashboard.js') }}" defer></script> -->
+    <script>
+        // Sidebar Toggle functionality
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function openSidebar() {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            // Hide hamburger when sidebar is open
+            hamburgerBtn.style.opacity = '0';
+            hamburgerBtn.style.visibility = 'hidden';
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            // Show hamburger when sidebar is closed
+            hamburgerBtn.style.opacity = '1';
+            hamburgerBtn.style.visibility = 'visible';
+        }
+
+        hamburgerBtn.addEventListener('click', openSidebar);
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        // Close sidebar when clicking a nav item on mobile
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    closeSidebar();
+                }
+            });
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('stationModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const stationCard = document.getElementById('stationCard');
+
+        function openModal() {
+            modal.style.display = 'block';
+            // Trigger reflow
+            modal.offsetHeight;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300); // Match transition duration
+        }
+
+        stationCard.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                closeModal();
+            }
+        });
+
+        function selectStation(station) {
+            const currentStation = document.getElementById('current-station');
+            currentStation.textContent = station;
+            closeModal();
+        }
+    </script>
+</body>
+</html>

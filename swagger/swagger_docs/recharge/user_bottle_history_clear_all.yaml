@@ -1,0 +1,26 @@
+/user/bottle-history/clear-all:
+  get:
+    summary: "Clear All Bottle History Records"
+    description: "Deletes all bottle history records from the database."
+    tags: ["User"]
+    responses:
+      '200':
+        description: "Successfully cleared all bottle history records"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "All bottle history records cleared (100 record(s) deleted)"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding"

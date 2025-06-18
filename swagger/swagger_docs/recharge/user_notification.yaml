@@ -1,0 +1,87 @@
+/user/notification:
+  post:
+    summary: "Get notifications for a user by email"
+    description: "Fetches notifications for a user from the notification_recharge table using their email."
+    tags: ["User"]
+    parameters:
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            email:
+              type: "string"
+              description: "The user's email address."
+              example: "user@example.com"
+    responses:
+      '200':
+        description: "Successfully fetched the notifications for the user"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                email:
+                  type: "string"
+                  example: "user@example.com"
+                uniqueId:
+                  type: "string"
+                  example: "12345"
+                notifications:
+                  type: "array"
+                  items:
+                    type: "object"
+                    properties:
+                      id:
+                        type: "integer"
+                        example: 1
+                      uniqueId:
+                        type: "string"
+                        example: "12345"
+                      role:
+                        type: "string"
+                        example: "Admin"
+                      status:
+                        type: "string"
+                        example: "Active"
+                      message:
+                        type: "string"
+                        example: "Your account has been updated"
+                      priority:
+                        type: "string"
+                        example: "High"
+                      timestamp:
+                        type: "string"
+                        format: "date-time"
+                        example: "2025-05-16T08:30:00Z"
+      '400':
+        description: "Missing required field: 'email'"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "Missing required field: 'email'"
+      '404':
+        description: "User not found or no notifications found"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "User not found"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding"

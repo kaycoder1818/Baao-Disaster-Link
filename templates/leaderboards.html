@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/ReChargeLOGO(2).ico') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboards - ReCharge</title>
+    <!-- <link rel="stylesheet" href="styles.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- <link rel="stylesheet" href="userdashboard.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/userdashboard.css') }}">
+    <!-- <link rel="stylesheet" href="leaderboards.css"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/leaderboards.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger-menu" id="hamburgerBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="{{ url_for('static', filename='images/ReChargeLOGO(2).png') }}" class="sidebar-logo">
+            <button class="close-sidebar" id="closeSidebarBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <nav class="sidebar-nav">
+<!--             <a href="user_dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="history.html" class="nav-item">
+                <i class="fas fa-history"></i>
+                <span>History</span>
+            </a>
+            <a href="rewards.html" class="nav-item">
+                <i class="fas fa-gift"></i>
+                <span>Rewards</span>
+            </a>
+            <a href="leaderboards.html" class="nav-item active">
+                <i class="fas fa-trophy"></i>
+                <span>Leaderboards</span>
+            </a>
+            <a href="#" id="logout_btn" class="nav-item logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a> -->
+
+            <a href="javascript:void(0)" class="nav-item" onclick="navigateToDashboard()">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item" onclick="navigateToHistory()">
+                <i class="fas fa-history"></i>
+                <span>History</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item" onclick="navigateToRewards()">
+                <i class="fas fa-gift"></i>
+                <span>Rewards</span>
+            </a>
+            <a href="javascript:void(0)" class="nav-item active" onclick="navigateToLeaderboards()">
+                <i class="fas fa-trophy"></i>
+                <span>Leaderboards</span>
+            </a>
+            <a href="javascript:void(0)" id="logout_btn" class="nav-item logout" onclick="handleLogout(event)">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+
+        </nav>
+    </div>
+
+<script>
+    function navigateToDashboard() {
+        console.log("Navigating to /user-dashboard");
+        updateActiveNavItem('navigateToDashboard');
+        window.location.href = window.location.origin + "/user-dashboard";
+    }
+
+    function navigateToHistory() {
+        console.log("Navigating to /history");
+        updateActiveNavItem('navigateToHistory');
+        window.location.href = window.location.origin + "/history";
+    }
+
+    function navigateToRewards() {
+        console.log("Navigating to /rewards");
+        updateActiveNavItem('navigateToRewards');
+        window.location.href = window.location.origin + "/rewards";
+    }
+
+    function navigateToLeaderboards() {
+        console.log("Navigating to /leaderboards");
+        updateActiveNavItem('navigateToLeaderboards');
+        window.location.href = window.location.origin + "/leaderboards";
+    }
+
+    function updateActiveNavItem(navigationFunction) {
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('onclick')?.includes(navigationFunction)) {
+                item.classList.add('active');
+            }
+        });
+    }
+
+    function logoutUser() {
+        console.log("Logout button clicked");
+    }
+</script>
+
+    <!-- Overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <main class="dashboard-container">
+            <div class="leaderboards-header">
+                <h1>7-Day Leaderboard</h1>
+                <div class="date-range" id="dateRange">
+                    <!-- Date range will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Leaderboard Table -->
+            <div class="leaderboard-container">
+                <div class="leaderboard-table">
+                    <div class="table-header">
+                        <div class="rank-col">Rank</div>
+                        <div class="user-col">User</div>
+                        <div class="bottles-col">Bottles</div>
+                    </div>
+                    <div class="table-body" id="leaderboardBody">
+                        <!-- Leaderboard entries will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Your Position -->
+            <div class="your-position" id="yourPosition">
+                <!-- User's position will be shown here -->
+            </div>
+        </main>
+    </div>
+
+<!--     <script type="module" src="./auth.js"></script>
+    <script src="./leaderboards.js"></script> -->
+
+        <!-- <script type="module" src="auth.js"></script> -->
+    <!-- <script src="{{ url_for('static', filename='js/auth.js') }}" defer></script> -->
+    <!-- <script type="module" src="history.js"></script> -->
+    <script src="{{ url_for('static', filename='js/leaderboards.js') }}" defer></script>
+</body>
+</html> 

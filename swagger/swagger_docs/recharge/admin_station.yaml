@@ -1,0 +1,59 @@
+/admin/station:
+  get:
+    summary: "Retrieve all station records"
+    description: "Fetches all records from the 'store_recharge' table and returns station details."
+    tags: ["Admin"]
+    responses:
+      '200':
+        description: "Successfully fetched station records"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                stations:
+                  type: "array"
+                  items:
+                    type: "object"
+                    properties:
+                      id:
+                        type: "integer"
+                        description: "The ID of the station"
+                        example: 1
+                      uniqueId:
+                        type: "integer"
+                        description: "The unique ID of the user associated with the station"
+                        example: 1234
+                      stationName:
+                        type: "string"
+                        description: "The name of the station"
+                        example: "Station 1"
+                      stationStatus:
+                        type: "string"
+                        description: "The status of the station"
+                        example: "active"
+                      timestamp:
+                        type: "string"
+                        format: "date-time"
+                        description: "The timestamp when the record was created"
+                        example: "2025-05-15T12:34:56Z"
+      '404':
+        description: "No records found in 'store_recharge' table"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "No records found in 'store_recharge' table"
+      '500':
+        description: "Internal Server Error due to database or connection issues"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"

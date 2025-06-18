@@ -1,0 +1,82 @@
+/user:
+  get:
+    summary: "Get All User Recharge Records"
+    description: "Retrieves all records from the 'users_recharge' table. Returns a 404 message if no records are found."
+    tags: ["User"]
+    responses:
+      '200':
+        description: "Successfully retrieved user recharge records"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                users_recharge:
+                  type: "array"
+                  items:
+                    type: "object"
+                    properties:
+                      id:
+                        type: "integer"
+                        description: "The ID of the user recharge record"
+                        example: 1
+                      uniqueId:
+                        type: "string"
+                        description: "The unique identifier of the user"
+                        example: "user_001"
+                      userName:
+                        type: "string"
+                        description: "Username of the user"
+                        example: "john_doe"
+                      passwordHash:
+                        type: "string"
+                        description: "Hashed password of the user"
+                        example: "$2b$12$abc123..."
+                      role:
+                        type: "string"
+                        description: "Role of the user"
+                        example: "user"
+                      groupId:
+                        type: "string"
+                        description: "Group ID the user belongs to"
+                        example: "groupA"
+                      email:
+                        type: "string"
+                        description: "Email address of the user"
+                        example: "john@example.com"
+                      status:
+                        type: "string"
+                        description: "Status of the user"
+                        example: "active"
+                      token:
+                        type: "string"
+                        description: "Authentication token"
+                        example: "abcd1234efgh5678"
+                      resetCode:
+                        type: "string"
+                        description: "Password reset code"
+                        example: "reset9876"
+                      timestamp:
+                        type: "string"
+                        description: "Timestamp of record creation"
+                        example: "2025-03-08T15:00:00Z"
+      '404':
+        description: "No records found in 'users_recharge' table"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                message:
+                  type: "string"
+                  example: "No records found in 'users_recharge' table"
+      '500':
+        description: "Internal Server Error if the database is not responding or the connection is unavailable"
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                error:
+                  type: "string"
+                  example: "MySQL database not responding, please check the database service"
