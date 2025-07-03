@@ -13,7 +13,7 @@ def load_swagger_docs(docs_path):
     return swagger_docs
 
 def setup_swagger(app):
-    parking_docs_path = os.path.join(os.path.dirname(__file__), 'swagger_docs', 'recharge')
+    parking_docs_path = os.path.join(os.path.dirname(__file__), 'swagger_docs', 'baaolink')
     
     # Load documents from both directories
     swagger_docs = {}
@@ -23,7 +23,7 @@ def setup_swagger(app):
         "swagger": "2.0",
         "info": {
             "title": "API Documentation",
-            "description": "Recharge API",
+            "description": "ParcelPoint API",
             "version": "1.0",
         },
         "paths": swagger_docs

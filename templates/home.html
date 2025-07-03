@@ -1,0 +1,130 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Baao Disaster Link</title>
+    <!-- Link to the CSS file in the static folder -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+    <div class="dashboard-wrapper">  
+        <div class="horizontal-box" >
+            <div class="nested-box-image" >
+              <!-- App logo -->
+              <img src="{{ url_for('static', filename='images/app-logoo.jpg') }}" class="app-logo">
+            </div>
+            <div class="nested-box nested-box-bold" >
+              BAAO DISASTER LINK
+            </div>
+            <div class="nested-box" >
+              <div class="spacer-box"> </div>
+            </div>
+            <!--         <div class="nested-box">
+              <div class="icon-container" id="history-button"  onclick="navigateToHistory()">
+                <img src="{{ url_for('static', filename='images/history.svg') }}" alt="History Icon" class="history-icon">
+              </div>
+              <div class="spinner" id="history-spinner"></div>
+            </div> -->
+        </div>
+  
+      <div class="horizontal-box" >
+            <div class="nested-box nested-box-bold" >
+              BAAO
+            </div>
+
+            <div class="nested-box">
+              <div class="icon-container" id="history-button"  onclick="navigateToHistory()">
+                <img src="{{ url_for('static', filename='images/history.svg') }}" alt="History Icon" class="history-icon">
+              </div>
+              <div class="spinner" id="history-spinner"></div>
+            </div>
+      </div>
+  
+      <div class="horizontal-box" >
+        <div class="nested-box nested-box-bold" >
+            Today
+        </div>
+        <div class="nested-box" >
+            <div class="spacer-box"> </div> 
+        </div>
+      </div>
+  
+        <div class="horizontal-box" >
+            <div class="nested-box" >
+                <div class="card-gauge">
+                    <div class="number-gauge">22°C</div>
+                    <div class="label-gauge">Cloudy</div>
+                </div>
+            </div>
+        </div>
+  
+        <div class="horizontal-box" >
+            <div class="nested-box" >
+                <div class="card-gauge">
+                    <div class="number-gauge-small">2 Km/h</div>
+                    <div class="label-gauge">Wind</div>
+                </div>
+            </div>
+            <div class="nested-box" >
+                <div class="nested-box" >
+                    <div class="card-gauge">
+                      <div class="number-gauge-small">62%</div>
+                      <div class="label-gauge">Humidity</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nested-box" >
+                <div class="nested-box" >
+                    <div class="card-gauge">
+                      <div class="number-gauge-small">1Km</div>
+                      <div class="label-gauge">Visibility</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+  
+        <div class="horizontal-box" >
+            <div class="nested-box" >
+                <div class="card-gauge">
+                    <div class="number-gauge">0</div>
+                    <div class="label-gauge">Exacution</div>
+                    <div class="label-gauge">Place</div>
+                </div>
+            </div>
+            <div class="nested-box" >
+                <div class="nested-box" >
+                    <div class="card-gauge">
+                      <div class="number-gauge">0</div>
+                      <div class="label-gauge">Weather</div>
+                      <div class="label-gauge">Update</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="horizontal-box" >
+            <div class="nested-box" >
+                <div class="card-gauge">
+                    <div class="number-gauge">0</div>
+                    <div class="label-gauge">Flooding</div>
+                    <div class="label-gauge">Area</div>
+                </div>
+            </div>
+            <div class="nested-box" >
+                <div class="nested-box" >
+                    <div class="card-gauge">
+                      <div class="number-gauge">0</div>
+                      <div class="label-gauge">Accident</div>
+                      <div class="label-gauge">Prone</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+    </div>
+</html>

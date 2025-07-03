@@ -1,32 +1,21 @@
-<!-- index.html (Welcome Page) -->
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/ReChargeLOGO(2).ico') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    
-    <title>Welcome</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Front - Baao Disaster Link</title>
+    <!-- Link to the CSS file in the static folder -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 <body>
-    <div class="indexBody">
-        <div class="logo-container">
-            <img src="{{ url_for('static', filename='images/flaticon.png') }}" class="logo" alt="Logo">
-        </div>
-        <div class="container">
-            <h2>Welcome</h2>
-            <h2>To</h2>
-            <h2>Baao Disaster Link</h2>
-            <div style="margin-top: 20px;">
-                <button onclick="window.location.href='/user-dashboard'">
-                    Start
-                </button>
-            </div>
-        </div>
+    <div class="dashboard-wrapper">
+
+      <div class="intro-container">
+        <h1 class="intro-title">BAAO DISASTERLINK</h1>
+        <p class="intro-subtitle">Your Smart Guide to Safety and Preparedness.</p>
+        <button class="start-button" onclick="startApp()">START</button>
+      </div>  
     </div>
-</body>
 </html>
