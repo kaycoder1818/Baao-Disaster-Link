@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request, render_template
 # from dotenv import load_dotenv
 import mysql.connector
 import os
-from swagger.swaggerui import setup_swagger
+# from swagger.swaggerui import setup_swagger
 import random
 import string
 
@@ -10,7 +10,7 @@ import string
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/static')
 
 # Set up Swagger
-setup_swagger(app)
+# setup_swagger(app)
 
 # Load environment variables from .env file
 # load_dotenv()
