@@ -1,12 +1,58 @@
-
-/*home.css*/
+/* static\css\home.css */
 
 body {
   margin: 0;
   padding: 0;
+  background-color: #90D2EF; /* Set your desired background */
   background-size: cover;
   font-family: Arial, sans-serif;
 }
+
+.spacer-box {
+  width: 120px;  /* adjust width here */
+  height: 10px;  /* adjust height here */
+  /* border: solid black; */
+}
+
+.spacer-box-2 {
+  width: 80px;  /* adjust width here */
+  height: 10px;  /* adjust height here */
+  /* border: solid black; */
+}
+
+.spacer-box-3 {
+  width: 250px;  /* adjust width here */
+  height: 10px;  /* adjust height here */
+  /* border: solid black; */
+}
+
+
+
+/* disable the ability to vertical scroll */
+body, html {
+  overflow: hidden;
+  height: 100%;
+}
+
+.app-title-text {
+    font-weight: bold;
+    font-size: 32px; /* Adjust size as needed */
+    color: white;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+
+    text-shadow:
+        -1px -1px 0 black,
+         1px -1px 0 black,
+        -1px  1px 0 black,
+         1px  1px 0 black,
+         2px  2px 5px black; /* Drop shadow */
+    
+    width: 100%; /* Ensure it can center itself in container */
+}
+
 
 
 .dashboard-wrapper{
@@ -17,7 +63,7 @@ body {
   align-items: center; 
   justify-content: center; 
   flex-direction: column;
-  padding: 9vh; /* Set padding relative to the viewport height */
+  /* padding: 9vh; */
   /*border: solid black;*/
 }
 
@@ -40,7 +86,7 @@ body {
 
 .nested-box {
   display: flex;
-  margin: 5px;
+  /* margin: 5px; */
   white-space: nowrap;
   /*border: solid gray;*/
 }
@@ -141,15 +187,15 @@ body {
 .card-gauge {
     width: 120px;
     height: 120px;
-    border: 3px solid black;
-    border-radius: 15px;
+    /* border: 3px solid black; */
+    /* border-radius: 15px; */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: white;
+    /* background-color: white; */
 }
 
 .number-gauge {
@@ -191,6 +237,68 @@ body {
     font-weight: bold;
     cursor: pointer;
 }
+
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #cccccc; /* Gray background */
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 0;
+  z-index: 1000;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.nav-icon {
+  font-size: 24px;
+  color: black; /* Black outlined icons */
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.nav-icon:hover {
+  transform: scale(1.2);
+}
+
+
+
+.history-icon {
+  font-size: 24px; /* Adjust size as needed */
+  color: black;    /* Change color if needed */
+  cursor: pointer;
+}
+
+.number-gauge {
+    font-size: 50px;
+    font-weight: bold;
+    color: white;
+}
+
+.label-gauge {
+    font-size: 16px; /* increase size */
+    text-transform: uppercase;
+    font-weight: bold;
+    color: white;    /* make text white */
+}
+
+
+.shadowed-box {
+  /* border: 2px solid black; */
+  border-radius: 15px;
+  box-shadow: 0 4px 12px white;
+  padding: 10px; /* Optional: add spacing inside */
+}
+
+.text-white {
+  color: white;
+}
+
+
+
 
 
 /* Spinner style */

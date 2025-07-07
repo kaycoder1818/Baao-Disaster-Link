@@ -1,10 +1,12 @@
-<!-- index.html -->
+<!-- templates\home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - Baao Disaster Link</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <!-- Link to the CSS file in the static folder -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
     <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
@@ -12,43 +14,50 @@
 <body>
     <div class="dashboard-wrapper">  
         <div class="horizontal-box" >
-            <div class="nested-box-image" >
-              <!-- App logo -->
+            <!-- <div class="nested-box-image" >
               <img src="{{ url_for('static', filename='images/app-logoo.jpg') }}" class="app-logo">
+            </div> -->
+            <div class="nested-box app-title-text">
+                BAAO DISASTER LINK
             </div>
-            <div class="nested-box nested-box-bold" >
-              BAAO DISASTER LINK
-            </div>
-            <div class="nested-box" >
+
+            <!-- <div class="nested-box" >
               <div class="spacer-box"> </div>
-            </div>
-            <!--         <div class="nested-box">
-              <div class="icon-container" id="history-button"  onclick="navigateToHistory()">
-                <img src="{{ url_for('static', filename='images/history.svg') }}" alt="History Icon" class="history-icon">
-              </div>
-              <div class="spinner" id="history-spinner"></div>
             </div> -->
         </div>
   
-      <div class="horizontal-box" >
-            <div class="nested-box nested-box-bold" >
-              BAAO
-            </div>
+      <div class="horizontal-box" 
+        style="
+        /* border: solid black;  */
+        justify-content: space-around;  
+        ">
 
-            <div class="nested-box">
-              <div class="icon-container" id="history-button"  onclick="navigateToHistory()">
-                <img src="{{ url_for('static', filename='images/history.svg') }}" alt="History Icon" class="history-icon">
-              </div>
-              <div class="spinner" id="history-spinner"></div>
-            </div>
+        <div class="spacer-box"> </div>
+
+        <div class="nested-box nested-box-bold"
+          style="color: white; font-size: 30px;">
+          Baao
+        </div>
+
+        <div class="spacer-box-2"> </div>
+
+        <div class="nested-box">
+          <div class="icon-container" id="history-button"  onclick="navigateToHistory()">
+            <!-- <img src="{{ url_for('static', filename='images/history.svg') }}" alt="History Icon" class="history-icon"> -->
+            <i class="fas fa-cog history-icon"></i>
+          </div>
+          <div class="spinner" id="history-spinner"></div>
+        </div>
+
       </div>
   
-      <div class="horizontal-box" >
-        <div class="nested-box nested-box-bold" >
+      <div class="horizontal-box">
+        <div class="nested-box nested-box-bold"
+          style="color: white; font-size: 20px;">
             Today
         </div>
         <div class="nested-box" >
-            <div class="spacer-box"> </div> 
+            <div class="spacer-box-3"> </div> 
         </div>
       </div>
   
@@ -61,17 +70,17 @@
             </div>
         </div>
   
-        <div class="horizontal-box" >
+        <div class="horizontal-box shadowed-box">
             <div class="nested-box" >
                 <div class="card-gauge">
-                    <div class="number-gauge-small">2 Km/h</div>
+                    <div class="number-gauge-small text-white">2Km/h</div>
                     <div class="label-gauge">Wind</div>
                 </div>
             </div>
             <div class="nested-box" >
                 <div class="nested-box" >
                     <div class="card-gauge">
-                      <div class="number-gauge-small">62%</div>
+                      <div class="number-gauge-small text-white">62%</div>
                       <div class="label-gauge">Humidity</div>
                     </div>
                 </div>
@@ -80,7 +89,7 @@
             <div class="nested-box" >
                 <div class="nested-box" >
                     <div class="card-gauge">
-                      <div class="number-gauge-small">1Km</div>
+                      <div class="number-gauge-small text-white">1Km</div>
                       <div class="label-gauge">Visibility</div>
                     </div>
                 </div>
@@ -127,4 +136,13 @@
         </div>
   
     </div>
+
+  <div class="bottom-nav">
+    <i class="far fa-circle nav-icon" title="Home"></i>
+    <i class="far fa-square nav-icon" title="Phone"></i>
+    <i class="far fa-address-book nav-icon" title="Phonebook"></i>
+  </div>
+
+
+
 </html>
