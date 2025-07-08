@@ -26,6 +26,12 @@ body {
   /* border: solid black; */
 }
 
+.spacer-box-4 {
+  width: 250px;  /* adjust width here */
+  height: 20px;  /* adjust height here */
+  /* border: solid black; */
+}
+
 
 
 /* disable the ability to vertical scroll */
@@ -44,11 +50,11 @@ body, html {
     display: flex;
 
     text-shadow:
-        -1px -1px 0 black,
-         1px -1px 0 black,
-        -1px  1px 0 black,
-         1px  1px 0 black,
-         2px  2px 5px black; /* Drop shadow */
+        -1px -1px 0 rgb(114, 110, 110),
+         1px -1px 0 rgb(114, 110, 110),
+        -1px  1px 0 rgb(114, 110, 110),
+         1px  1px 0 rgb(114, 110, 110),
+         2px  2px 5px rgb(114, 110, 110); /* Drop shadow */
     
     width: 100%; /* Ensure it can center itself in container */
 }
@@ -88,7 +94,7 @@ body, html {
   display: flex;
   /* margin: 5px; */
   white-space: nowrap;
-  /*border: solid gray;*/
+  /* border: solid gray; */
 }
 
 .nested-box-image {
@@ -191,7 +197,9 @@ body, html {
     /* border-radius: 15px; */
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
+    /* justify-content: space-between; */
+     justify-content: space-evenly;
     align-items: center;
     font-family: Arial, sans-serif;
     text-align: center;
@@ -297,6 +305,21 @@ body, html {
   color: white;
 }
 
+
+.bg-light-blue {
+    background-color: #7DB2C9;
+}
+
+
+.shadow-gray {
+    box-shadow: 0 4px 8px rgba(128, 128, 128, 0.4); /* soft gray shadow */
+    border-radius: 8px; /* optional: adds rounded corners */
+}
+
+
+.horizontal-spacing > .nested-box:not(:last-child) {
+    margin-right: 30px; /* adjust spacing as needed */
+}
 
 
 
