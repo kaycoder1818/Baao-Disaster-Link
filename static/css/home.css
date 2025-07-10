@@ -35,8 +35,14 @@ body {
 
 
 /* disable the ability to vertical scroll */
-body, html {
+/* body, html {
   overflow: hidden;
+  height: 100%;
+} */
+
+body, html {
+  margin: 0;
+  padding: 0;
   height: 100%;
 }
 
@@ -61,7 +67,7 @@ body, html {
 
 
 
-.dashboard-wrapper{
+/* .dashboard-wrapper{
 
   flex: 1; 
   margin: 10px; 
@@ -69,8 +75,27 @@ body, html {
   align-items: center; 
   justify-content: center; 
   flex-direction: column;
-  /* padding: 9vh; */
-  /*border: solid black;*/
+  padding: 9vh;
+  border: solid black;
+} */
+
+
+.dashboard-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+  padding-bottom: 100px; /* prevent content from hiding behind bottom-nav */
+  max-height: calc(100vh - 60px); /* adjust 60px to match your .bottom-nav height */
+}
+
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .horizontal-box{
