@@ -201,6 +201,25 @@ def evacuation():
     return render_template("evacuation.html")
 
 
+@app.route("/accident")
+def accident():
+    # Render the HTML template for the /** route
+    return render_template("accident.html")
+
+
+
+@app.route("/flooding")
+def flooding():
+    # Render the HTML template for the /** route
+    return render_template("flooding.html")
+
+@app.route("/weather")
+def weather():
+    # Render the HTML template for the /** route
+    return render_template("weather.html")
+
+
+
 @app.route("/history")
 def history():
     # Render the HTML template for the /history route

@@ -1,0 +1,43 @@
+<!-- templates\home.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+       <!-- prevent user zoom on mobile browsers by controlling the viewport settings in your HTML -->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <title>Accident Prone Area - Baao Disaster Link</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+      <!-- Link to the CSS file in the static folder -->
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/accident.css') }}">
+      <script src="{{ url_for('static', filename='js/.js') }}" defer></script>
+  </head>
+
+  <body>
+    <div class="page-container">
+      <!-- Back Button -->
+      <div class="back-button">
+        <a href="/home" title="Go Back">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+      </div>
+
+    <div class="dashboard-wrapper">  
+      <div class="vertical-box">
+        <div class="nested-box section-a">
+          Section A
+        </div>
+        <div class="nested-box section-b">
+          Section B
+        </div>
+      </div>
+    </div>
+
+
+    </div>
+  </body>
+
+  
+</html>
