@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Google Map with Custom Search Bar</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: sans-serif;
+    }
+
+    #map {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #search-container {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      width: 320px;
+      padding: 6px 10px;
+    }
+
+    .icon {
+      color: #555;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    #autocomplete {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 8px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div id="search-container">
+    <i class="fas fa-arrow-left icon" title="Back" onclick="handleBackClick()"></i>
+    <input id="autocomplete" placeholder="Search a location..." value="Baao, Camarines Sur, Philippines" />
+    <i class="fas fa-search icon" title="Search" onclick="triggerSearch()"></i>
+  </div>
+
+    <gmp-map
+    id="map"
+    center="13.4525,123.3658"
+    zoom="14"
+    map-id="YOUR_MAP_ID_IF_NEEDED"
+    ></gmp-map>
+
+  <script
+    async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoVrxrSQxLYbGR7YJq17NYyWTOd4npOIA&libraries=places,marker&callback=initMap&loading=async">
+  </script>
+
+  <script>
+    let map;
+    let marker;
+    let searchBox;
+
+    // Callback from Google Maps API
+    function initMap() {
+      map = document.querySelector("#map");
+
+      const input = document.getElementById("autocomplete");
+      searchBox = new google.maps.places.SearchBox(input);
+
+      map.addEventListener("bounds_changed", () => {
+        searchBox.setBounds(map.bounds);
+      });
+
+      searchBox.addListener("places_changed", () => {
+        const places = searchBox.getPlaces();
+
+        if (places.length === 0) return;
+
+        const place = places[0];
+        if (!place.geometry || !place.geometry.location) {
+          alert("No geometry found for selected place.");
+          return;
+        }
+
+        map.center = place.geometry.location;
+        map.zoom = 15;
+
+        if (marker) marker.map = null;
+
+        marker = new google.maps.marker.AdvancedMarkerElement({
+          map: map,
+          position: place.geometry.location,
+          title: place.name,
+        });
+      });
+
+      input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          triggerSearch();
+        }
+      });
+    }
+
+    // Expose functions globally
+    function triggerSearch() {
+      const input = document.getElementById("autocomplete");
+      google.maps.event.trigger(input, 'focus');
+      google.maps.event.trigger(input, 'keydown', { keyCode: 13 });
+    }
+
+    function handleBackClick() {
+      window.location.href = "/";
+    }
+
+    // Expose to HTML
+    window.triggerSearch = triggerSearch;
+    window.handleBackClick = handleBackClick;
+    window.initMap = initMap;
+  </script>
+</body>
+</html>

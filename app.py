@@ -194,6 +194,13 @@ def home():
     # Render the HTML template for the /ui route
     return render_template("home.html")
 
+
+@app.route("/evacuation")
+def evacuation():
+    # Render the HTML template for the /** route
+    return render_template("evacuation.html")
+
+
 @app.route("/history")
 def history():
     # Render the HTML template for the /history route
