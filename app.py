@@ -6,7 +6,7 @@ import os
 import random
 import string
 from datetime import datetime
-import pytz
+# import pytz
 
 
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/static')
@@ -235,9 +235,8 @@ def history_preview():
 ## APIs
 @app.route("/get_current_date")
 def get_current_date():
-    # Get the current time in the desired timezone (e.g., Asia/Manila for Taguig)
-    manila_tz = pytz.timezone('Asia/Manila')
-    now = datetime.now(manila_tz)
+    # Get the current local time
+    now = datetime.now()
     
     # Format the date as "Day, DD Month YYYY" (e.g., "Friday, 13 June 2025")
     # %A for full weekday name, %d for day of the month, %B for full month name, %Y for year
