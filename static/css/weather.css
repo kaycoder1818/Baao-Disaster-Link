@@ -2,7 +2,7 @@
 
 
 .back-button {
-  position: absolute;
+  /* position: absolute; */
   top: 15px;
   left: 15px;
   z-index: 1000;
@@ -56,6 +56,18 @@ body {
 .spacer-box-4 {
   width: 250px;  /* adjust width here */
   height: 20px;  /* adjust height here */
+  /* border: solid black; */
+}
+
+.spacer-box-5 {
+  width: 85px;  /* adjust width here */
+  height: 10px;  /* adjust height here */
+  /* border: solid black; */
+}
+
+.spacer-box-6 {
+  width: 100px;  /* adjust width here */
+  height: 10px;  /* adjust height here */
   /* border: solid black; */
 }
 
@@ -190,19 +202,32 @@ body {
   flex: 1; 
   display: flex;
   flex-direction: row;
-  margin: 7px; 
+  /* margin: 7px;  */
   align-items: center; 
   justify-content: center; 
-  /* border: solid red; */
   margin-left: 30px;
   margin-right: 30px;
+  /* border: solid red; */
 }
 
 .vertical-box {
+  flex: 1; 
   display: flex;
   flex-direction: column;
-  margin: 5px; 
-  border: solid blue;
+  margin-left: 30px;
+  margin-right: 30px;
+  /* margin: 5px;  */
+  /* border: solid blue; */
+}
+
+
+.vertical-box-2 {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin: 5px;  */
+  /* border: solid blue; */
 }
 
 .nested-box {
@@ -390,7 +415,7 @@ body {
 }
 
 .number-gauge {
-    font-size: 50px;
+    font-size: 100px;
     font-weight: bold;
     color: white;
 }
@@ -461,6 +486,124 @@ body {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+
+.date-container {
+    background-color: #FF5757; /* Red background */
+    border: 2px solid black; /* Black border */
+    border-radius: 20px; /* Rounded corners */
+    padding: 8px 15px; /* Adjust padding as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white; /* White text color */
+    font-weight: bold;
+    font-size: 12px; /* Adjust font size as needed */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: add a subtle shadow */
+}
+
+.date-text {
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+
+.cloud-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white; /* White text color */
+    font-weight: bold;
+    font-size: 12px; /* Adjust font size as needed */
+}
+
+
+
+.weekly-forecast-nav {
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px; /* Adjust padding to match horizontal-box margins */
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    /* border: 1px solid blue; */ /* For debugging */
+}
+
+.weekly-forecast-text {
+    /* No specific styles needed here, uses parent styles */
+}
+
+.arrow-icon {
+    font-size: 24px;
+    /* border: 1px solid green; */ /* For debugging */
+}
+
+.weather-cards-container {
+    overflow-x: auto; /* Enable horizontal scrolling */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    justify-content: flex-start; /* Align cards to the start */
+    gap: 2px;
+    padding: 10px 30px; /* Padding for the scrollable area */
+    margin-left: 0; /* Remove default horizontal-box margin */
+    margin-right: 0; /* Remove default horizontal-box margin */
+    /* border: 1px solid purple; */ /* For debugging */
+}
+
+/* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+.weather-cards-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.weather-cards-container {
+    scrollbar-width: none;
+}
+
+.weather-card {
+    flex-shrink: 0; /* Prevent cards from shrinking */
+    width: 75px; /* Fixed width for each card */
+    height: 160px; /* Fixed height for each card */
+    background-color: #333333; /* Dark background as in the image */
+    border-radius: 30px; /* Highly rounded corners */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 10px 0;
+    box-sizing: border-box; /* Include padding in width/height */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+
+.weather-card .card-date {
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.weather-card .card-icon img {
+    width: 45px; /* Adjust icon size */
+    height: 45px;
+    object-fit: contain;
+}
+
+.weather-card .card-description {
+    font-size: 13px;
+    text-transform: capitalize;
+}
+
+.weather-card .card-temp {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.card-day { 
+    margin: 10px;
+    font-size: 11px;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    opacity: 0.7;
 }
 
 
