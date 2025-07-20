@@ -542,8 +542,8 @@ body {
     overflow-x: auto; /* Enable horizontal scrolling */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     justify-content: flex-start; /* Align cards to the start */
-    gap: 2px;
-    padding: 10px 30px; /* Padding for the scrollable area */
+    gap: 5px;
+    /* padding: 10px 10px;  */
     margin-left: 0; /* Remove default horizontal-box margin */
     margin-right: 0; /* Remove default horizontal-box margin */
     /* border: 1px solid purple; */ /* For debugging */
