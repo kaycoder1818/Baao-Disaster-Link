@@ -220,6 +220,11 @@ def weather():
     # Render the HTML template for the /** route
     return render_template("weather.html")
 
+@app.route("/emergency")
+def emergency():
+    # Render the HTML template for the /** route
+    return render_template("emergency.html")
+
 
 
 @app.route("/history")

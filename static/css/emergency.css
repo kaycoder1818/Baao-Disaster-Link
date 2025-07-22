@@ -1,0 +1,174 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #87CEEB;
+    font-family: Arial, sans-serif;
+}
+
+.back-button {
+  /* position: absolute; */
+  top: 15px;
+  left: 15px;
+  z-index: 1000;
+  font-size: 20px;
+}
+
+.spacer-box {
+  width: 300px;  /* adjust width here */
+  height: 10px;  /* adjust height here */
+  /* border: solid black; */
+}
+
+.horizontal-box{
+  flex: 1; 
+  display: flex;
+  flex-direction: row;
+  margin: 7px; 
+  align-items: center; 
+  justify-content: center; 
+  margin-left: 30px;
+  margin-right: 30px;
+  /* border: solid red; */
+}
+
+.vertical-box {
+  display: flex;
+  flex-direction: column;
+  margin: 5px; 
+  /* border: solid blue; */
+}
+
+.nested-box {
+  display: flex;
+  margin: 5px;
+  white-space: nowrap;
+  /* border: solid gray; */
+}
+
+.container {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+    /* border: solid black; */
+}
+
+.header {
+    background-color: red;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.header i {
+    font-size: 24px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.header-title {
+    font-size: 24px;
+    font-weight: bold;
+    vertical-align: middle;
+}
+
+.subheader {
+    font-size: 14px;
+    margin-top: 4px;
+    font-weight: bold;
+}
+
+.hotline-card {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border-bottom: 4px solid red;
+}
+
+.hotline-card-no-background {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    padding: 10px;
+    /* border-radius: 5px; */
+    border-bottom: 4px solid black;
+}
+
+
+.hotline-img {
+    width: 60px;
+    height: 60px;
+    background-color: #ddd;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+.hotline-info {
+    flex: 1;
+    text-align: left;
+    border: solid blue;
+
+}
+
+.hotline-number {
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+}
+
+/* .hotline-label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-top: 4px;
+    color: black;
+} */
+
+.hotline-label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 4px;
+  color: white;
+  text-shadow:
+    -1px -1px 0 black,
+     1px -1px 0 black,
+    -1px  1px 0 black,
+     1px  1px 0 black;
+  letter-spacing: 1px; 
+}
+
+.hotline-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;  /* or use 'contain' if you want the whole image visible without cropping */
+  border-radius: 5px;
+}
+
+
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    .hotline-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hotline-img {
+        margin: 0 auto 10px;
+    }
+
+    .hotline-info {
+        text-align: center;
+        width: 100%;
+    }
+}

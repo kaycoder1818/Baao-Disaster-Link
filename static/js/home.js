@@ -264,7 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const navRoutes = {
         "nav-home": "/",
         "nav-phone": "/phone",
-        "nav-phonebook": "/phonebook"
+        "nav-emergency": "/emergency"
     };
 
     for (const [id, path] of Object.entries(navRoutes)) {
