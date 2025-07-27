@@ -209,7 +209,6 @@ def accident():
     return render_template("accident.html")
 
 
-
 @app.route("/flooding")
 def flooding():
     # Render the HTML template for the /** route
@@ -222,6 +221,12 @@ def weather():
 
 @app.route("/emergency")
 def emergency():
+    # Render the HTML template for the /** route
+    return render_template("emergency.html")
+
+
+@app.route("/phone")
+def phone():
     # Render the HTML template for the /** route
     return render_template("emergency.html")
 
