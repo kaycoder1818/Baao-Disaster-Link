@@ -542,7 +542,7 @@ body {
     overflow-x: auto; /* Enable horizontal scrolling */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     justify-content: flex-start; /* Align cards to the start */
-    gap: 5px;
+    gap: 1px;
     /* padding: 10px 10px;  */
     margin-left: 0; /* Remove default horizontal-box margin */
     margin-right: 0; /* Remove default horizontal-box margin */
