@@ -228,7 +228,7 @@ def emergency():
 @app.route("/phone")
 def phone():
     # Render the HTML template for the /** route
-    return render_template("emergency.html")
+    return render_template("guide.html")
 
 @app.route("/guide")
 def guide():
