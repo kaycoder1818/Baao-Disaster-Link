@@ -263,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const navRoutes = {
         "nav-home": "/",
-        "nav-phone": "/phone",
+        "nav-phone": "/guide",
         "nav-emergency": "/emergency"
     };
 

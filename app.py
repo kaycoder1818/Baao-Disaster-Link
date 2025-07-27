@@ -225,7 +225,26 @@ def emergency():
     # Render the HTML template for the /** route
     return render_template("emergency.html")
 
+@app.route("/guide")
+def guide():
+    # Render the HTML template for the /** route
+    return render_template("guide.html")
 
+@app.route("/disaster-preparedness")
+def disaster_prep():
+    # Render the HTML template for the /** route
+    return render_template("disaster-prep.html")
+
+@app.route("/fire-preparedness")
+def fire_prep():
+    # Render the HTML template for the /** route
+    return render_template("fire-prep.html")
+
+
+@app.route("/earthquake-preparedness")
+def earthquake_prep():
+    # Render the HTML template for the /** route
+    return render_template("earthquake-prep.html")
 
 @app.route("/history")
 def history():
