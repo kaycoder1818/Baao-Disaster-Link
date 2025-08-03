@@ -7,12 +7,12 @@
       <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
        <!-- prevent user zoom on mobile browsers by controlling the viewport settings in your HTML -->
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-      <title>Earth Preparedness Tips - Baao Disaster Link</title>
+      <title>Disaster Preparedness Tips - Baao Disaster Link</title>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
       <!-- Link to the CSS file in the static folder -->
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/earthquake-prep.css') }}">
-      <script src="{{ url_for('static', filename='js/.js') }}" defer></script>
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/disaster-prep.css') }}">
+      <!-- <script src="{{ url_for('static', filename='js/.js') }}" defer></script> -->
   </head>
 
   <body>
@@ -24,18 +24,30 @@
         </a>
       </div>
 
-    <div class="dashboard-wrapper">  
-      <div class="vertical-box">
-        <div class="nested-box section-a">
-          <div class="image-container">
+    <div class="nested-box flex-grow"> 
+      <div class="vertical-box flex-grow gap-min">
+        <div class="nested-box flex-grow"> 
+          <div class="nested-box fixed-height all-side-padding add-background-white full-width margin-zero" style="--height: 50px;">
+              System Guide
+          </div>
+        </div>
+
+        <div class="vertical-box flex-grow fixed-height-max"> 
+
+          <div class="nested-box flex-grow ">
+            <div class="image-container">
             <img src="{{ url_for('static', filename='images/earthquake-tips.jpg') }}" alt="Emergency Kit" class="image-fit" />
+            </div>
           </div>
-        </div>
-        <div class="nested-box section-b">
-          <div class="image-container">
+          <div class="nested-box flex-grow ">
+            <div class="image-container">
             <img src="{{ url_for('static', filename='images/earthquake-safety.jpg') }}" alt="Emergency Kit" class="image-fit" />
+            </div>
           </div>
+
         </div>
+
+
       </div>
     </div>
 

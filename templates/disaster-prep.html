@@ -12,7 +12,7 @@
 
       <!-- Link to the CSS file in the static folder -->
       <link rel="stylesheet" href="{{ url_for('static', filename='css/disaster-prep.css') }}">
-      <script src="{{ url_for('static', filename='js/.js') }}" defer></script>
+      <!-- <script src="{{ url_for('static', filename='js/.js') }}" defer></script> -->
   </head>
 
   <body>
@@ -24,18 +24,30 @@
         </a>
       </div>
 
-    <div class="dashboard-wrapper">  
-      <div class="vertical-box">
-        <div class="nested-box section-a">
-          <div class="image-container">
-            <img src="{{ url_for('static', filename='images/disaster-tips.jpg') }}" alt="Disaster Preparedness Tips" class="image-fit" />
+    <div class="nested-box flex-grow"> 
+      <div class="vertical-box flex-grow gap-min">
+        <div class="nested-box flex-grow"> 
+          <div class="nested-box fixed-height all-side-padding add-background-white full-width margin-zero" style="--height: 50px;">
+              System Guide
           </div>
         </div>
-        <div class="nested-box section-b">
-          <div class="image-container">
-            <img src="{{ url_for('static', filename='images/emergency-kit.png') }}" alt="Emergency Kit" class="image-fit" />
+
+        <div class="vertical-box flex-grow fixed-height-max"> 
+
+          <div class="nested-box flex-grow ">
+            <div class="image-container">
+              <img src="{{ url_for('static', filename='images/disaster-tips.jpg') }}" alt="Disaster Preparedness Tips" class="image-fit" />
+            </div>
           </div>
+          <div class="nested-box flex-grow ">
+            <div class="image-container">
+              <img src="{{ url_for('static', filename='images/emergency-kit.png') }}" alt="Emergency Kit" class="image-fit" />
+            </div>
+          </div>
+
         </div>
+
+
       </div>
     </div>
 

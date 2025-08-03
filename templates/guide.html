@@ -15,81 +15,86 @@
       <script src="{{ url_for('static', filename='js/guide.js') }}" defer></script>
   </head>
 
-  <body>
-    <div class="page-container">
-      <!-- Back Button -->
-      <div class="back-button">
-        <a href="/home" title="Go Back">
-          <i class="fas fa-arrow-left"></i>
-        </a>
-      </div>
+    <body>
 
-    <div class="dashboard-wrapper">  
-      <div class="vertical-box flex-grow">
-        <div class="nested-box fixed-height all-side-padding add-background-white" style="--height: 10px;">
-          System Guide
-        </div>
-        <div class="nested-box flex-grow">
-            <div class="vertical-box outline-drop-shadow add-margin">
-                <div class="nested-box  add-background-white fixed-dimension" id="disaster-prep">
-                    <div class="horizontal-box  add-margin">
-                        <div class="nested-box section">
-                            <div class="image-container">
-                                <img src="{{ url_for('static', filename='images/disaster-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
-                            </div>
 
-                        </div>
-                        <div class="nested-box section">
-                            <div class="multi-line-stack-container">
-                                <span class="title-line">Disaster</span>
-                                <span class="title-line">Preparedness</span>
-                                <span class="title-line">Tips</span>
-                            </div>
-                        </div>
+
+        <div class="page-container">
+
+            <!-- Back Button -->
+            <div class="back-button">
+            <a href="/home" title="Go Back">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            </div>
+
+            <div class="nested-box flex-grow">  
+                <div class="vertical-box flex-grow gap-min">
+                    <div class="nested-box fixed-height all-side-padding add-background-white full-width margin-zero" style="--height: 50px;">
+                        System Guide
                     </div>
-                </div>
-                <div class="nested-box add-background-white fixed-dimension" id="fire-prep">
-                    <div class="horizontal-box add-margin">
-                        <div class="nested-box section">
-                            <div class="image-container">
-                                <img src="{{ url_for('static', filename='images/fire-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
-                            </div>
+                    <div class="nested-box flex-grow">
+                        <div class="fixed-height-max fixed-width-max justify-center vertical-box outline-drop-shadow add-margin">
+                            <div class="nested-box  add-background-white fixed-dimension" id="disaster-prep">
+                                <div class="horizontal-box  add-margin">
+                                    <div class="nested-box section">
+                                        <div class="image-container">
+                                            <img src="{{ url_for('static', filename='images/disaster-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
+                                        </div>
 
-                        </div>
-                        <div class="nested-box section">
-                            <div class="multi-line-stack-container">
-                                <span class="title-line">Fire</span>
-                                <span class="title-line">Preparedness</span>
-                                <span class="title-line">Tips</span>
+                                    </div>
+                                    <div class="nested-box section">
+                                        <div class="multi-line-stack-container">
+                                            <span class="title-line">Disaster</span>
+                                            <span class="title-line">Preparedness</span>
+                                            <span class="title-line">Tips</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="nested-box add-background-white fixed-dimension" id="earthquake-prep">
-                    <div class="horizontal-box  add-margin">
-                        <div class="nested-box section">
-                            <div class="image-container">
-                                <img src="{{ url_for('static', filename='images/earthquake-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
-                            </div>
+                            <div class="nested-box add-background-white fixed-dimension" id="fire-prep">
+                                <div class="horizontal-box add-margin">
+                                    <div class="nested-box section">
+                                        <div class="image-container">
+                                            <img src="{{ url_for('static', filename='images/fire-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
+                                        </div>
 
-                        </div>
-                        <div class="nested-box section">
-                            <div class="multi-line-stack-container">
-                                <span class="title-line">Earthquake</span>
-                                <span class="title-line">Preparedness</span>
-                                <span class="title-line">Tips</span>
+                                    </div>
+                                    <div class="nested-box section">
+                                        <div class="multi-line-stack-container">
+                                            <span class="title-line">Fire</span>
+                                            <span class="title-line">Preparedness</span>
+                                            <span class="title-line">Tips</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="nested-box add-background-white fixed-dimension" id="earthquake-prep">
+                                <div class="horizontal-box  add-margin">
+                                    <div class="nested-box section">
+                                        <div class="image-container">
+                                            <img src="{{ url_for('static', filename='images/earthquake-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
+                                        </div>
+
+                                    </div>
+                                    <div class="nested-box section">
+                                        <div class="multi-line-stack-container">
+                                            <span class="title-line">Earthquake</span>
+                                            <span class="title-line">Preparedness</span>
+                                            <span class="title-line">Tips</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
-      </div>
-    </div>
 
 
-    </div>
-  </body>
+    </body>
 
   
 </html>

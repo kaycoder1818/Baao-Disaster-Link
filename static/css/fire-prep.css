@@ -1,50 +1,76 @@
 /* static\css\fire-prep.css */
 
-
-
-body, html {
+body{
   margin: 0;
   padding: 0;
   height: 100%;
   overflow-x: hidden; /* hide horizontal scroll */
   overflow-y: auto;   /* keep vertical scroll */
-  display: flex;
   justify-content: center;
-}
-
-
-body {
-  margin: 0;
-  padding: 0;
-  background-color: #90D2EF; /* Set your desired background */
+  background-color: #90D2EF;
   background-size: cover;
-  font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif; 
+  /* border: solid green; */
 }
+
+.flex-grow {
+  flex: 1;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.nested-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: solid gray; */
+}
+
+/* Chrome, Safari and Edge (WebKit) */
+.nested-box::-webkit-scrollbar {
+  display: none;
+}
+
+.vertical-box {
+  display: flex;
+  flex-direction: column;
+  /* border: solid blue; */
+}
+
+
+.horizontal-box {
+  display: flex;
+  flex-direction: row;
+  /* border: solid red; */
+}
+
+.gap-min {
+  display: flex;
+  flex-direction: column; 
+  gap: 15px;               
+  /* gap: 0; */
+}
+
+
+.border-black{
+  border: solid black;
+}
+
+
+.fixed-height-max {
+  height: 750px;
+  overflow: hidden;
+}
+
+
 
 .spacer-box {
   width: 120px;  /* adjust width here */
   height: 10px;  /* adjust height here */
   /* border: solid black; */
-}
-
-
-
-
-.dashboard-wrapper {
-  width: 400px; /* or desired fixed width */
-  /* max-width: calc(100% - 20px); */
-  max-width: 100%;
-  margin: 10px;
-  padding-bottom: 80px; /* for space above bottom-nav */
-  box-sizing: border-box;
-  overflow-y: auto;
-  scrollbar-width: none;       /* Firefox */
-  -ms-overflow-style: none;    /* Internet Explorer 10+ */
-}
-
-/* Chrome, Safari and Edge (WebKit) */
-.dashboard-wrapper::-webkit-scrollbar {
-  display: none;
 }
 
 
@@ -62,48 +88,9 @@ body {
 }
 
 
-.page-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.dashboard-wrapper {
-  width: 100%;
-  max-width: 400px;
-  height: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-}
-
-.vertical-box {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.nested-box {
-  flex: 1; /* Each takes 50% of parent height */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* border: solid gray; */
-  margin: 5px;
-}
-
-.section-a {
-  background-color: #d3f0ff; /* optional */
-}
-
-.section-b {
-  background-color: #b0e0e6; /* optional */
-}
-
 .image-container {
   width: 300px;     /* Set desired fixed width */
-  height: 300px;    /* Set desired fixed height */
+  height: 375px;    /* Set desired fixed height */
   overflow: hidden; /* Hide anything that overflows the box */
   /* border-radius: 8px; */
   /* box-shadow: 0 4px 8px rgba(0,0,0,0.2);  */
@@ -116,4 +103,22 @@ body {
   object-fit: fill;  /* Options: cover, contain, fill, scale-down, none */
   object-position: center;
   display: block;
+}
+
+.fixed-height {
+  height: var(--height, 200px);
+  overflow: hidden;
+}
+
+.all-side-padding {
+  padding: 16px;
+}
+
+.add-background-white {
+  background-color: #fff; 
+}
+
+.full-width {
+  width: 100%;
+  box-sizing: border-box;
 }
