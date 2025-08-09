@@ -15,7 +15,7 @@ function navigateToHistory() {
     setTimeout(function() {
         button.style.display = 'block';
         spinner.style.display = 'none';
-        window.location.href = 'history.html';
+        window.location.href = '/settings';
     }, 500); 
 }
 

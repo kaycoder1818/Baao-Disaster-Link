@@ -1,0 +1,88 @@
+<!-- templates\settings.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+      <meta charset="UTF-8">
+      <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+       <!-- prevent user zoom on mobile browsers by controlling the viewport settings in your HTML -->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+      <title>System Settings - Baao Disaster Link</title>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+      <!-- Link to the CSS file in the static folder -->
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}">
+      <script src="{{ url_for('static', filename='js/settings.js') }}" defer></script>
+  </head>
+
+    <body>
+
+
+
+        <div class="page-container">
+
+            <!-- Back Button -->
+            <div class="back-button">
+            <a href="/home" title="Go Back">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            </div>
+
+            <div class="nested-box flex-grow">  
+                <div class="vertical-box flex-grow gap-min">
+                    <div class="nested-box fixed-height all-side-padding add-background-white full-width margin-zero" style="--height: 50px;">
+                        System Settings
+                    </div>
+                    <div class="nested-box flex-grow">
+                        <div class="fixed-height-max fixed-width-max vertical-box outline-drop-shadow add-margin all-side-padding" style="gap: 15px; background-color: #fff;">
+
+                            <div class="horizontal-box justify-center" style="justify-content: space-between; align-items: center;">
+                                <label for="language-select" >Set Language</label>
+                                <select id="language-select">
+                                    <option value="">Select</option>
+                                    <option value="en">English</option>
+                                    <option value="fil">Filipino</option>
+                                    <option value="fil">Rinconada</option>
+                                    <!-- Add more as needed -->
+                                </select>
+                            </div>
+
+                            <hr>
+
+                            <div class="horizontal-box justify-center" style="justify-content: space-between;">
+                                <span>Dark Mode/Light Mode</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="dark-mode-toggle">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <hr>
+
+                            <div class="horizontal-box justify-center" style="justify-content: space-between;">
+                                <span>Set SMS Alert</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="sms-alert-toggle">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+
+                            <hr>
+
+                            <div class="horizontal-box justify-center" style="justify-content: space-between;">
+                                <span>Help</span>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </body>
+
+  
+</html>

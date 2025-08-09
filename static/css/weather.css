@@ -542,11 +542,13 @@ body {
     overflow-x: auto; /* Enable horizontal scrolling */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     justify-content: flex-start; /* Align cards to the start */
-    gap: 1px;
+    /* gap: 2px; */
+    margin: 1.5rem;
     /* padding: 10px 10px;  */
-    margin-left: 0; /* Remove default horizontal-box margin */
-    margin-right: 0; /* Remove default horizontal-box margin */
-    /* border: 1px solid purple; */ /* For debugging */
+    /* margin-left: 0; 
+    margin-right: 0;  */
+  
+    /* border: 1px solid purple;  */
 }
 
 /* Hide scrollbar for Webkit browsers (Chrome, Safari) */

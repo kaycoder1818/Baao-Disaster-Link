@@ -261,6 +261,17 @@ def history_preview():
     # Render the HTML template for the /history route
     return render_template("history-preview.html")
 
+@app.route("/forecast-table")
+def forecast_table():
+    # Render the HTML template for the /history route
+    return render_template("forecast.html")
+
+
+@app.route("/settings")
+def settings():
+    # Render the HTML template for the /history route
+    return render_template("settings.html")
+
 ## APIs
 # @app.route("/get_current_date")
 # def get_current_date():

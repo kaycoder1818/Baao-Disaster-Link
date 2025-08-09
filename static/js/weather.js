@@ -330,7 +330,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const navRoutes = {
         "nav-home": "/",
         "nav-phone": "/phone",
-        "nav-phonebook": "/phonebook"
+        "nav-phonebook": "/phonebook",
+        "forecast-link": "/forecast-table"
     };
 
     for (const [id, path] of Object.entries(navRoutes)) {

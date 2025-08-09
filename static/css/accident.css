@@ -98,3 +98,21 @@ body {
 .section-b {
   background-color: #b0e0e6; /* optional */
 }
+
+
+.image-container {
+  width: 300px;     /* Set desired fixed width */
+  height: 375px;    /* Set desired fixed height */
+  overflow: hidden; /* Hide anything that overflows the box */
+  /* border-radius: 8px; */
+  /* box-shadow: 0 4px 8px rgba(0,0,0,0.2);  */
+  position: relative;
+}
+
+.image-fit {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;  /* Options: cover, contain, fill, scale-down, none */
+  object-position: center;
+  display: block;
+}
