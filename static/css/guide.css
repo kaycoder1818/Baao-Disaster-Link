@@ -159,7 +159,7 @@ body{
 }
 
 .fixed-dimension {
-  width: 300px;   /* Set desired fixed width */
+  /* width: 300px;  */
   height: 200px;  /* Set desired fixed height */
   overflow: hidden; /* Optional: hide overflow content */
   box-sizing: border-box; /* Include padding/border in total size */

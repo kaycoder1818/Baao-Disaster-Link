@@ -12,7 +12,7 @@
 
       <!-- Link to the CSS file in the static folder -->
       <link rel="stylesheet" href="{{ url_for('static', filename='css/accident.css') }}">
-      <script src="{{ url_for('static', filename='js/.js') }}" defer></script>
+      <script src="{{ url_for('static', filename='js/accident.js') }}" defer></script>
   </head>
 
   <body>
@@ -24,20 +24,31 @@
         </a>
       </div>
 
-    <div class="dashboard-wrapper">  
-      <div class="vertical-box">
-        <div class="nested-box section-a">
-            <div class="image-container">
-              <img src="{{ url_for('static', filename='images/house-fire.png') }}" alt="Emergency Kit" class="image-fit" />
-            </div>
-        </div>
-        <div class="nested-box section-b">
-            <div class="image-container">
-              <img src="{{ url_for('static', filename='images/house-fire.png') }}" alt="Emergency Kit" class="image-fit" />
-            </div>
-        </div>
+      <div class="vertical-box" >
+
+        <div class="vertical-box" >  </div>
+
+          <div class="table-container">
+            <table class="accident-table" id="accident-table">
+              <thead>
+                <tr>
+                  <th>Brgy</th>
+                  <th>2021 Count of Accident</th>
+                  <th>% per Brgy</th>
+                  <th>2022 Count of Accident</th>
+                  <th>% per Brgy</th>
+                  <th>Past 2 Years Total Count of Accident</th>
+                  <th>% per Brgy</th>
+                </tr>
+              </thead>
+              <tbody id="accident-body"></tbody>
+              <tfoot id="accident-footer"></tfoot>
+            </table>
+          </div>
+
+        <div class="vertical-box" >  </div>
+        
       </div>
-    </div>
 
 
     </div>

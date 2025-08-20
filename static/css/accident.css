@@ -27,19 +27,6 @@ body {
 
 
 
-
-.dashboard-wrapper {
-  width: 400px; /* or desired fixed width */
-  /* max-width: calc(100% - 20px); */
-  max-width: 100%;
-  margin: 10px;
-  padding-bottom: 80px; /* for space above bottom-nav */
-  box-sizing: border-box;
-  overflow-y: auto;
-  scrollbar-width: none;       /* Firefox */
-  -ms-overflow-style: none;    /* Internet Explorer 10+ */
-}
-
 /* Chrome, Safari and Edge (WebKit) */
 .dashboard-wrapper::-webkit-scrollbar {
   display: none;
@@ -60,21 +47,21 @@ body {
 }
 
 
-.page-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
 .dashboard-wrapper {
+  max-height: 90vh;
   width: 100%;
-  max-width: 400px;
-  height: 100%;
-  box-sizing: border-box;
+  max-width: 1000px;
+  overflow: auto; /* enable scroll inside if content overflows */
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  /* border: solid blue; */
 }
+
+
 
 .vertical-box {
   display: flex;
@@ -115,4 +102,48 @@ body {
   object-fit: fill;  /* Options: cover, contain, fill, scale-down, none */
   object-position: center;
   display: block;
+}
+
+
+.page-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column; /* instead of align-items center */
+  overflow: hidden; /* prevent double scrollbars */
+   /* border: solid red; */
+}
+
+
+
+
+.accident-table th, .accident-table td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: center;
+}
+
+.accident-table th {
+  background-color: #ffe600;
+}
+
+.accident-table tfoot td {
+  font-weight: bold;
+  background-color: #ffff99;
+}
+
+
+.table-container {
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto; /* both x and y scroll */
+}
+
+
+.accident-table {
+  width: 100%;
+  min-width: 800px;      /* Prevent too narrow table */
+  border-collapse: collapse;
+  background-color: #fffacd;
+  font-family: Arial, sans-serif;
 }

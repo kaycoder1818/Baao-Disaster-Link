@@ -243,9 +243,9 @@ document.addEventListener("DOMContentLoaded", function () {
         "weather-box": "/weather",
         "flood-box": "/flooding",
         "accident-box": "/accident",
-        "wind-box": "/wind",
-        "humidity-box": "/humidity",
-        "visibility-box": "/visibility"
+        // "wind-box": "/wind",
+        // "humidity-box": "/humidity",
+        // "visibility-box": "/visibility"
     };
 
     for (const [id, path] of Object.entries(routes)) {

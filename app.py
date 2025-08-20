@@ -359,5 +359,26 @@ def get_weather():
         # Return a message for other locations or no location provided
         return jsonify({"message": "No forecast data available for this location. Try 'baao'."}), 404
 
+
+@app.route('/accident-area')
+def accident_area_data():
+    accident_data = [
+        {"brgy": "Buluang", "acc_2021": 27, "pct_2021": "22%", "acc_2022": 19, "pct_2022": "14%", "total": 46, "pct_total": "18%"},
+        {"brgy": "Agdangan", "acc_2021": 9, "pct_2021": "7%", "acc_2022": 24, "pct_2022": "18%", "total": 33, "pct_total": "13%"},
+        {"brgy": "San Isidro", "acc_2021": 6, "pct_2021": "5%", "acc_2022": 11, "pct_2022": "8%", "total": 17, "pct_total": "7%"},
+        {"brgy": "Sta. Teresita", "acc_2021": 0, "pct_2021": "0%", "acc_2022": 20, "pct_2022": "15%", "total": 20, "pct_total": "8%"},
+        {"brgy": "San Vicente", "acc_2021": 12, "pct_2021": "10%", "acc_2022": 5, "pct_2022": "4%", "total": 17, "pct_total": "7%"},
+        # Add more rows...
+        {"brgy": "Un-recorded Location", "acc_2021": 41, "pct_2021": "33%", "acc_2022": 0, "pct_2022": "0%", "total": 41, "pct_total": "16%"}
+    ]
+
+    grand_totals = {
+        "acc_2021": 125,
+        "acc_2022": 133,
+        "total": 258
+    }
+
+    return jsonify({"data": accident_data, "grand_totals": grand_totals})
+    
 if __name__ == '__main__':
     app.run(debug=True)
