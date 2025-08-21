@@ -365,10 +365,23 @@ def accident_area_data():
     accident_data = [
         {"brgy": "Buluang", "acc_2021": 27, "pct_2021": "22%", "acc_2022": 19, "pct_2022": "14%", "total": 46, "pct_total": "18%"},
         {"brgy": "Agdangan", "acc_2021": 9, "pct_2021": "7%", "acc_2022": 24, "pct_2022": "18%", "total": 33, "pct_total": "13%"},
-        {"brgy": "San Isidro", "acc_2021": 6, "pct_2021": "5%", "acc_2022": 11, "pct_2022": "8%", "total": 17, "pct_total": "7%"},
+        {"brgy": "San Isidro", "acc_2021": 6, "pct_2021": "5%", "acc_2022": 15, "pct_2022": "11%", "total": 21, "pct_total": "8%"},
         {"brgy": "Sta. Teresita", "acc_2021": 0, "pct_2021": "0%", "acc_2022": 20, "pct_2022": "15%", "total": 20, "pct_total": "8%"},
         {"brgy": "San Vicente", "acc_2021": 12, "pct_2021": "10%", "acc_2022": 5, "pct_2022": "4%", "total": 17, "pct_total": "7%"},
-        # Add more rows...
+        {"brgy": "San Juan", "acc_2021": 1, "pct_2021": "1%", "acc_2022": 12, "pct_2022": "9%", "total": 13, "pct_total": "5%"},
+        {"brgy": "San Nicolas", "acc_2021": 4, "pct_2021": "3%", "acc_2022": 8, "pct_2022": "6%", "total": 12, "pct_total": "5%"},
+        {"brgy": "La Medalla", "acc_2021": 5, "pct_2021": "4%", "acc_2022": 7, "pct_2022": "5%", "total": 12, "pct_total": "5%"},
+        {"brgy": "Sta. Cruz", "acc_2021": 2, "pct_2021": "2%", "acc_2022": 9, "pct_2022": "7%", "total": 11, "pct_total": "4%"},
+        {"brgy": "San Jose", "acc_2021": 6, "pct_2021": "5%", "acc_2022": 1, "pct_2022": "1%", "total": 7, "pct_total": "3%"},
+        {"brgy": "San Francisco", "acc_2021": 0, "pct_2021": "0%", "acc_2022": 5, "pct_2022": "4%", "total": 5, "pct_total": "2%"},
+        {"brgy": "Sta. Teresita", "acc_2021": 4, "pct_2021": "3%", "acc_2022": 0, "pct_2022": "0%", "total": 4, "pct_total": "2%"},
+        {"brgy": "Salvacion", "acc_2021": 2, "pct_2021": "2%", "acc_2022": 2, "pct_2022": "2%", "total": 4, "pct_total": "2%"},
+        {"brgy": "Antipolo", "acc_2021": 1, "pct_2021": "1%", "acc_2022": 2, "pct_2022": "2%", "total": 3, "pct_total": "1%"},
+        {"brgy": "Sagrada", "acc_2021": 2, "pct_2021": "2%", "acc_2022": 1, "pct_2022": "1%", "total": 3, "pct_total": "1%"},
+        {"brgy": "San Ramon", "acc_2021": 1, "pct_2021": "1%", "acc_2022": 1, "pct_2022": "1%", "total": 2, "pct_total": "1%"},
+        {"brgy": "Del Rosario", "acc_2021": 1, "pct_2021": "1%", "acc_2022": 1, "pct_2022": "1%", "total": 2, "pct_total": "1%"},
+        {"brgy": "San Roque", "acc_2021": 1, "pct_2021": "1%", "acc_2022": 0, "pct_2022": "0%", "total": 1, "pct_total": "0%"},
+        {"brgy": "Sta. Eulalia", "acc_2021": 1, "pct_2021": "1%", "acc_2022": 0, "pct_2022": "0%", "total": 1, "pct_total": "0%"},
         {"brgy": "Un-recorded Location", "acc_2021": 41, "pct_2021": "33%", "acc_2022": 0, "pct_2022": "0%", "total": 41, "pct_total": "16%"}
     ]
 
@@ -379,6 +392,6 @@ def accident_area_data():
     }
 
     return jsonify({"data": accident_data, "grand_totals": grand_totals})
-    
+
 if __name__ == '__main__':
     app.run(debug=True)
