@@ -9,8 +9,11 @@ from datetime import datetime
 import pytz
 from dotenv import load_dotenv  ## pip install python-dotenv
 import openai  ## pip install openai==0.28.0
+from flask_cors import CORS ## pip install flask-cors
 
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/static')
+
+CORS(app)  # This allows all origins (wildcard)
 
 # Set up Swagger
 # setup_swagger(app)

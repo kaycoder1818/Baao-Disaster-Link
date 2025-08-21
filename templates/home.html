@@ -11,8 +11,60 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
       <!-- Link to the CSS file in the static folder -->
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-      <script src="{{ url_for('static', filename='js/home.js') }}" defer></script>
+      <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}"> -->
+
+      <script>
+        // For CSS test
+        const testImageCSS = new Image();
+
+        // For chatbot image test
+        const testImageChatbot = new Image();
+
+        // Declare a global Image object to test loading
+        const testImageJS = new Image();
+      </script>
+
+      <script>
+        // CSS test
+        testImageCSS.onload = function() {
+          console.log("[+] use raw path");
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = '../static/css/home.css';
+          document.head.appendChild(link);
+        };
+        testImageCSS.onerror = function() {
+          console.log("[+] use flask render template");
+          const link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = '{{ url_for("static", filename="css/home.css") }}';
+          document.head.appendChild(link);
+        };
+        testImageCSS.src = '.mobile'; // or other test image path
+      </script>
+
+
+      <!-- <script src="{{ url_for('static', filename='js/home.js') }}" defer></script> -->
+
+    <script>
+
+      testImageJS.onload = function() {
+        console.log("[+] use raw path for JS");
+        const script = document.createElement('script');
+        script.src = '../static/js/home.js';  // raw path
+        document.head.appendChild(script);
+      };
+
+      testImageJS.onerror = function() {
+        console.log("[+] use flask render template for JS");
+        const script = document.createElement('script');
+        script.src = '{{ url_for("static", filename="js/home.js") }}'; // Flask url_for
+        document.head.appendChild(script);
+      };
+
+      testImageJS.src = '.mobile'; // or any file path to test (like a small image file)
+    </script>
+    
   </head>
 
   <body>
@@ -219,7 +271,31 @@
 
 <div id="chatbot">
   <div id="chatbot-toggle">
-    <img src="{{ url_for('static', filename='images/bot-svgrepo-com.svg') }}" alt="Chatbot">
+    <!-- <img src="{{ url_for('static', filename='images/bot-svgrepo-com.svg') }}" alt="Chatbot"> -->
+
+    <script>
+      // Chatbot image test
+      testImageChatbot.onload = function() {
+        console.log("[+] use raw path for chatbot image");
+        const img = document.createElement('img');
+        img.src = '../static/images/bot-svgrepo-com.svg';
+        img.alt = 'Chatbot';
+        img.className = 'app-logo';
+        document.getElementById('chatbot-toggle').appendChild(img);
+      };
+      testImageChatbot.onerror = function() {
+        console.log("[+] use flask render template for chatbot image");
+        const img = document.createElement('img');
+        img.src = '{{ url_for("static", filename="images/bot-svgrepo-com.svg") }}';
+        img.alt = 'Chatbot';
+        img.className = 'app-logo';
+        document.getElementById('chatbot-toggle').appendChild(img);
+      };
+      testImageChatbot.src = '.mobile'; // same test path or another test image
+    </script>
+
+
+
   </div>
 
   <div id="chatbot-modal">

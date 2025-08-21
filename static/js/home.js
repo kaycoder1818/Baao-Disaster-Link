@@ -120,121 +120,202 @@ function updateIndicator(value, elementId) {
 // });
 
 
-document.addEventListener('DOMContentLoaded', (event) => {
+// document.addEventListener('DOMContentLoaded', (event) => {
 
+//     async function fetchWeatherData(location) {
+//         try {
+//             // console.log(`Attempting to fetch weather data for location: ${location}`);
+
+//             const response = await fetch('/forecast', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json',
+//                 },
+//                 body: JSON.stringify({ location: location }),
+//             });
+            
+//             if (!response.ok) {
+//                 const errorBody = await response.text();
+//                 throw new Error(`Network response was not ok: ${response.status} ${response.statusText || ''}. Body: ${errorBody}`);
+//             }
+            
+//             const data = await response.json();
+//             // console.log('Received data from Flask API:', data); // This log confirms data receipt
+
+//             // --- Update Current Weather Section ---
+//             if (data.forecastData) {
+//                 const forecast = data.forecastData;
+//                 console.log('Forecast data extracted:', forecast); // Log the extracted forecast object
+
+//                 // Update the outside temperature
+//                 const outsideTempElement = document.getElementById('outside-temp');
+//                 if (outsideTempElement) {
+//                     outsideTempElement.textContent = forecast.outsideTemp;
+//                     // console.log(`Updated #outside-temp to: ${forecast.outsideTemp}`);
+//                 } else {
+//                     console.warn('Element #outside-temp not found.');
+//                 }
+
+//                 // Update the outside weather description
+//                 const outsideWeatherElement = document.getElementById('outside-weather');
+//                 if (outsideWeatherElement) {
+//                     outsideWeatherElement.textContent = forecast.outsideWeather;
+//                     // console.log(`Updated #outside-weather to: ${forecast.outsideWeather}`);
+//                 } else {
+//                     console.warn('Element #outside-weather not found.');
+//                 }
+
+//                 // Update the wind speed
+//                 const windSpeedElement = document.getElementById('wind-speed');
+//                 if (windSpeedElement) {
+//                     windSpeedElement.textContent = forecast.windSpeed;
+//                     // console.log(`Updated #wind-speed to: ${forecast.windSpeed}`);
+//                 } else {
+//                     console.warn('Element #wind-speed not found.');
+//                 }
+
+//                 // Update the humidity
+//                 const humidityElement = document.getElementById('humidity');
+//                 if (humidityElement) {
+//                     humidityElement.textContent = forecast.humidity;
+//                     // console.log(`Updated #humidity to: ${forecast.humidity}`);
+//                 } else {
+//                     console.warn('Element #humidity not found.');
+//                 }
+
+//                 // Update the visibility
+//                 const visibility = document.getElementById('visibility');
+//                 if (visibility) {
+//                     visibility.textContent = forecast.visibility;
+//                     // console.log(`Updated #visibility to: ${forecast.visibility}`);
+//                 } else {
+//                     console.warn('Element #visibility not found.');
+//                 }
+
+//                 // Update the visibility
+//                 // Select the specific number-gauge-small element within the visibility-box
+//                 // const visibilityNumberElement = document.querySelector('#visibility-box .number-gauge-small');
+//                 // if (visibilityNumberElement) {
+//                 //     visibilityNumberElement.textContent = forecast.Visibility;
+//                 //     console.log(`Updated visibility value to: ${forecast.Visibility}`);
+//                 // } else {
+//                 //     console.warn('Element for visibility value (#visibility-box .number-gauge-small) not found.');
+//                 // }
+//             } else if (data.message) {
+//                 console.warn('API message:', data.message);
+//                 const elementsToUpdate = [
+//                     '#outside-temp', '#outside-weather', '#wind-speed', '#humidity',
+//                     '#visibility-box .number-gauge-small'
+//                 ];
+//                 elementsToUpdate.forEach(selector => {
+//                     const el = document.querySelector(selector);
+//                     if (el) {
+//                         el.textContent = 'N/A';
+//                     }
+//                 });
+//             }
+
+//         } catch (error) {
+//             console.error('Error fetching current weather data:', error.message);
+//             const elementsToUpdate = [
+//                 '#outside-temp', '#outside-weather', '#wind-speed', '#humidity',
+//                 '#visibility-box .number-gauge-small'
+//             ];
+//             elementsToUpdate.forEach(selector => {
+//                 const el = document.querySelector(selector);
+//                 if (el) {
+//                     el.textContent = 'Error';
+//                 }
+//             });
+//         }
+//     }
+
+
+
+//     // Call the function when the page loads
+//     fetchWeatherData('baao');
+// });
+
+
+  // Your test image for determining which API endpoint to use
+  const testImageJS2 = new Image();
+
+  testImageJS2.onload = function() {
+    console.log('[+] testImageJS2 loaded — use raw API');
+    startWeatherFetch('https://baao-disaster-link.vercel.app/forecast');
+  };
+
+  testImageJS2.onerror = function() {
+    console.log('[+] testImageJS2 failed to load — use local API');
+    startWeatherFetch('/forecast');
+  };
+
+  // Start loading test image (replace '.mobile' with your actual test file)
+  testImageJS2.src = '.mobile';
+
+  function startWeatherFetch(endpoint) {
     async function fetchWeatherData(location) {
-        try {
-            // console.log(`Attempting to fetch weather data for location: ${location}`);
+      try {
+        const response = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ location }),
+        });
 
-            const response = await fetch('/forecast', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ location: location }),
-            });
-            
-            if (!response.ok) {
-                const errorBody = await response.text();
-                throw new Error(`Network response was not ok: ${response.status} ${response.statusText || ''}. Body: ${errorBody}`);
-            }
-            
-            const data = await response.json();
-            // console.log('Received data from Flask API:', data); // This log confirms data receipt
-
-            // --- Update Current Weather Section ---
-            if (data.forecastData) {
-                const forecast = data.forecastData;
-                console.log('Forecast data extracted:', forecast); // Log the extracted forecast object
-
-                // Update the outside temperature
-                const outsideTempElement = document.getElementById('outside-temp');
-                if (outsideTempElement) {
-                    outsideTempElement.textContent = forecast.outsideTemp;
-                    // console.log(`Updated #outside-temp to: ${forecast.outsideTemp}`);
-                } else {
-                    console.warn('Element #outside-temp not found.');
-                }
-
-                // Update the outside weather description
-                const outsideWeatherElement = document.getElementById('outside-weather');
-                if (outsideWeatherElement) {
-                    outsideWeatherElement.textContent = forecast.outsideWeather;
-                    // console.log(`Updated #outside-weather to: ${forecast.outsideWeather}`);
-                } else {
-                    console.warn('Element #outside-weather not found.');
-                }
-
-                // Update the wind speed
-                const windSpeedElement = document.getElementById('wind-speed');
-                if (windSpeedElement) {
-                    windSpeedElement.textContent = forecast.windSpeed;
-                    // console.log(`Updated #wind-speed to: ${forecast.windSpeed}`);
-                } else {
-                    console.warn('Element #wind-speed not found.');
-                }
-
-                // Update the humidity
-                const humidityElement = document.getElementById('humidity');
-                if (humidityElement) {
-                    humidityElement.textContent = forecast.humidity;
-                    // console.log(`Updated #humidity to: ${forecast.humidity}`);
-                } else {
-                    console.warn('Element #humidity not found.');
-                }
-
-                // Update the visibility
-                const visibility = document.getElementById('visibility');
-                if (visibility) {
-                    visibility.textContent = forecast.visibility;
-                    // console.log(`Updated #visibility to: ${forecast.visibility}`);
-                } else {
-                    console.warn('Element #visibility not found.');
-                }
-
-                // Update the visibility
-                // Select the specific number-gauge-small element within the visibility-box
-                // const visibilityNumberElement = document.querySelector('#visibility-box .number-gauge-small');
-                // if (visibilityNumberElement) {
-                //     visibilityNumberElement.textContent = forecast.Visibility;
-                //     console.log(`Updated visibility value to: ${forecast.Visibility}`);
-                // } else {
-                //     console.warn('Element for visibility value (#visibility-box .number-gauge-small) not found.');
-                // }
-            } else if (data.message) {
-                console.warn('API message:', data.message);
-                const elementsToUpdate = [
-                    '#outside-temp', '#outside-weather', '#wind-speed', '#humidity',
-                    '#visibility-box .number-gauge-small'
-                ];
-                elementsToUpdate.forEach(selector => {
-                    const el = document.querySelector(selector);
-                    if (el) {
-                        el.textContent = 'N/A';
-                    }
-                });
-            }
-
-        } catch (error) {
-            console.error('Error fetching current weather data:', error.message);
-            const elementsToUpdate = [
-                '#outside-temp', '#outside-weather', '#wind-speed', '#humidity',
-                '#visibility-box .number-gauge-small'
-            ];
-            elementsToUpdate.forEach(selector => {
-                const el = document.querySelector(selector);
-                if (el) {
-                    el.textContent = 'Error';
-                }
-            });
+        if (!response.ok) {
+          const errorBody = await response.text();
+          throw new Error(`Network response was not ok: ${response.status}. Body: ${errorBody}`);
         }
+
+        const data = await response.json();
+        console.log('Received data:', data);
+
+        if (data.forecastData) {
+          const forecast = data.forecastData;
+          console.log('Forecast data extracted:', forecast);
+
+          const update = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = value;
+            else console.warn(`Element #${id} not found.`);
+          };
+
+          update('outside-temp', forecast.outsideTemp);
+          update('outside-weather', forecast.outsideWeather);
+          update('wind-speed', forecast.windSpeed);
+          update('humidity', forecast.humidity);
+          update('visibility', forecast.visibility);
+        } else if (data.message) {
+          console.warn('API message:', data.message);
+          ['outside-temp', 'outside-weather', 'wind-speed', 'humidity', 'visibility'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = 'N/A';
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching weather data:', error.message);
+        ['outside-temp', 'outside-weather', 'wind-speed', 'humidity', 'visibility'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = 'Error';
+        });
+      }
     }
 
+    function runFetch() {
+      fetchWeatherData('baao');
+    }
+
+    // Run fetch after DOM is ready (or immediately if already ready)
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', runFetch);
+    } else {
+      runFetch();
+    }
+  }
 
 
-    // Call the function when the page loads
-    fetchWeatherData('baao');
-});
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
