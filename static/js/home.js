@@ -278,3 +278,88 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
+
+/* Chatbot floating icon */
+
+const chatbotToggle = document.getElementById('chatbot-toggle');
+const chatbotModal = document.getElementById('chatbot-modal');
+const chatbotSend = document.getElementById('chatbot-send');
+const chatbotInput = document.getElementById('chatbot-input');
+const chatbotConversation = document.getElementById('chatbot-conversation');
+
+const conversationData = [];
+
+chatbotToggle.addEventListener('click', () => {
+chatbotModal.style.display = chatbotModal.style.display === 'flex' ? 'none' : 'flex';
+});
+
+function renderMessage(message, sender) {
+const div = document.createElement('div');
+div.classList.add('message', sender);
+div.textContent = message;
+chatbotConversation.appendChild(div);
+chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
+return div;
+}
+
+function showLoading() {
+const loader = document.createElement('div');
+loader.classList.add('message', 'bot', 'loading-bubble');
+loader.innerHTML = `
+    <span class="dot"></span>
+    <span class="dot"></span>
+    <span class="dot"></span>
+`;
+chatbotConversation.appendChild(loader);
+chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
+return loader;
+}
+
+async function sendMessage(message) {
+renderMessage(message, 'user');
+conversationData.push({ sender: 'user', message });
+
+const loading = showLoading();
+
+try {
+    const res = await fetch('/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message })
+    });
+
+    const data = await res.json();
+    const botReply = data.reply || "No response";
+
+    // Remove loading
+    chatbotConversation.removeChild(loading);
+
+    renderMessage(botReply, 'bot');
+    conversationData.push({ sender: 'bot', message: botReply });
+
+} catch (err) {
+    chatbotConversation.removeChild(loading);
+    renderMessage("Error connecting to server.", 'bot');
+}
+}
+
+chatbotSend.addEventListener('click', () => {
+const message = chatbotInput.value.trim();
+if (!message) return;
+chatbotInput.value = '';
+sendMessage(message);
+});
+
+chatbotInput.addEventListener('keydown', (e) => {
+if (e.key === 'Enter') chatbotSend.click();
+});
+
+window.addEventListener('beforeunload', () => {
+if (conversationData.length > 0) {
+    navigator.sendBeacon('/save-conversation', new Blob(
+    [JSON.stringify(conversationData)],
+    { type: 'application/json' }
+    ));
+}
+});

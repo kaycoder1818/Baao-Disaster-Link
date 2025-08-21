@@ -7,15 +7,20 @@ import random
 import string
 from datetime import datetime
 import pytz
-
+from dotenv import load_dotenv  ## pip install python-dotenv
+import openai  ## pip install openai==0.28.0
 
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/static')
 
 # Set up Swagger
 # setup_swagger(app)
 
-# Load environment variables from .env file
-# load_dotenv()
+#Load environment variables from .env file
+load_dotenv()
+
+# Configure DeepSeek
+openai.api_key = os.getenv("DEEPSEEK_API_KEY")
+openai.api_base = "https://api.deepseek.com/v1"
 
 # Check if the file "dev" exists
 if not os.path.exists('dev'):
@@ -392,6 +397,52 @@ def accident_area_data():
     }
 
     return jsonify({"data": accident_data, "grand_totals": grand_totals})
+
+
+# @app.route('/chat', methods=['POST'])
+# def chat():
+#     try:
+#         data = request.get_json()
+#         message = data.get('message', '').lower()
+
+#         # Simple rule-based reply
+#         if message == 'hello':
+#             response = 'This is a bot response.'
+#         else:
+#             response = "Sorry, I didn't understand that."
+
+#         return jsonify({'reply': response})
+#     except Exception as e:
+#         return jsonify({'reply': f'Error: {str(e)}'}), 500
+    
+
+@app.route('/chat', methods=['POST'])
+def chat():
+    try:
+        data = request.get_json()
+        user_message = data.get('message', '').strip()
+
+        if not user_message:
+            return jsonify({'reply': "No message received."}), 400
+
+        # Call DeepSeek API
+        response = openai.ChatCompletion.create(
+            model="deepseek-chat",  # Or "deepseek-reasoner"
+            messages=[
+                # {"role": "system", "content": "You are a helpful assistant."},
+                {
+                    "role": "system",
+                    "content": "You are a helpful assistant. Keep all your replies under 100 words and respond quickly."
+                },
+                {"role": "user", "content": user_message}
+            ]
+        )
+
+        reply = response.choices[0].message.content.strip()
+        return jsonify({'reply': reply})
+
+    except Exception as e:
+        return jsonify({'reply': f"Error: {str(e)}"}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
