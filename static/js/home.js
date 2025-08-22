@@ -1,5 +1,8 @@
 // script.js
 
+const REMOTE_API_BASE_URL = 'https://baao-disaster-link.vercel.app';
+
+
 function navigateToIndex() {
     window.location.href = '/ui';
 }
@@ -15,7 +18,7 @@ function navigateToHistory() {
     setTimeout(function() {
         button.style.display = 'block';
         spinner.style.display = 'none';
-        window.location.href = '/settings';
+        window.location.href = '/';
     }, 500); 
 }
 
@@ -237,21 +240,81 @@ function updateIndicator(value, elementId) {
 // });
 
 
-  // Your test image for determining which API endpoint to use
-  const testImageJS2 = new Image();
+//   // Your test image for determining which API endpoint to use
+//   const testImageJS2 = new Image();
 
-  testImageJS2.onload = function() {
-    console.log('[+] testImageJS2 loaded — use raw API');
-    startWeatherFetch('https://baao-disaster-link.vercel.app/forecast');
-  };
+//   testImageJS2.onload = function() {
+//     console.log('[+] testImageJS2 loaded — use raw API');
+//     startWeatherFetch('https://baao-disaster-link.vercel.app/forecast');
+//   };
 
-  testImageJS2.onerror = function() {
-    console.log('[+] testImageJS2 failed to load — use local API');
-    startWeatherFetch('/forecast');
-  };
+//   testImageJS2.onerror = function() {
+//     console.log('[+] testImageJS2 failed to load — use local API');
+//     startWeatherFetch('/forecast');
+//   };
 
-  // Start loading test image (replace '.mobile' with your actual test file)
-  testImageJS2.src = '.mobile';
+//   // Start loading test image (replace '.mobile' with your actual test file)
+//   testImageJS2.src = '.mobile';
+
+//   function startWeatherFetch(endpoint) {
+//     async function fetchWeatherData(location) {
+//       try {
+//         const response = await fetch(endpoint, {
+//           method: 'POST',
+//           headers: { 'Content-Type': 'application/json' },
+//           body: JSON.stringify({ location }),
+//         });
+
+//         if (!response.ok) {
+//           const errorBody = await response.text();
+//           throw new Error(`Network response was not ok: ${response.status}. Body: ${errorBody}`);
+//         }
+
+//         const data = await response.json();
+//         console.log('Received data:', data);
+
+//         if (data.forecastData) {
+//           const forecast = data.forecastData;
+//           console.log('Forecast data extracted:', forecast);
+
+//           const update = (id, value) => {
+//             const el = document.getElementById(id);
+//             if (el) el.textContent = value;
+//             else console.warn(`Element #${id} not found.`);
+//           };
+
+//           update('outside-temp', forecast.outsideTemp);
+//           update('outside-weather', forecast.outsideWeather);
+//           update('wind-speed', forecast.windSpeed);
+//           update('humidity', forecast.humidity);
+//           update('visibility', forecast.visibility);
+//         } else if (data.message) {
+//           console.warn('API message:', data.message);
+//           ['outside-temp', 'outside-weather', 'wind-speed', 'humidity', 'visibility'].forEach(id => {
+//             const el = document.getElementById(id);
+//             if (el) el.textContent = 'N/A';
+//           });
+//         }
+//       } catch (error) {
+//         console.error('Error fetching weather data:', error.message);
+//         ['outside-temp', 'outside-weather', 'wind-speed', 'humidity', 'visibility'].forEach(id => {
+//           const el = document.getElementById(id);
+//           if (el) el.textContent = 'Error';
+//         });
+//       }
+//     }
+
+//     function runFetch() {
+//       fetchWeatherData('baao');
+//     }
+
+//     // Run fetch after DOM is ready (or immediately if already ready)
+//     if (document.readyState === 'loading') {
+//       document.addEventListener('DOMContentLoaded', runFetch);
+//     } else {
+//       runFetch();
+//     }
+//   }
 
   function startWeatherFetch(endpoint) {
     async function fetchWeatherData(location) {
@@ -298,6 +361,7 @@ function updateIndicator(value, elementId) {
           const el = document.getElementById(id);
           if (el) el.textContent = 'Error';
         });
+        throw error; // Let caller know the fetch failed
       }
     }
 
@@ -305,13 +369,33 @@ function updateIndicator(value, elementId) {
       fetchWeatherData('baao');
     }
 
-    // Run fetch after DOM is ready (or immediately if already ready)
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', runFetch);
     } else {
       runFetch();
     }
   }
+
+  // Attempt remote fetch first, fallback if it throws
+  (async function () {
+    const remoteEndpoint = `${REMOTE_API_BASE_URL}/forecast`;
+    const localEndpoint = '/forecast';
+
+    try {
+      console.log('[*] Trying remote forecast API...');
+      await fetch(remoteEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ location: 'baao' }),
+      });
+
+      console.log('[+] Remote forecast API working — using remote');
+      startWeatherFetch(remoteEndpoint);
+    } catch (error) {
+      console.log('[!] Remote forecast API failed — falling back to local');
+      startWeatherFetch(localEndpoint);
+    }
+  })();
 
 
 // document.addEventListener("DOMContentLoaded", function () {
@@ -336,58 +420,96 @@ function updateIndicator(value, elementId) {
 //     }
 // });
 
-function setupNavigation() {
-  const testImage = new Image();
+// function setupNavigation() {
+//   const testImage = new Image();
 
-  testImage.onload = function () {
-    // .mobile exists — enable navigation with .html suffix
-    const routes = {
-      "evacuation-box": "evacuation.html",
-      "weather-box": "weather.html",
-      "flood-box": "flooding.html",
-      "accident-box": "accident.html",
-    };
+//   testImage.onload = function () {
+//     // .mobile exists — enable navigation with .html suffix
+//     const routes = {
+//       "evacuation-box": "evacuation.html",
+//       "weather-box": "weather.html",
+//       "flood-box": "flooding.html",
+//       "accident-box": "accident.html",
+//     };
 
-    for (const [id, path] of Object.entries(routes)) {
-      const el = document.getElementById(id);
-      if (el) {
-        el.style.cursor = "pointer";
-        el.addEventListener("click", () => {
-          window.location.href = path;
-        });
-      }
+//     for (const [id, path] of Object.entries(routes)) {
+//       const el = document.getElementById(id);
+//       if (el) {
+//         el.style.cursor = "pointer";
+//         el.addEventListener("click", () => {
+//           window.location.href = path;
+//         });
+//       }
+//     }
+//   };
+
+//   testImage.onerror = function () {
+//     // .mobile not present — enable navigation without .html suffix
+//     const routes = {
+//       "evacuation-box": "/evacuation",
+//       "weather-box": "/weather",
+//       "flood-box": "/flooding",
+//       "accident-box": "/accident",
+//     };
+
+//     for (const [id, path] of Object.entries(routes)) {
+//       const el = document.getElementById(id);
+//       if (el) {
+//         el.style.cursor = "pointer";
+//         el.addEventListener("click", () => {
+//           window.location.href = path;
+//         });
+//       }
+//     }
+//   };
+
+//   testImage.src = ".mobile"; // trigger load test
+// }
+
+// // Run setupNavigation after DOM is ready (or immediately if already ready)
+// if (document.readyState === "loading") {
+//   document.addEventListener("DOMContentLoaded", setupNavigation);
+// } else {
+//   setupNavigation();
+// }
+
+
+function setupNavigation(routes) {
+  for (const [id, path] of Object.entries(routes)) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.style.cursor = "pointer";
+      el.addEventListener("click", () => {
+        window.location.href = path;
+      });
     }
-  };
+  }
+}
 
-  testImage.onerror = function () {
-    // .mobile not present — enable navigation without .html suffix
-    const routes = {
+(async function initNavigation() {
+  try {
+    // Try a route you know only exists in server mode
+    const res = await fetch('/', { method: 'GET' });
+    if (!res.ok) throw new Error("Server route not found");
+
+    console.log("[+] Using remote route navigation (no .html)");
+    setupNavigation({
       "evacuation-box": "/evacuation",
       "weather-box": "/weather",
       "flood-box": "/flooding",
       "accident-box": "/accident",
-    };
+    });
 
-    for (const [id, path] of Object.entries(routes)) {
-      const el = document.getElementById(id);
-      if (el) {
-        el.style.cursor = "pointer";
-        el.addEventListener("click", () => {
-          window.location.href = path;
-        });
-      }
-    }
-  };
-
-  testImage.src = ".mobile"; // trigger load test
-}
-
-// Run setupNavigation after DOM is ready (or immediately if already ready)
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", setupNavigation);
-} else {
-  setupNavigation();
-}
+  } catch (err) {
+    console.log("[!] Falling back to .html static navigation");
+    setupNavigation({
+      "evacuation-box": "evacuation.html",
+      "weather-box": "weather.html",
+      "flood-box": "flooding.html",
+      "accident-box": "accident.html",
+    });
+  }
+})();
 
 
 
@@ -411,6 +533,61 @@ if (document.readyState === "loading") {
 
 
 
+// function setupNavIcons(navRoutes) {
+//   for (const [id, path] of Object.entries(navRoutes)) {
+//     const icon = document.getElementById(id);
+//     if (icon) {
+//       icon.style.cursor = "pointer";
+//       icon.addEventListener("click", () => {
+//         window.location.href = path;
+//       });
+//     }
+//   }
+// }
+
+// function checkMobileAndSetupNav() {
+//   const testImage = new Image();
+
+//   testImage.onload = function () {
+//     // .mobile exists — use this routing
+//     const navRoutes = {
+//       "nav-home": "index.html",
+//       "nav-phone": "guide.html",
+//       "nav-emergency": "emergency.html"
+//     };
+
+//     if (document.readyState === "loading") {
+//       document.addEventListener("DOMContentLoaded", () => setupNavIcons(navRoutes));
+//     } else {
+//       setupNavIcons(navRoutes);
+//     }
+//   };
+
+//   testImage.onerror = function () {
+//     // .mobile not found — use fallback routing
+//     const navRoutes = {
+//       "nav-home": "/",
+//       "nav-phone": "/guide",
+//       "nav-emergency": "/emergency"
+//     };
+
+//     if (document.readyState === "loading") {
+//       document.addEventListener("DOMContentLoaded", () => setupNavIcons(navRoutes));
+//     } else {
+//       setupNavIcons(navRoutes);
+//     }
+    
+//     console.log(".mobile resource not found, fallback nav links activated.");
+//   };
+
+//   testImage.src = ".mobile"; // test .mobile presence
+// }
+
+// // Start the check immediately
+// checkMobileAndSetupNav();
+
+
+
 function setupNavIcons(navRoutes) {
   for (const [id, path] of Object.entries(navRoutes)) {
     const icon = document.getElementById(id);
@@ -423,46 +600,45 @@ function setupNavIcons(navRoutes) {
   }
 }
 
-function checkMobileAndSetupNav() {
-  const testImage = new Image();
+async function checkServerAndSetupNav() {
+  try {
+    // Try to fetch a known backend route (like Flask's /)
+    const res = await fetch('/', { method: 'GET' });
+    if (!res.ok) throw new Error('Server route not available');
 
-  testImage.onload = function () {
-    // .mobile exists — use this routing
-    const navRoutes = {
-      "nav-home": "index.html",
-      "nav-phone": "guide.html",
-      "nav-emergency": "emergency.html"
-    };
-
-    if (document.readyState === "loading") {
-      document.addEventListener("DOMContentLoaded", () => setupNavIcons(navRoutes));
-    } else {
-      setupNavIcons(navRoutes);
-    }
-  };
-
-  testImage.onerror = function () {
-    // .mobile not found — use fallback routing
+    // Flask-style routing (no .html)
     const navRoutes = {
       "nav-home": "/",
       "nav-phone": "/guide",
       "nav-emergency": "/emergency"
     };
 
+    console.log("[+] Using remote navigation.");
     if (document.readyState === "loading") {
       document.addEventListener("DOMContentLoaded", () => setupNavIcons(navRoutes));
     } else {
       setupNavIcons(navRoutes);
     }
-    
-    console.log(".mobile resource not found, fallback nav links activated.");
-  };
 
-  testImage.src = ".mobile"; // test .mobile presence
+  } catch (err) {
+    // Fallback to raw .html static routing
+    const navRoutes = {
+      "nav-home": "index.html",
+      "nav-phone": "guide.html",
+      "nav-emergency": "emergency.html"
+    };
+
+    console.log("[!] Remote navigation not available — falling back to static .html navigation.");
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => setupNavIcons(navRoutes));
+    } else {
+      setupNavIcons(navRoutes);
+    }
+  }
 }
 
 // Start the check immediately
-checkMobileAndSetupNav();
+checkServerAndSetupNav();
 
 
 // /* Chatbot floating icon */
@@ -552,6 +728,109 @@ checkMobileAndSetupNav();
 
 /* Chatbot floating icon */
 
+// const chatbotToggle = document.getElementById('chatbot-toggle');
+// const chatbotModal = document.getElementById('chatbot-modal');
+// const chatbotSend = document.getElementById('chatbot-send');
+// const chatbotInput = document.getElementById('chatbot-input');
+// const chatbotConversation = document.getElementById('chatbot-conversation');
+
+// const conversationData = [];
+
+// let useRemoteAPI = false; // Will be set by image test
+
+// // Test for .mobile image to determine environment
+// const testImage = new Image();
+// testImage.onload = () => {
+//   console.log('[+] .mobile loaded — using remote API');
+//   useRemoteAPI = true;
+//   initChatbot();
+// };
+// testImage.onerror = () => {
+//   console.log('[+] .mobile failed to load — using local API');
+//   useRemoteAPI = false;
+//   initChatbot();
+// };
+// testImage.src = '.mobile'; // Trigger the check
+
+// function initChatbot() {
+//   chatbotToggle.addEventListener('click', () => {
+//     chatbotModal.style.display = chatbotModal.style.display === 'flex' ? 'none' : 'flex';
+//   });
+
+//   function renderMessage(message, sender) {
+//     const div = document.createElement('div');
+//     div.classList.add('message', sender);
+//     div.textContent = message;
+//     chatbotConversation.appendChild(div);
+//     chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
+//     return div;
+//   }
+
+//   function showLoading() {
+//     const loader = document.createElement('div');
+//     loader.classList.add('message', 'bot', 'loading-bubble');
+//     loader.innerHTML = `
+//       <span class="dot"></span>
+//       <span class="dot"></span>
+//       <span class="dot"></span>
+//     `;
+//     chatbotConversation.appendChild(loader);
+//     chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
+//     return loader;
+//   }
+
+//   async function sendMessage(message) {
+//     renderMessage(message, 'user');
+//     conversationData.push({ sender: 'user', message });
+
+//     const loading = showLoading();
+
+//     try {
+//       const res = await fetch(
+//         useRemoteAPI ? 'https://baao-disaster-link.vercel.app/chat' : '/chat',
+//         {
+//           method: 'POST',
+//           headers: { 'Content-Type': 'application/json' },
+//           body: JSON.stringify({ message })
+//         }
+//       );
+
+//       const data = await res.json();
+//       const botReply = data.reply || "No response";
+
+//       chatbotConversation.removeChild(loading);
+//       renderMessage(botReply, 'bot');
+//       conversationData.push({ sender: 'bot', message: botReply });
+
+//     } catch (err) {
+//       chatbotConversation.removeChild(loading);
+//       renderMessage("Error connecting to server.", 'bot');
+//     }
+//   }
+
+//   chatbotSend.addEventListener('click', () => {
+//     const message = chatbotInput.value.trim();
+//     if (!message) return;
+//     chatbotInput.value = '';
+//     sendMessage(message);
+//   });
+
+//   chatbotInput.addEventListener('keydown', (e) => {
+//     if (e.key === 'Enter') chatbotSend.click();
+//   });
+
+//   window.addEventListener('beforeunload', () => {
+//     if (conversationData.length > 0) {
+//       navigator.sendBeacon(
+//         useRemoteAPI ? 'https://baao-disaster-link.vercel.app/save-conversation' : '/save-conversation',
+//         new Blob([JSON.stringify(conversationData)], { type: 'application/json' })
+//       );
+//     }
+//   });
+// }
+
+/* Chatbot floating icon */
+
 const chatbotToggle = document.getElementById('chatbot-toggle');
 const chatbotModal = document.getElementById('chatbot-modal');
 const chatbotSend = document.getElementById('chatbot-send');
@@ -560,21 +839,20 @@ const chatbotConversation = document.getElementById('chatbot-conversation');
 
 const conversationData = [];
 
-let useRemoteAPI = false; // Will be set by image test
+let useRemoteAPI = false; // Will be set by server route check
 
-// Test for .mobile image to determine environment
-const testImage = new Image();
-testImage.onload = () => {
-  console.log('[+] .mobile loaded — using remote API');
-  useRemoteAPI = true;
+async function checkApiAvailability() {
+  try {
+    const res = await fetch('/', { method: 'GET' });
+    if (!res.ok) throw new Error('Route not available');
+    console.log('[+] / route available — using local API');
+    useRemoteAPI = false;
+  } catch {
+    console.log('[+] / route not found — using remote API');
+    useRemoteAPI = true;
+  }
   initChatbot();
-};
-testImage.onerror = () => {
-  console.log('[+] .mobile failed to load — using local API');
-  useRemoteAPI = false;
-  initChatbot();
-};
-testImage.src = '.mobile'; // Trigger the check
+}
 
 function initChatbot() {
   chatbotToggle.addEventListener('click', () => {
@@ -611,7 +889,7 @@ function initChatbot() {
 
     try {
       const res = await fetch(
-        useRemoteAPI ? 'https://baao-disaster-link.vercel.app/chat' : '/chat',
+        useRemoteAPI ? `${REMOTE_API_BASE_URL}/chat` : '/chat',
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -646,11 +924,13 @@ function initChatbot() {
   window.addEventListener('beforeunload', () => {
     if (conversationData.length > 0) {
       navigator.sendBeacon(
-        useRemoteAPI ? 'https://baao-disaster-link.vercel.app/save-conversation' : '/save-conversation',
+        useRemoteAPI ? `${REMOTE_API_BASE_URL}/save-conversation` : '/save-conversation',
         new Blob([JSON.stringify(conversationData)], { type: 'application/json' })
       );
     }
   });
 }
 
+// Run check on script load
+checkApiAvailability();
 

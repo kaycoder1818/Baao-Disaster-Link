@@ -13,7 +13,7 @@
       <!-- Link to the CSS file in the static folder -->
       <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}"> -->
 
-      <script>
+      <!-- <script>
         // For CSS test
         const testImageCSS = new Image();
 
@@ -22,9 +22,9 @@
 
         // Declare a global Image object to test loading
         const testImageJS = new Image();
-      </script>
+      </script> -->
 
-      <script>
+      <!-- <script>
         // CSS test
         testImageCSS.onload = function() {
           console.log("[+] use raw path");
@@ -41,12 +41,34 @@
           document.head.appendChild(link);
         };
         testImageCSS.src = '.mobile'; // or other test image path
+      </script> -->
+
+
+      <script>
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = '../static/css/home.css';
+
+        // Fallback to Flask path if raw CSS fails to load
+        link.onerror = function () {
+          console.log("[+] raw CSS failed, using Flask-rendered path");
+          const fallbackLink = document.createElement('link');
+          fallbackLink.rel = 'stylesheet';
+          fallbackLink.href = '{{ url_for("static", filename="css/home.css") }}';
+          document.head.appendChild(fallbackLink);
+        };
+
+        link.onload = function () {
+          console.log("[+] raw CSS loaded successfully");
+        };
+
+        document.head.appendChild(link);
       </script>
 
 
       <!-- <script src="{{ url_for('static', filename='js/home.js') }}" defer></script> -->
 
-    <script>
+    <!-- <script>
 
       testImageJS.onload = function() {
         console.log("[+] use raw path for JS");
@@ -63,8 +85,27 @@
       };
 
       testImageJS.src = '.mobile'; // or any file path to test (like a small image file)
+    </script> -->
+
+    <script>
+      const script = document.createElement('script');
+      script.src = '../static/js/home.js'; // Try raw path first
+
+      script.onload = function () {
+        console.log("[+] raw JS loaded successfully");
+      };
+
+      script.onerror = function () {
+        console.log("[+] raw JS failed, using Flask-rendered path");
+        const fallbackScript = document.createElement('script');
+        fallbackScript.src = '{{ url_for("static", filename="js/home.js") }}';
+        document.head.appendChild(fallbackScript);
+      };
+
+      document.head.appendChild(script);
     </script>
-    
+
+
   </head>
 
   <body>
@@ -273,7 +314,7 @@
   <div id="chatbot-toggle">
     <!-- <img src="{{ url_for('static', filename='images/bot-svgrepo-com.svg') }}" alt="Chatbot"> -->
 
-    <script>
+    <!-- <script>
       // Chatbot image test
       testImageChatbot.onload = function() {
         console.log("[+] use raw path for chatbot image");
@@ -292,8 +333,30 @@
         document.getElementById('chatbot-toggle').appendChild(img);
       };
       testImageChatbot.src = '.mobile'; // same test path or another test image
-    </script>
+    </script> -->
 
+
+    <script>
+      const chatbotImg = document.createElement('img');
+      chatbotImg.src = '../static/images/bot-svgrepo-com.svg'; // Try raw path first
+      chatbotImg.alt = 'Chatbot';
+      chatbotImg.className = 'app-logo';
+
+      chatbotImg.onload = function () {
+        console.log("[+] raw chatbot image loaded successfully");
+        document.getElementById('chatbot-toggle').appendChild(chatbotImg);
+      };
+
+      chatbotImg.onerror = function () {
+        console.log("[+] raw chatbot image failed, using Flask-rendered path");
+        const fallbackImg = document.createElement('img');
+        fallbackImg.src = '{{ url_for("static", filename="images/bot-svgrepo-com.svg") }}';
+        fallbackImg.alt = 'Chatbot';
+        fallbackImg.className = 'app-logo';
+        document.getElementById('chatbot-toggle').appendChild(fallbackImg);
+      };
+
+    </script>
 
 
   </div>
