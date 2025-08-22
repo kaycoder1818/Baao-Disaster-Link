@@ -11,21 +11,66 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
       <!-- Link to the CSS file in the static folder -->
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/guide.css') }}">
-      <script src="{{ url_for('static', filename='js/guide.js') }}" defer></script>
+      <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/guide.css') }}"> -->
+
+        <script>
+            const guideCSS = document.createElement('link');
+            guideCSS.rel = 'stylesheet';
+            guideCSS.href = '../static/css/guide.css'; // Try raw path first
+
+            guideCSS.onerror = function () {
+                console.log("[+] raw CSS failed, using Flask-rendered path");
+                const fallbackLink = document.createElement('link');
+                fallbackLink.rel = 'stylesheet';
+                fallbackLink.href = '{{ url_for("static", filename="css/guide.css") }}';
+                document.head.appendChild(fallbackLink);
+            };
+
+            guideCSS.onload = function () {
+                console.log("[+] raw CSS loaded successfully");
+            };
+
+            document.head.appendChild(guideCSS);
+        </script>
+
+        
+      <!-- <script src="{{ url_for('static', filename='js/guide.js') }}" defer></script> -->
+        <script>
+            const script = document.createElement('script');
+            script.src = '../static/js/guide.js'; // Try raw path first
+
+            script.onload = function () {
+                console.log("[+] raw JS loaded successfully");
+            };
+
+            script.onerror = function () {
+                console.log("[+] raw JS failed, using Flask-rendered path");
+                const fallbackScript = document.createElement('script');
+                fallbackScript.src = '{{ url_for("static", filename="js/guide.js") }}';
+                document.head.appendChild(fallbackScript);
+            };
+
+            document.head.appendChild(script);
+        </script>
+
   </head>
 
     <body>
 
-
-
         <div class="page-container">
 
             <!-- Back Button -->
+            <!-- <div class="back-button">
+                <a href="/home" title="Go Back">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div> -->
+
+            <!-- Back Button -->
             <div class="back-button">
-            <a href="/home" title="Go Back">
-                <i class="fas fa-arrow-left"></i>
-            </a>
+                <a id="back-link" href="/home" title="Go Back">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
             </div>
 
             <div class="nested-box flex-grow">  
@@ -38,10 +83,12 @@
                             <div class="nested-box  add-background-white fixed-dimension" id="disaster-prep">
                                 <div class="horizontal-box  add-margin">
                                     <div class="nested-box section">
-                                        <div class="image-container">
+                                        <!-- <div class="image-container">
                                             <img src="{{ url_for('static', filename='images/disaster-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
+                                        </div> -->
+                                        <div class="image-container" id="disaster-prep-container">
+                                        <!-- The image will be inserted by JS -->
                                         </div>
-
                                     </div>
                                     <div class="nested-box section">
                                         <div class="multi-line-stack-container">
@@ -55,8 +102,12 @@
                             <div class="nested-box add-background-white fixed-dimension" id="fire-prep">
                                 <div class="horizontal-box add-margin">
                                     <div class="nested-box section">
-                                        <div class="image-container">
+                                        <!-- <div class="image-container">
                                             <img src="{{ url_for('static', filename='images/fire-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
+                                        </div> -->
+
+                                        <div class="image-container" id="fire-prep-container">
+                                        <!-- Image will be inserted by JS -->
                                         </div>
 
                                     </div>
@@ -72,8 +123,12 @@
                             <div class="nested-box add-background-white fixed-dimension" id="earthquake-prep">
                                 <div class="horizontal-box  add-margin">
                                     <div class="nested-box section">
-                                        <div class="image-container">
+                                        <!-- <div class="image-container">
                                             <img src="{{ url_for('static', filename='images/earthquake-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
+                                        </div> -->
+
+                                        <div class="image-container" id="earthquake-prep-container">
+                                        <!-- Image will be inserted by JS -->
                                         </div>
 
                                     </div>
