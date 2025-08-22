@@ -314,51 +314,240 @@ function updateIndicator(value, elementId) {
   }
 
 
+// document.addEventListener("DOMContentLoaded", function () {
+//     const routes = {
+//         "evacuation-box": "/evacuation",
+//         "weather-box": "/weather",
+//         "flood-box": "/flooding",
+//         "accident-box": "/accident",
+//         // "wind-box": "/wind",
+//         // "humidity-box": "/humidity",
+//         // "visibility-box": "/visibility"
+//     };
 
+//     for (const [id, path] of Object.entries(routes)) {
+//         const el = document.getElementById(id);
+//         if (el) {
+//             el.style.cursor = "pointer"; // show hand on hover
+//             el.addEventListener("click", () => {
+//                 window.location.href = path;
+//             });
+//         }
+//     }
+// });
 
+function setupNavigation() {
+  const testImage = new Image();
 
-
-document.addEventListener("DOMContentLoaded", function () {
+  testImage.onload = function () {
+    // .mobile exists — enable navigation with .html suffix
     const routes = {
-        "evacuation-box": "/evacuation",
-        "weather-box": "/weather",
-        "flood-box": "/flooding",
-        "accident-box": "/accident",
-        // "wind-box": "/wind",
-        // "humidity-box": "/humidity",
-        // "visibility-box": "/visibility"
+      "evacuation-box": "evacuation.html",
+      "weather-box": "weather.html",
+      "flood-box": "flooding.html",
+      "accident-box": "accident.html",
     };
 
     for (const [id, path] of Object.entries(routes)) {
-        const el = document.getElementById(id);
-        if (el) {
-            el.style.cursor = "pointer"; // show hand on hover
-            el.addEventListener("click", () => {
-                window.location.href = path;
-            });
-        }
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.cursor = "pointer";
+        el.addEventListener("click", () => {
+          window.location.href = path;
+        });
+      }
     }
-});
+  };
 
-
-document.addEventListener("DOMContentLoaded", function () {
-    const navRoutes = {
-        "nav-home": "/",
-        "nav-phone": "/guide",
-        "nav-emergency": "/emergency"
+  testImage.onerror = function () {
+    // .mobile not present — enable navigation without .html suffix
+    const routes = {
+      "evacuation-box": "/evacuation",
+      "weather-box": "/weather",
+      "flood-box": "/flooding",
+      "accident-box": "/accident",
     };
 
-    for (const [id, path] of Object.entries(navRoutes)) {
-        const icon = document.getElementById(id);
-        if (icon) {
-            icon.style.cursor = "pointer";
-            icon.addEventListener("click", () => {
-                window.location.href = path;
-            });
-        }
+    for (const [id, path] of Object.entries(routes)) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.style.cursor = "pointer";
+        el.addEventListener("click", () => {
+          window.location.href = path;
+        });
+      }
     }
-});
+  };
 
+  testImage.src = ".mobile"; // trigger load test
+}
+
+// Run setupNavigation after DOM is ready (or immediately if already ready)
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setupNavigation);
+} else {
+  setupNavigation();
+}
+
+
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     const navRoutes = {
+//         "nav-home": "/",
+//         "nav-phone": "/guide",
+//         "nav-emergency": "/emergency"
+//     };
+
+//     for (const [id, path] of Object.entries(navRoutes)) {
+//         const icon = document.getElementById(id);
+//         if (icon) {
+//             icon.style.cursor = "pointer";
+//             icon.addEventListener("click", () => {
+//                 window.location.href = path;
+//             });
+//         }
+//     }
+// });
+
+
+
+function setupNavIcons(navRoutes) {
+  for (const [id, path] of Object.entries(navRoutes)) {
+    const icon = document.getElementById(id);
+    if (icon) {
+      icon.style.cursor = "pointer";
+      icon.addEventListener("click", () => {
+        window.location.href = path;
+      });
+    }
+  }
+}
+
+function checkMobileAndSetupNav() {
+  const testImage = new Image();
+
+  testImage.onload = function () {
+    // .mobile exists — use this routing
+    const navRoutes = {
+      "nav-home": "index.html",
+      "nav-phone": "guide.html",
+      "nav-emergency": "emergency.html"
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => setupNavIcons(navRoutes));
+    } else {
+      setupNavIcons(navRoutes);
+    }
+  };
+
+  testImage.onerror = function () {
+    // .mobile not found — use fallback routing
+    const navRoutes = {
+      "nav-home": "/",
+      "nav-phone": "/guide",
+      "nav-emergency": "/emergency"
+    };
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", () => setupNavIcons(navRoutes));
+    } else {
+      setupNavIcons(navRoutes);
+    }
+    
+    console.log(".mobile resource not found, fallback nav links activated.");
+  };
+
+  testImage.src = ".mobile"; // test .mobile presence
+}
+
+// Start the check immediately
+checkMobileAndSetupNav();
+
+
+// /* Chatbot floating icon */
+
+// const chatbotToggle = document.getElementById('chatbot-toggle');
+// const chatbotModal = document.getElementById('chatbot-modal');
+// const chatbotSend = document.getElementById('chatbot-send');
+// const chatbotInput = document.getElementById('chatbot-input');
+// const chatbotConversation = document.getElementById('chatbot-conversation');
+
+// const conversationData = [];
+
+// chatbotToggle.addEventListener('click', () => {
+// chatbotModal.style.display = chatbotModal.style.display === 'flex' ? 'none' : 'flex';
+// });
+
+// function renderMessage(message, sender) {
+// const div = document.createElement('div');
+// div.classList.add('message', sender);
+// div.textContent = message;
+// chatbotConversation.appendChild(div);
+// chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
+// return div;
+// }
+
+// function showLoading() {
+// const loader = document.createElement('div');
+// loader.classList.add('message', 'bot', 'loading-bubble');
+// loader.innerHTML = `
+//     <span class="dot"></span>
+//     <span class="dot"></span>
+//     <span class="dot"></span>
+// `;
+// chatbotConversation.appendChild(loader);
+// chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
+// return loader;
+// }
+
+// async function sendMessage(message) {
+// renderMessage(message, 'user');
+// conversationData.push({ sender: 'user', message });
+
+// const loading = showLoading();
+
+// try {
+//     const res = await fetch('/chat', {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify({ message })
+//     });
+
+//     const data = await res.json();
+//     const botReply = data.reply || "No response";
+
+//     // Remove loading
+//     chatbotConversation.removeChild(loading);
+
+//     renderMessage(botReply, 'bot');
+//     conversationData.push({ sender: 'bot', message: botReply });
+
+// } catch (err) {
+//     chatbotConversation.removeChild(loading);
+//     renderMessage("Error connecting to server.", 'bot');
+// }
+// }
+
+// chatbotSend.addEventListener('click', () => {
+// const message = chatbotInput.value.trim();
+// if (!message) return;
+// chatbotInput.value = '';
+// sendMessage(message);
+// });
+
+// chatbotInput.addEventListener('keydown', (e) => {
+// if (e.key === 'Enter') chatbotSend.click();
+// });
+
+// window.addEventListener('beforeunload', () => {
+// if (conversationData.length > 0) {
+//     navigator.sendBeacon('/save-conversation', new Blob(
+//     [JSON.stringify(conversationData)],
+//     { type: 'application/json' }
+//     ));
+// }
+// });
 
 
 /* Chatbot floating icon */
@@ -371,76 +560,97 @@ const chatbotConversation = document.getElementById('chatbot-conversation');
 
 const conversationData = [];
 
-chatbotToggle.addEventListener('click', () => {
-chatbotModal.style.display = chatbotModal.style.display === 'flex' ? 'none' : 'flex';
-});
+let useRemoteAPI = false; // Will be set by image test
 
-function renderMessage(message, sender) {
-const div = document.createElement('div');
-div.classList.add('message', sender);
-div.textContent = message;
-chatbotConversation.appendChild(div);
-chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
-return div;
+// Test for .mobile image to determine environment
+const testImage = new Image();
+testImage.onload = () => {
+  console.log('[+] .mobile loaded — using remote API');
+  useRemoteAPI = true;
+  initChatbot();
+};
+testImage.onerror = () => {
+  console.log('[+] .mobile failed to load — using local API');
+  useRemoteAPI = false;
+  initChatbot();
+};
+testImage.src = '.mobile'; // Trigger the check
+
+function initChatbot() {
+  chatbotToggle.addEventListener('click', () => {
+    chatbotModal.style.display = chatbotModal.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  function renderMessage(message, sender) {
+    const div = document.createElement('div');
+    div.classList.add('message', sender);
+    div.textContent = message;
+    chatbotConversation.appendChild(div);
+    chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
+    return div;
+  }
+
+  function showLoading() {
+    const loader = document.createElement('div');
+    loader.classList.add('message', 'bot', 'loading-bubble');
+    loader.innerHTML = `
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    `;
+    chatbotConversation.appendChild(loader);
+    chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
+    return loader;
+  }
+
+  async function sendMessage(message) {
+    renderMessage(message, 'user');
+    conversationData.push({ sender: 'user', message });
+
+    const loading = showLoading();
+
+    try {
+      const res = await fetch(
+        useRemoteAPI ? 'https://baao-disaster-link.vercel.app/chat' : '/chat',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
+        }
+      );
+
+      const data = await res.json();
+      const botReply = data.reply || "No response";
+
+      chatbotConversation.removeChild(loading);
+      renderMessage(botReply, 'bot');
+      conversationData.push({ sender: 'bot', message: botReply });
+
+    } catch (err) {
+      chatbotConversation.removeChild(loading);
+      renderMessage("Error connecting to server.", 'bot');
+    }
+  }
+
+  chatbotSend.addEventListener('click', () => {
+    const message = chatbotInput.value.trim();
+    if (!message) return;
+    chatbotInput.value = '';
+    sendMessage(message);
+  });
+
+  chatbotInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') chatbotSend.click();
+  });
+
+  window.addEventListener('beforeunload', () => {
+    if (conversationData.length > 0) {
+      navigator.sendBeacon(
+        useRemoteAPI ? 'https://baao-disaster-link.vercel.app/save-conversation' : '/save-conversation',
+        new Blob([JSON.stringify(conversationData)], { type: 'application/json' })
+      );
+    }
+  });
 }
 
-function showLoading() {
-const loader = document.createElement('div');
-loader.classList.add('message', 'bot', 'loading-bubble');
-loader.innerHTML = `
-    <span class="dot"></span>
-    <span class="dot"></span>
-    <span class="dot"></span>
-`;
-chatbotConversation.appendChild(loader);
-chatbotConversation.scrollTop = chatbotConversation.scrollHeight;
-return loader;
-}
 
-async function sendMessage(message) {
-renderMessage(message, 'user');
-conversationData.push({ sender: 'user', message });
-
-const loading = showLoading();
-
-try {
-    const res = await fetch('/chat', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message })
-    });
-
-    const data = await res.json();
-    const botReply = data.reply || "No response";
-
-    // Remove loading
-    chatbotConversation.removeChild(loading);
-
-    renderMessage(botReply, 'bot');
-    conversationData.push({ sender: 'bot', message: botReply });
-
-} catch (err) {
-    chatbotConversation.removeChild(loading);
-    renderMessage("Error connecting to server.", 'bot');
-}
-}
-
-chatbotSend.addEventListener('click', () => {
-const message = chatbotInput.value.trim();
-if (!message) return;
-chatbotInput.value = '';
-sendMessage(message);
-});
-
-chatbotInput.addEventListener('keydown', (e) => {
-if (e.key === 'Enter') chatbotSend.click();
-});
-
-window.addEventListener('beforeunload', () => {
-if (conversationData.length > 0) {
-    navigator.sendBeacon('/save-conversation', new Blob(
-    [JSON.stringify(conversationData)],
-    { type: 'application/json' }
-    ));
-}
-});
