@@ -8,8 +8,27 @@
        <!-- prevent user zoom on mobile browsers by controlling the viewport settings in your HTML -->
       <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
       <title>Weather - Baao Disaster Link</title>
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+      <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+      <script>
+        const cdnLink = document.createElement('link');
+        cdnLink.rel = 'stylesheet';
+        cdnLink.href = '../static/css/font-awesome/6.4.0/css/all.min.css'; // Raw/static attempt
 
+        cdnLink.onerror = function () {
+          console.warn("[!] raw CSS failed, using Flask-rendered path");
+
+          const fallbackLink = document.createElement('link');
+          fallbackLink.rel = 'stylesheet';
+          fallbackLink.href = "{{ url_for('static', filename='css/font-awesome/6.4.0/css/all.min.css') }}"; // Jinja2 rendered
+          document.head.appendChild(fallbackLink);
+        };
+
+        cdnLink.onload = function () {
+          console.log("[+] raw CSS loaded successfully");
+        };
+
+        document.head.appendChild(cdnLink); 
+      </script>
       <!-- Link to the CSS file in the static folder -->
       <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/weather.css') }}"> -->
 
@@ -82,9 +101,12 @@
           ">
 
           <div class="back-button">
-            <a href="/home" title="Go Back">
+            <!-- <a href="/home" title="Go Back">
               <i class="fas fa-arrow-left"></i>
-            </a>
+            </a> -->
+          <a id="back-link" href="/home" title="Go Back">
+              <i class="fas fa-arrow-left"></i>
+          </a>
           </div>
 
           <div class="spacer-box-5"> </div>
