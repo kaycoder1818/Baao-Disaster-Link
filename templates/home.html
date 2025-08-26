@@ -139,12 +139,18 @@
 
           <div class="spacer-box-2"> </div>
 
-          <div class="nested-box">
-            <div class="icon-container" id="history-button"  onclick="navigateToHistory()">
-              <!-- <img src="{{ url_for('static', filename='images/history.svg') }}" alt="History Icon" class="history-icon"> -->
+          <!-- <div class="nested-box">
+            <div class="icon-container" id="settings-button"  onclick="navigateToSettings()">
               <i class="fas fa-cog history-icon"></i>
             </div>
-            <div class="spinner" id="history-spinner"></div>
+            <div class="spinner" id="settings-spinner"></div>
+          </div> -->
+
+          <div class="nested-box">
+            <div class="icon-container" id="settings-button" onclick="navigateToSettings()">
+              <i class="fas fa-cog history-icon"></i>
+            </div>
+            <div class="spinner" id="settings-spinner" style="display: none;"></div>
           </div>
 
         </div>

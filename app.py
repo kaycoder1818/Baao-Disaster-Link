@@ -161,8 +161,6 @@ def create_users_table():
     except mysql.connector.Error as e:
         return handle_mysql_error(e)
 
-
-
 # Route to reconnect to MySQL
 @app.route('/reconnect-mysql', methods=['GET'])
 def reconnect_mysql():
@@ -197,7 +195,6 @@ else:
 # @app.route('/', methods=['GET'])
 # def index():
 #     return jsonify({"message": "Welcome to the baao disaster link"})
-
 
 @app.route("/home")
 def home():
@@ -332,8 +329,8 @@ def weather_data():
                 "lastTwoDayTemp": "28"
             },
             "weatherLabel": {
-                "lastDay" : "Sunday",
-                "lastTwoDay": "Saturday"
+                "lastDay" : "SSunday",
+                "lastTwoDay": "SSaturday"
             }
         }
         return jsonify(response_data), 200

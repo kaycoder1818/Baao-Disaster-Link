@@ -7,20 +7,56 @@ function navigateToIndex() {
     window.location.href = '/ui';
 }
 
-// Function to handle the history button click
-function navigateToHistory() {
-    const button = document.getElementById("history-button");
-    const spinner = document.getElementById("history-spinner");
+// // Function to handle the history button click
+// function navigateToSettings() {
+//     const button = document.getElementById("settings-button");
+//     const spinner = document.getElementById("settings-spinner");
 
-    button.style.display = 'none';
-    spinner.style.display = 'block';
+//     button.style.display = 'none';
+//     spinner.style.display = 'block';
 
-    setTimeout(function() {
-        button.style.display = 'block';
-        spinner.style.display = 'none';
-        window.location.href = '/';
-    }, 500); 
+//     setTimeout(function() {
+//         button.style.display = 'block';
+//         spinner.style.display = 'none';
+//         window.location.href = '/settings';
+//     }, 500); 
+// }
+
+
+async function navigateToSettings() {
+    const button = document.getElementById("settings-button");
+    const spinner = document.getElementById("settings-spinner");
+
+    if (!button || !spinner) {
+        console.error("[x] Settings button or spinner not found!");
+        return;
+    }
+
+    // Show spinner, hide button
+    button.style.display = "none";
+    spinner.style.display = "block";
+
+    try {
+        console.log("Checking /settings availability...");
+        const res = await fetch("/settings", { method: "GET" });
+        if (!res.ok) throw new Error("Flask /settings route not available");
+
+        console.log("[+] Navigating to Flask /settings route");
+        window.location.href = "/settings";
+
+    } catch (err) {
+        console.log("[+] Falling back to static settings.html");
+        window.location.href = "settings.html";
+    } finally {
+        setTimeout(() => {
+            button.style.display = "block";
+            spinner.style.display = "none";
+        }, 500); // Optional short delay for smoother UX
+    }
 }
+
+// You already use inline onclick in HTML, so no DOMContentLoaded wrapping needed here
+
 
 // Function to handle the save button click
 function saveData() {

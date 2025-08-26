@@ -11,16 +11,55 @@
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
       <!-- Link to the CSS file in the static folder -->
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/accident.css') }}">
-      <script src="{{ url_for('static', filename='js/accident.js') }}" defer></script>
+      <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/accident.css') }}"> -->
+        <script>
+            const guideCSS = document.createElement('link');
+            guideCSS.rel = 'stylesheet';
+            guideCSS.href = '../static/css/accident.css'; // Try raw path first
+
+            guideCSS.onerror = function () {
+                console.log("[+] raw CSS failed, using Flask-rendered path");
+                const fallbackLink = document.createElement('link');
+                fallbackLink.rel = 'stylesheet';
+                fallbackLink.href = '{{ url_for("static", filename="css/accident.css") }}';
+                document.head.appendChild(fallbackLink);
+            };
+
+            guideCSS.onload = function () {
+                console.log("[+] raw CSS loaded successfully");
+            };
+
+            document.head.appendChild(guideCSS);
+        </script>
+      <!-- <script src="{{ url_for('static', filename='js/accident.js') }}" defer></script> -->
+        <script>
+            const script = document.createElement('script');
+            script.src = '../static/js/accident.js'; // Try raw path first
+
+            script.onload = function () {
+                console.log("[+] raw JS loaded successfully");
+            };
+
+            script.onerror = function () {
+                console.log("[+] raw JS failed, using Flask-rendered path");
+                const fallbackScript = document.createElement('script');
+                fallbackScript.src = '{{ url_for("static", filename="js/accident.js") }}';
+                document.head.appendChild(fallbackScript);
+            };
+
+            document.head.appendChild(script);
+        </script>
   </head>
 
   <body>
     <div class="page-container">
       <!-- Back Button -->
       <div class="back-button">
-        <a href="/home" title="Go Back">
+        <!-- <a href="/home" title="Go Back">
           <i class="fas fa-arrow-left"></i>
+        </a> -->
+        <a id="back-link" href="/home" title="Go Back">
+            <i class="fas fa-arrow-left"></i>
         </a>
       </div>
 
