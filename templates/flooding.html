@@ -49,22 +49,42 @@
       font-size: 14px;
     }
   </style>
+
+
+  <script>
+    const script = document.createElement('script');
+    script.src = '../static/js/flooding.js'; // Try raw path first
+
+    script.onload = function () {
+      console.log("[+] raw JS loaded successfully");
+    };
+
+    script.onerror = function () {
+      console.log("[+] raw JS failed, using Flask-rendered path");
+      const fallbackScript = document.createElement('script');
+      fallbackScript.src = '{{ url_for("static", filename="js/flooding.js") }}';
+      document.head.appendChild(fallbackScript);
+    };
+
+    document.head.appendChild(script);
+  </script>
+
 </head>
 <body>
   <div id="search-container">
-    <i class="fas fa-arrow-left icon" title="Back" onclick="handleBackClick()"></i>
+    <i class="fas fa-arrow-left icon" id="back-button" title="Back" onclick="handleBackClick()"></i>
     <input id="autocomplete" placeholder="Search a location..." value="Baao, Camarines Sur, Philippines" />
     <i class="fas fa-search icon" title="Search" onclick="triggerSearch()"></i>
   </div>
 
-    <gmp-map
+    <!-- <gmp-map
     id="map"
     center="13.4525,123.3658"
     zoom="14"
     map-id="YOUR_MAP_ID_IF_NEEDED"
-    ></gmp-map>
+    ></gmp-map> -->
 
-  <script
+  <!-- <script
     async
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoVrxrSQxLYbGR7YJq17NYyWTOd4npOIA&libraries=places,marker&callback=initMap&loading=async">
   </script>
@@ -131,6 +151,15 @@
     window.triggerSearch = triggerSearch;
     window.handleBackClick = handleBackClick;
     window.initMap = initMap;
-  </script>
+  </script> -->
+
+  <div id="map" style="width: 100%; height: 100vh;"></div>
+
+  <!-- <script
+    async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoVrxrSQxLYbGR7YJq17NYyWTOd4npOIA&callback=initMap"
+  ></script> -->
+
+
 </body>
 </html>
