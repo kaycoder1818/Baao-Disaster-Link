@@ -970,3 +970,12 @@ function initChatbot() {
 // Run check on script load
 checkApiAvailability();
 
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('app').style.display = 'block';
+  });
+} else {
+  document.getElementById('app').style.display = 'block';
+}
+
