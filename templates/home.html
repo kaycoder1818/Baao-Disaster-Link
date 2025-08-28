@@ -342,70 +342,70 @@
 
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
 
-<div id="app-chat" style="display: none;"></div>
-  <div id="chatbot">
-    <div id="chatbot-toggle">
-      <!-- <img src="{{ url_for('static', filename='images/bot-svgrepo-com.svg') }}" alt="Chatbot"> -->
+  <div id="app-chat" style="display: none;">
+    <div id="chatbot">
+      <div id="chatbot-toggle">
+        <!-- <img src="{{ url_for('static', filename='images/bot-svgrepo-com.svg') }}" alt="Chatbot"> -->
 
-      <!-- <script>
-        // Chatbot image test
-        testImageChatbot.onload = function() {
-          console.log("[+] use raw path for chatbot image");
-          const img = document.createElement('img');
-          img.src = '../static/images/bot-svgrepo-com.svg';
-          img.alt = 'Chatbot';
-          img.className = 'app-logo';
-          document.getElementById('chatbot-toggle').appendChild(img);
-        };
-        testImageChatbot.onerror = function() {
-          console.log("[+] use flask render template for chatbot image");
-          const img = document.createElement('img');
-          img.src = '{{ url_for("static", filename="images/bot-svgrepo-com.svg") }}';
-          img.alt = 'Chatbot';
-          img.className = 'app-logo';
-          document.getElementById('chatbot-toggle').appendChild(img);
-        };
-        testImageChatbot.src = '.mobile'; // same test path or another test image
-      </script> -->
-
-
-      <script>
-        const chatbotImg = document.createElement('img');
-        chatbotImg.src = '../static/images/bot-svgrepo-com.svg'; // Try raw path first
-        chatbotImg.alt = 'Chatbot';
-        chatbotImg.className = 'app-logo';
-
-        chatbotImg.onload = function () {
-          console.log("[+] raw chatbot image loaded successfully");
-          document.getElementById('chatbot-toggle').appendChild(chatbotImg);
-        };
-
-        chatbotImg.onerror = function () {
-          console.log("[+] raw chatbot image failed, using Flask-rendered path");
-          const fallbackImg = document.createElement('img');
-          fallbackImg.src = '{{ url_for("static", filename="images/bot-svgrepo-com.svg") }}';
-          fallbackImg.alt = 'Chatbot';
-          fallbackImg.className = 'app-logo';
-          document.getElementById('chatbot-toggle').appendChild(fallbackImg);
-        };
-
-      </script>
+        <!-- <script>
+          // Chatbot image test
+          testImageChatbot.onload = function() {
+            console.log("[+] use raw path for chatbot image");
+            const img = document.createElement('img');
+            img.src = '../static/images/bot-svgrepo-com.svg';
+            img.alt = 'Chatbot';
+            img.className = 'app-logo';
+            document.getElementById('chatbot-toggle').appendChild(img);
+          };
+          testImageChatbot.onerror = function() {
+            console.log("[+] use flask render template for chatbot image");
+            const img = document.createElement('img');
+            img.src = '{{ url_for("static", filename="images/bot-svgrepo-com.svg") }}';
+            img.alt = 'Chatbot';
+            img.className = 'app-logo';
+            document.getElementById('chatbot-toggle').appendChild(img);
+          };
+          testImageChatbot.src = '.mobile'; // same test path or another test image
+        </script> -->
 
 
-    </div>
+        <script>
+          const chatbotImg = document.createElement('img');
+          chatbotImg.src = '../static/images/bot-svgrepo-com.svg'; // Try raw path first
+          chatbotImg.alt = 'Chatbot';
+          chatbotImg.className = 'app-logo';
 
-    <div id="chatbot-modal">
-      <div id="chatbot-header">Chatbot</div>
-      <div id="chatbot-conversation"></div>
-      <div id="chatbot-input-area">
-        <input type="text" id="chatbot-input" placeholder="Type your message..." />
-        <button id="chatbot-send">
-          <i class="fas fa-paper-plane"></i>
-        </button>
+          chatbotImg.onload = function () {
+            console.log("[+] raw chatbot image loaded successfully");
+            document.getElementById('chatbot-toggle').appendChild(chatbotImg);
+          };
+
+          chatbotImg.onerror = function () {
+            console.log("[+] raw chatbot image failed, using Flask-rendered path");
+            const fallbackImg = document.createElement('img');
+            fallbackImg.src = '{{ url_for("static", filename="images/bot-svgrepo-com.svg") }}';
+            fallbackImg.alt = 'Chatbot';
+            fallbackImg.className = 'app-logo';
+            document.getElementById('chatbot-toggle').appendChild(fallbackImg);
+          };
+
+        </script>
+
+
+      </div>
+
+      <div id="chatbot-modal">
+        <div id="chatbot-header">Chatbot</div>
+        <div id="chatbot-conversation"></div>
+        <div id="chatbot-input-area">
+          <input type="text" id="chatbot-input" placeholder="Type your message..." />
+          <button id="chatbot-send">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
 </html>
