@@ -979,3 +979,12 @@ if (document.readyState === 'loading') {
   document.getElementById('app').style.display = 'block';
 }
 
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('app-chat').style.display = 'block';
+  });
+} else {
+  document.getElementById('app-chat').style.display = 'block';
+}
+
