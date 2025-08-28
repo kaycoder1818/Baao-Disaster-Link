@@ -133,204 +133,204 @@
   <body>
     <div id="app" style="display: none;">
 
-          <div class="page-container">
-      <div class="dashboard-wrapper">  
-          <div class="horizontal-box" >
-              <!-- <div class="nested-box-image" >
-                <img src="{{ url_for('static', filename='images/app-logoo.jpg') }}" class="app-logo">
-              </div> -->
-              <div class="nested-box app-title-text">
-                  BAAO DISASTER LINK
+      <div class="page-container">
+        <div class="dashboard-wrapper">  
+            <div class="horizontal-box" >
+                <!-- <div class="nested-box-image" >
+                  <img src="{{ url_for('static', filename='images/app-logoo.jpg') }}" class="app-logo">
+                </div> -->
+                <div class="nested-box app-title-text">
+                    BAAO DISASTER LINK
+                </div>
+
+                <!-- <div class="nested-box" >
+                  <div class="spacer-box"> </div>
+                </div> -->
+            </div>
+      
+          <div class="horizontal-box" 
+            style="
+            /* border: solid black;  */
+            justify-content: space-around;  
+            ">
+
+            <div class="spacer-box"> </div>
+
+            <div class="nested-box nested-box-bold"
+              style="color: white; font-size: 30px;">
+              Baao
+            </div>
+
+            <div class="spacer-box-2"> </div>
+
+            <!-- <div class="nested-box">
+              <div class="icon-container" id="settings-button"  onclick="navigateToSettings()">
+                <i class="fas fa-cog history-icon"></i>
               </div>
+              <div class="spinner" id="settings-spinner"></div>
+            </div> -->
 
-              <!-- <div class="nested-box" >
-                <div class="spacer-box"> </div>
-              </div> -->
-          </div>
-    
-        <div class="horizontal-box" 
-          style="
-          /* border: solid black;  */
-          justify-content: space-around;  
-          ">
-
-          <div class="spacer-box"> </div>
-
-          <div class="nested-box nested-box-bold"
-            style="color: white; font-size: 30px;">
-            Baao
-          </div>
-
-          <div class="spacer-box-2"> </div>
-
-          <!-- <div class="nested-box">
-            <div class="icon-container" id="settings-button"  onclick="navigateToSettings()">
-              <i class="fas fa-cog history-icon"></i>
+            <div class="nested-box">
+              <div class="icon-container" id="settings-button" onclick="navigateToSettings()">
+                <i class="fas fa-cog history-icon"></i>
+              </div>
+              <div class="spinner" id="settings-spinner" style="display: none;"></div>
             </div>
-            <div class="spinner" id="settings-spinner"></div>
-          </div> -->
 
-          <div class="nested-box">
-            <div class="icon-container" id="settings-button" onclick="navigateToSettings()">
-              <i class="fas fa-cog history-icon"></i>
-            </div>
-            <div class="spinner" id="settings-spinner" style="display: none;"></div>
           </div>
+      
+          <div class="horizontal-box">
+            <div class="nested-box nested-box-bold"
+              style="color: white; font-size: 20px;">
+                Today
+            </div>
+            <div class="nested-box" >
+                <div class="spacer-box-3"> </div> 
+            </div>
+          </div>
+      
+            <div class="horizontal-box" >
+                <div class="nested-box" >
+                    <div class="card-gauge">
+                        <div class="number-gauge" id="outside-temp" >-</div>
+                        <div class="label-gauge"  id="outside-weather" >-</div>
+                    </div>
+                </div>
+            </div>
+      
+            <div class="horizontal-box shadowed-box bg-light-blue">
+                <div class="nested-box" id="wind-box" >
+                    <div class="card-gauge">
+                        <div class="card-gauge">
+                          <div class="nested-box" >
+                            <i class="fas fa-wind history-icon"></i> 
+                          </div>
+                          <div class="nested-box" >
+                            <div class="number-gauge-small text-white" id="wind-speed">-</div> 
+                          </div>
+                          <div class="nested-box" >
+                            <div class="label-gauge">Wind</div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nested-box" >
+                    <div class="nested-box" id="humidity-box">
+                        <div class="card-gauge">
+                          <div class="nested-box" >
+                            <i class="fas fa-tint history-icon"></i> <!-- Humidity icon -->
+                          </div>
+                          <div class="nested-box" >
+                            <div class="number-gauge-small text-white" id="humidity">-</div> 
+                          </div>
+                          <div class="nested-box" >
+                            <div class="label-gauge" id="humidity">Humidity</div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="nested-box" >
+                    <div class="nested-box" id="visibility-box">
+                        <div class="card-gauge">
+                          <div class="nested-box" >
+                            <i class="fas fa-eye history-icon"></i> <!-- Visibility icon -->
+                          </div>
+                          <div class="nested-box" >
+                            <div class="number-gauge-small text-white" id="visibility">-</div> 
+                          </div>
+                          <div class="nested-box" >
+                            <div class="label-gauge" >Visibility</div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="horizontal-box" >
+              <div class="spacer-box-4">
+              </div>
+            </div>
+      
+            <div class="horizontal-box horizontal-spacing" >
+                <div class="nested-box" id="evacuation-box">
+                    <div class="card-gauge shadow-gray">
+                        <div class="nested-box" >
+                          <i class="fas fa-house history-icon"></i> <!-- Evacuation icon -->
+                        </div>
+                        <div class="nested-box" >
+                          <div class="label-gauge">Evacuation</div>
+                        </div>
+                        <div class="nested-box" >
+                          <div class="label-gauge">Place</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="nested-box" >
+                    <div class="nested-box" id="weather-box">
+                        <div class="card-gauge shadow-gray">
+
+                          <div class="nested-box" >
+                            <i class="fas fa-cloud-sun history-icon"></i> <!-- Weather icon -->
+                          </div>
+                          <div class="nested-box" >
+                            <div class="label-gauge">Weather</div>
+                          </div>
+                          <div class="nested-box" >
+                            <div class="label-gauge">Update</div>
+                          </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spacer-box">
+            </div>
+
+            <div class="horizontal-box horizontal-spacing" >
+                <div class="nested-box " id="flood-box">
+                    <div class="card-gauge shadow-gray nested-spacing">
+
+                        <div class="nested-box" >
+                          <i class="fas fa-water history-icon"></i> <!-- Flood icon -->
+                        </div>
+                        <div class="nested-box" >
+                          <div class="label-gauge">Flooding</div>
+                        </div>
+                        <div class="nested-box" >
+                          <div class="label-gauge">Area</div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="nested-box" >
+                    <div class="nested-box" id="accident-box">
+                        <div class="card-gauge shadow-gray">
+                          
+                        <div class="nested-box" id="accident-box">
+                          <i class="fas fa-car-crash history-icon"></i> <!-- Accident icon -->
+                        </div>
+                        <div class="nested-box" >
+                          <div class="label-gauge">Accident</div>
+                        </div>
+                        <div class="nested-box" >
+                          <div class="label-gauge">Prone</div>
+                        </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+      
         </div>
-    
-        <div class="horizontal-box">
-          <div class="nested-box nested-box-bold"
-            style="color: white; font-size: 20px;">
-              Today
-          </div>
-          <div class="nested-box" >
-              <div class="spacer-box-3"> </div> 
-          </div>
+        <div class="bottom-nav">
+          <i class="fas fa-home nav-icon" title="Home" id="nav-home"></i>
+          <i class="fas fa-phone nav-icon" title="Phonebook" id="nav-emergency"></i>
+          <i class="far fa-address-book nav-icon" title="Phonebook" id="nav-phone"></i>
         </div>
-    
-          <div class="horizontal-box" >
-              <div class="nested-box" >
-                  <div class="card-gauge">
-                      <div class="number-gauge" id="outside-temp" >-</div>
-                      <div class="label-gauge"  id="outside-weather" >-</div>
-                  </div>
-              </div>
-          </div>
-    
-          <div class="horizontal-box shadowed-box bg-light-blue">
-              <div class="nested-box" id="wind-box" >
-                  <div class="card-gauge">
-                      <div class="card-gauge">
-                        <div class="nested-box" >
-                          <i class="fas fa-wind history-icon"></i> 
-                        </div>
-                        <div class="nested-box" >
-                          <div class="number-gauge-small text-white" id="wind-speed">-</div> 
-                        </div>
-                        <div class="nested-box" >
-                          <div class="label-gauge">Wind</div>
-                        </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="nested-box" >
-                  <div class="nested-box" id="humidity-box">
-                      <div class="card-gauge">
-                        <div class="nested-box" >
-                          <i class="fas fa-tint history-icon"></i> <!-- Humidity icon -->
-                        </div>
-                        <div class="nested-box" >
-                          <div class="number-gauge-small text-white" id="humidity">-</div> 
-                        </div>
-                        <div class="nested-box" >
-                          <div class="label-gauge" id="humidity">Humidity</div>
-                        </div>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="nested-box" >
-                  <div class="nested-box" id="visibility-box">
-                      <div class="card-gauge">
-                        <div class="nested-box" >
-                          <i class="fas fa-eye history-icon"></i> <!-- Visibility icon -->
-                        </div>
-                        <div class="nested-box" >
-                          <div class="number-gauge-small text-white" id="visibility">-</div> 
-                        </div>
-                        <div class="nested-box" >
-                          <div class="label-gauge" >Visibility</div>
-                        </div>
-                      </div>
-                  </div>
-              </div>
-
-          </div>
-
-          <div class="horizontal-box" >
-            <div class="spacer-box-4">
-            </div>
-          </div>
-    
-          <div class="horizontal-box horizontal-spacing" >
-              <div class="nested-box" id="evacuation-box">
-                  <div class="card-gauge shadow-gray">
-                      <div class="nested-box" >
-                        <i class="fas fa-house history-icon"></i> <!-- Evacuation icon -->
-                      </div>
-                      <div class="nested-box" >
-                        <div class="label-gauge">Evacuation</div>
-                      </div>
-                      <div class="nested-box" >
-                        <div class="label-gauge">Place</div>
-                      </div>
-                  </div>
-              </div>
-              <div class="nested-box" >
-                  <div class="nested-box" id="weather-box">
-                      <div class="card-gauge shadow-gray">
-
-                        <div class="nested-box" >
-                          <i class="fas fa-cloud-sun history-icon"></i> <!-- Weather icon -->
-                        </div>
-                        <div class="nested-box" >
-                          <div class="label-gauge">Weather</div>
-                        </div>
-                        <div class="nested-box" >
-                          <div class="label-gauge">Update</div>
-                        </div>
-
-                      </div>
-                  </div>
-              </div>
-          </div>
-
-          <div class="spacer-box">
-          </div>
-
-          <div class="horizontal-box horizontal-spacing" >
-              <div class="nested-box " id="flood-box">
-                  <div class="card-gauge shadow-gray nested-spacing">
-
-                      <div class="nested-box" >
-                        <i class="fas fa-water history-icon"></i> <!-- Flood icon -->
-                      </div>
-                      <div class="nested-box" >
-                        <div class="label-gauge">Flooding</div>
-                      </div>
-                      <div class="nested-box" >
-                        <div class="label-gauge">Area</div>
-                      </div>
-
-                  </div>
-              </div>
-              <div class="nested-box" >
-                  <div class="nested-box" id="accident-box">
-                      <div class="card-gauge shadow-gray">
-                        
-                      <div class="nested-box" id="accident-box">
-                        <i class="fas fa-car-crash history-icon"></i> <!-- Accident icon -->
-                      </div>
-                      <div class="nested-box" >
-                        <div class="label-gauge">Accident</div>
-                      </div>
-                      <div class="nested-box" >
-                        <div class="label-gauge">Prone</div>
-                      </div>
-
-                      </div>
-                  </div>
-              </div>
-          </div>
-    
       </div>
-      <div class="bottom-nav">
-        <i class="fas fa-home nav-icon" title="Home" id="nav-home"></i>
-        <i class="fas fa-phone nav-icon" title="Phonebook" id="nav-emergency"></i>
-        <i class="far fa-address-book nav-icon" title="Phonebook" id="nav-phone"></i>
-      </div>
-    </div>
 
     </div>
 

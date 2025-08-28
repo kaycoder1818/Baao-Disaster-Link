@@ -47,201 +47,203 @@
 
 </head>
 <body>
-  <div class="container">
+  <div id="app-chat" style="display: none;">
+    <div class="container">
 
-    <div class="horizontal-box">
+      <div class="horizontal-box">
 
-        <div class="nested-box">
+          <div class="nested-box">
 
-            <div class="back-button">
-                <!-- <a href="/home" title="Go Back">
+              <div class="back-button">
+                  <!-- <a href="/home" title="Go Back">
+                      <i class="fas fa-arrow-left"></i>
+                  </a> -->
+                <a id="back-link" href="/home" title="Go Back">
                     <i class="fas fa-arrow-left"></i>
-                </a> -->
-              <a id="back-link" href="/home" title="Go Back">
-                  <i class="fas fa-arrow-left"></i>
-              </a>
-            </div>
-
-        </div>
-
-        <div class="nested-box">
-            <div class="spacer-box">
-                &nbsp;
-            </div>      
-        </div>
-
-
-    </div>
-
-
-
-    <div class="header">
-      <i class="fas fa-ambulance"></i>
-      <span class="header-title">EMERGENCY</span>
-      <div class="subheader">+ HOTLINE NUMBERS</div>
-    </div>
-
-    <div class="horizontal-box" onclick="alert('I have clicked MDRRMO BAAO')"> 
-
-        <div class="nested-box">
-            <div class="hotline-img">
-                <!-- <img src="{{ url_for('static', filename='images/RHU.webp') }}" alt="MDRRMO" /> -->
-                <div class="image-container" id="rhu-container"></div>
+                </a>
               </div>
+
+          </div>
+
+          <div class="nested-box">
+              <div class="spacer-box">
+                  &nbsp;
+              </div>      
+          </div>
+
+
+      </div>
+
+
+
+      <div class="header">
+        <i class="fas fa-ambulance"></i>
+        <span class="header-title">EMERGENCY</span>
+        <div class="subheader">+ HOTLINE NUMBERS</div>
+      </div>
+
+      <div class="horizontal-box" onclick="alert('I have clicked MDRRMO BAAO')"> 
+
+          <div class="nested-box">
+              <div class="hotline-img">
+                  <!-- <img src="{{ url_for('static', filename='images/RHU.webp') }}" alt="MDRRMO" /> -->
+                  <div class="image-container" id="rhu-container"></div>
+                </div>
+          </div>
+
+          <div class="vertical-box hotline-card-no-background">
+              <div class="nested-box">
+                  <div class="hotline-number">092178030605</div>
+              </div>
+              <div class="nested-box">
+                  <div class="hotline-label">MDRRMO BAAO</div>
+              </div>
+          </div>
+
+      </div>
+
+      <div class="horizontal-box" onclick="alert('I have clicked BAAO PNP')"> 
+
+          <div class="nested-box">
+              <div class="hotline-img">
+                  <!-- <img src="{{ url_for('static', filename='images/PNP.webp') }}" alt="BAAO PNP" /> -->
+                  <div class="image-container" id="baao-pnp-container"></div>
+              </div>
+          </div>
+
+          <div class="vertical-box hotline-card-no-background">
+              <div class="nested-box">
+                  <div class="hotline-number">09291084883</div>
+              </div>
+              <div class="nested-box">
+                  <div class="hotline-label">BAAO PNP</div>
+              </div>
+          </div>
+
+      </div>
+
+      <div class="horizontal-box" onclick="alert('I have clicked BAAO BFP')"s> 
+
+          <div class="nested-box" >
+              <div class="hotline-img">
+                  <!-- <img src="{{ url_for('static', filename='images/BFP.webp') }}" alt="BFP" /> -->
+                  <div class="image-container" id="bfp-container"></div>
+              </div>
+          </div>
+
+          <div class="vertical-box hotline-card-no-background">
+              <div class="nested-box">
+                  <div class="hotline-number">09185153517</div>
+              </div>
+              <div class="nested-box">
+                  <div class="hotline-label">BFP BAAO</div>
+              </div>
+          </div>
+
+      </div>
+
+      
+      <div class="horizontal-box" onclick="alert('I have clicked RHU')"> 
+
+          <div class="nested-box" >
+              <div class="hotline-img">
+                  <!-- <img src="{{ url_for('static', filename='images/RHU.webp') }}" alt="RHU" /> -->
+                  <div class="image-container" id="rhuu-container"></div>
+              </div>
+          </div>
+
+          <div class="vertical-box hotline-card-no-background">
+              <div class="nested-box">
+                  <div class="hotline-number">09567556374</div>
+              </div>
+              <div class="nested-box">
+                  <div class="hotline-label">RHU/MESU</div>
+              </div>
+          </div>
+
+      </div>
+
+      <div class="horizontal-box" onclick="alert('I have clicked BAAO DOH')"> 
+
+          <div class="nested-box" >
+              <div class="hotline-img">
+                  <!-- <img src="{{ url_for('static', filename='images/DOH.webp') }}" alt="DOH" /> -->
+                  <div class="image-container" id="doh-container"></div>
+              </div>
+          </div>
+
+          <div class="vertical-box hotline-card-no-background">
+              <div class="nested-box">
+                  <div class="hotline-number">09108605537</div>
+              </div>
+              <div class="nested-box">
+                  <div class="hotline-label">AMBULANCE</div>
+              </div>
+          </div>
+
+      </div>
+
+      <!-- <div class="hotline-card" onclick="alert('I have clicked MDRRMO BAAO')">
+        <div class="hotline-img">
+          <img src="" alt="MDRRMO" />
         </div>
-
-        <div class="vertical-box hotline-card-no-background">
-            <div class="nested-box">
-                <div class="hotline-number">092178030605</div>
-            </div>
-            <div class="nested-box">
-                <div class="hotline-label">MDRRMO BAAO</div>
-            </div>
+        <div class="hotline-info">
+          <div class="hotline-number">092178030605</div>
+          <div class="hotline-label">MDRRMO BAAO</div>
         </div>
+      </div>
 
-    </div>
-
-    <div class="horizontal-box" onclick="alert('I have clicked BAAO PNP')"> 
-
-        <div class="nested-box">
-            <div class="hotline-img">
-                <!-- <img src="{{ url_for('static', filename='images/PNP.webp') }}" alt="BAAO PNP" /> -->
-                <div class="image-container" id="baao-pnp-container"></div>
-            </div>
+      <div class="hotline-card" onclick="alert('I have clicked BAAO PNP')">
+        <div class="hotline-img">
+          <img src="" alt="PNP" />
         </div>
-
-        <div class="vertical-box hotline-card-no-background">
-            <div class="nested-box">
-                <div class="hotline-number">09291084883</div>
-            </div>
-            <div class="nested-box">
-                <div class="hotline-label">BAAO PNP</div>
-            </div>
+        <div class="hotline-info">
+          <div class="hotline-number">09291084883</div>
+          <div class="hotline-label">BAAO PNP</div>
         </div>
+      </div>
 
-    </div>
-
-    <div class="horizontal-box" onclick="alert('I have clicked BAAO BFP')"s> 
-
-        <div class="nested-box" >
-            <div class="hotline-img">
-                <!-- <img src="{{ url_for('static', filename='images/BFP.webp') }}" alt="BFP" /> -->
-                 <div class="image-container" id="bfp-container"></div>
-            </div>
+      <div class="hotline-card" onclick="alert('I have clicked DOH')">
+        <div class="hotline-img">
+          <img src="" alt="BFP" />
         </div>
-
-        <div class="vertical-box hotline-card-no-background">
-            <div class="nested-box">
-                <div class="hotline-number">09185153517</div>
-            </div>
-            <div class="nested-box">
-                <div class="hotline-label">BFP BAAO</div>
-            </div>
+        <div class="hotline-info">
+          <div class="hotline-number">09185153517</div>
+          <div class="hotline-label">BFP BAAO</div>
         </div>
+      </div>
 
-    </div>
-
-    
-    <div class="horizontal-box" onclick="alert('I have clicked RHU')"> 
-
-        <div class="nested-box" >
-            <div class="hotline-img">
-                <!-- <img src="{{ url_for('static', filename='images/RHU.webp') }}" alt="RHU" /> -->
-                <div class="image-container" id="rhuu-container"></div>
-            </div>
+      <div class="hotline-card" onclick="alert('I have clicked RHU/DOH')">
+        <div class="hotline-img">
+          <img src="" alt="RHU" />
         </div>
-
-        <div class="vertical-box hotline-card-no-background">
-            <div class="nested-box">
-                <div class="hotline-number">09567556374</div>
-            </div>
-            <div class="nested-box">
-                <div class="hotline-label">RHU/MESU</div>
-            </div>
+        <div class="hotline-info">
+          <div class="hotline-number">09567556374</div>
+          <div class="hotline-label">RHU/MESU</div>
         </div>
+      </div>
 
-    </div>
-
-    <div class="horizontal-box" onclick="alert('I have clicked BAAO DOH')"> 
-
-        <div class="nested-box" >
-            <div class="hotline-img">
-                <!-- <img src="{{ url_for('static', filename='images/DOH.webp') }}" alt="DOH" /> -->
-                 <div class="image-container" id="doh-container"></div>
-            </div>
+      <div class="hotline-card" onclick="alert('I have clicked DOH')">
+        <div class="hotline-img">
+          <img src="" alt="DOH" />
         </div>
-
-        <div class="vertical-box hotline-card-no-background">
-            <div class="nested-box">
-                <div class="hotline-number">09108605537</div>
-            </div>
-            <div class="nested-box">
-                <div class="hotline-label">AMBULANCE</div>
-            </div>
+        <div class="hotline-info">
+          <div class="hotline-number">09567556374</div>
+          <div class="hotline-label">RHU/MESU</div>
         </div>
+      </div>
 
+      <div class="hotline-card" onclick="alert('I have clicked AMBULANCE')">
+        <div class="hotline-img">
+          <img src="" alt="Ambulance" />
+        </div>
+        <div class="hotline-info">
+          <div class="hotline-number">09108605537</div>
+          <div class="hotline-label">AMBULANCE</div>
+        </div>
+      </div> -->
+      
     </div>
-
-    <!-- <div class="hotline-card" onclick="alert('I have clicked MDRRMO BAAO')">
-      <div class="hotline-img">
-        <img src="" alt="MDRRMO" />
-      </div>
-      <div class="hotline-info">
-        <div class="hotline-number">092178030605</div>
-        <div class="hotline-label">MDRRMO BAAO</div>
-      </div>
-    </div>
-
-    <div class="hotline-card" onclick="alert('I have clicked BAAO PNP')">
-      <div class="hotline-img">
-        <img src="" alt="PNP" />
-      </div>
-      <div class="hotline-info">
-        <div class="hotline-number">09291084883</div>
-        <div class="hotline-label">BAAO PNP</div>
-      </div>
-    </div>
-
-    <div class="hotline-card" onclick="alert('I have clicked DOH')">
-      <div class="hotline-img">
-        <img src="" alt="BFP" />
-      </div>
-      <div class="hotline-info">
-        <div class="hotline-number">09185153517</div>
-        <div class="hotline-label">BFP BAAO</div>
-      </div>
-    </div>
-
-    <div class="hotline-card" onclick="alert('I have clicked RHU/DOH')">
-      <div class="hotline-img">
-        <img src="" alt="RHU" />
-      </div>
-      <div class="hotline-info">
-        <div class="hotline-number">09567556374</div>
-        <div class="hotline-label">RHU/MESU</div>
-      </div>
-    </div>
-
-    <div class="hotline-card" onclick="alert('I have clicked DOH')">
-      <div class="hotline-img">
-        <img src="" alt="DOH" />
-      </div>
-      <div class="hotline-info">
-        <div class="hotline-number">09567556374</div>
-        <div class="hotline-label">RHU/MESU</div>
-      </div>
-    </div>
-
-    <div class="hotline-card" onclick="alert('I have clicked AMBULANCE')">
-      <div class="hotline-img">
-        <img src="" alt="Ambulance" />
-      </div>
-      <div class="hotline-info">
-        <div class="hotline-number">09108605537</div>
-        <div class="hotline-label">AMBULANCE</div>
-      </div>
-    </div> -->
-    
   </div>
 </body>
 </html>

@@ -147,3 +147,12 @@ dohImg.onerror = function () {
     fallbackImg5.className = 'image-fit';
     container5.appendChild(fallbackImg5);
 };
+
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('app').style.display = 'block';
+  });
+} else {
+  document.getElementById('app').style.display = 'block';
+}

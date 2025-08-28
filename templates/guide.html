@@ -56,87 +56,89 @@
   </head>
 
     <body>
+        <div id="app-chat" style="display: none;">
 
-        <div class="page-container">
+            <div class="page-container">
 
-            <!-- Back Button -->
-            <!-- <div class="back-button">
-                <a href="/home" title="Go Back">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-            </div> -->
+                <!-- Back Button -->
+                <!-- <div class="back-button">
+                    <a href="/home" title="Go Back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div> -->
 
-            <!-- Back Button -->
-            <div class="back-button">
-                <a id="back-link" href="/home" title="Go Back">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-            </div>
+                <!-- Back Button -->
+                <div class="back-button">
+                    <a id="back-link" href="/home" title="Go Back">
+                        <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
 
-            <div class="nested-box flex-grow">  
-                <div class="vertical-box flex-grow gap-min">
-                    <div class="nested-box fixed-height all-side-padding add-background-white full-width margin-zero" style="--height: 50px;">
-                        System Guide
-                    </div>
-                    <div class="nested-box flex-grow">
-                        <div class="fixed-height-max fixed-width-max justify-center vertical-box outline-drop-shadow add-margin">
-                            <div class="nested-box  add-background-white fixed-dimension" id="disaster-prep">
-                                <div class="horizontal-box  add-margin">
-                                    <div class="nested-box section">
-                                        <!-- <div class="image-container">
-                                            <img src="{{ url_for('static', filename='images/disaster-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
-                                        </div> -->
-                                        <div class="image-container" id="disaster-prep-container">
-                                        <!-- The image will be inserted by JS -->
+                <div class="nested-box flex-grow">  
+                    <div class="vertical-box flex-grow gap-min">
+                        <div class="nested-box fixed-height all-side-padding add-background-white full-width margin-zero" style="--height: 50px;">
+                            System Guide
+                        </div>
+                        <div class="nested-box flex-grow">
+                            <div class="fixed-height-max fixed-width-max justify-center vertical-box outline-drop-shadow add-margin">
+                                <div class="nested-box  add-background-white fixed-dimension" id="disaster-prep">
+                                    <div class="horizontal-box  add-margin">
+                                        <div class="nested-box section">
+                                            <!-- <div class="image-container">
+                                                <img src="{{ url_for('static', filename='images/disaster-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
+                                            </div> -->
+                                            <div class="image-container" id="disaster-prep-container">
+                                            <!-- The image will be inserted by JS -->
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="nested-box section">
-                                        <div class="multi-line-stack-container">
-                                            <span class="title-line">Disaster</span>
-                                            <span class="title-line">Preparedness</span>
-                                            <span class="title-line">Tips</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="nested-box add-background-white fixed-dimension" id="fire-prep">
-                                <div class="horizontal-box add-margin">
-                                    <div class="nested-box section">
-                                        <!-- <div class="image-container">
-                                            <img src="{{ url_for('static', filename='images/fire-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
-                                        </div> -->
-
-                                        <div class="image-container" id="fire-prep-container">
-                                        <!-- Image will be inserted by JS -->
-                                        </div>
-
-                                    </div>
-                                    <div class="nested-box section">
-                                        <div class="multi-line-stack-container">
-                                            <span class="title-line">Fire</span>
-                                            <span class="title-line">Preparedness</span>
-                                            <span class="title-line">Tips</span>
+                                        <div class="nested-box section">
+                                            <div class="multi-line-stack-container">
+                                                <span class="title-line">Disaster</span>
+                                                <span class="title-line">Preparedness</span>
+                                                <span class="title-line">Tips</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="nested-box add-background-white fixed-dimension" id="earthquake-prep">
-                                <div class="horizontal-box  add-margin">
-                                    <div class="nested-box section">
-                                        <!-- <div class="image-container">
-                                            <img src="{{ url_for('static', filename='images/earthquake-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
-                                        </div> -->
+                                <div class="nested-box add-background-white fixed-dimension" id="fire-prep">
+                                    <div class="horizontal-box add-margin">
+                                        <div class="nested-box section">
+                                            <!-- <div class="image-container">
+                                                <img src="{{ url_for('static', filename='images/fire-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
+                                            </div> -->
 
-                                        <div class="image-container" id="earthquake-prep-container">
-                                        <!-- Image will be inserted by JS -->
+                                            <div class="image-container" id="fire-prep-container">
+                                            <!-- Image will be inserted by JS -->
+                                            </div>
+
                                         </div>
-
+                                        <div class="nested-box section">
+                                            <div class="multi-line-stack-container">
+                                                <span class="title-line">Fire</span>
+                                                <span class="title-line">Preparedness</span>
+                                                <span class="title-line">Tips</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="nested-box section">
-                                        <div class="multi-line-stack-container">
-                                            <span class="title-line">Earthquake</span>
-                                            <span class="title-line">Preparedness</span>
-                                            <span class="title-line">Tips</span>
+                                </div>
+                                <div class="nested-box add-background-white fixed-dimension" id="earthquake-prep">
+                                    <div class="horizontal-box  add-margin">
+                                        <div class="nested-box section">
+                                            <!-- <div class="image-container">
+                                                <img src="{{ url_for('static', filename='images/earthquake-prep.webp') }}" alt="Disaster Preparedness Tips" class="image-fit" />
+                                            </div> -->
+
+                                            <div class="image-container" id="earthquake-prep-container">
+                                            <!-- Image will be inserted by JS -->
+                                            </div>
+
+                                        </div>
+                                        <div class="nested-box section">
+                                            <div class="multi-line-stack-container">
+                                                <span class="title-line">Earthquake</span>
+                                                <span class="title-line">Preparedness</span>
+                                                <span class="title-line">Tips</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -144,10 +146,10 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div>
-
 
     </body>
 

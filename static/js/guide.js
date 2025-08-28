@@ -172,3 +172,12 @@ async function checkServerAndSetupNav() {
 
 // Run immediately
 checkServerAndSetupNav();
+
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('app').style.display = 'block';
+  });
+} else {
+  document.getElementById('app').style.display = 'block';
+}
