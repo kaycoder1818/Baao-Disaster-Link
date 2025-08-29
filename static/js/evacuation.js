@@ -5,18 +5,80 @@ let markers = [];
 
 const currentLocation = { lat: 13.4539341516119, lng: 123.36561660818849 };
 
+// // List of stations
+// const stations = [
+//   {
+//     name: "Station A",
+//     position: { lat: 13.449154848182909, lng: 123.38967744292196 },
+//   },
+//   {
+//     name: "Station B",
+//     position: { lat: 13.456543058905588, lng: 123.36814776984579 },
+//   },
+//   // Add more stations here if needed
+// ];
+
+
 // List of stations
 const stations = [
   {
-    name: "Station A",
-    position: { lat: 13.449154848182909, lng: 123.38967744292196 },
+    name: "Agdangan ES",
+    position: { lat: 13.49378, lng: 123.32579 },
   },
   {
-    name: "Station B",
-    position: { lat: 13.456543058905588, lng: 123.36814776984579 },
+    name: "Agdangan NHS",
+    position: { lat: 13.49533, lng: 123.32157 },
   },
-  // Add more stations here if needed
+  {
+    name: "Antipolo ES",
+    position: { lat: 13.48785, lng: 123.38278 },
+  },
+  {
+    name: "Bagumbayan ES",
+    position: { lat: 13.48309, lng: 123.27788 },
+  },
+  {
+    name: "Buluang ES",
+    position: { lat: 13.47000, lng: 123.35697 },
+  },
+  {
+    name: "EPAMHS",
+    position: { lat: 13.47276, lng: 123.35546 },
+  },
+  {
+    name: "Cristo Rey ES",
+    position: { lat: 13.53634, lng: 123.43127 },
+  },
+  {
+    name: "Caranday HS",
+    position: { lat: 13.50164, lng: 123.38023 },
+  },
+  {
+    name: "Kalahi School Building",
+    position: { lat: 13.50064, lng: 123.39628 },
+  },
+  {
+    name: "West Central School",
+    position: { lat: 13.45471, lng: 123.36836 },
+  },
+  {
+    name: "Rosary School",
+    position: { lat: 13.45339, lng: 123.36797 },
+  },
+  {
+    name: "Iyagan ES",
+    position: { lat: 13.52921, lng: 123.38679 },
+  },
+  {
+    name: "Iyagan HS",
+    position: { lat: 13.53113, lng: 123.38899 },
+  },
+  {
+    name: "Lourdes ES",
+    position: { lat: 13.49938, lng: 123.36135 },
+  },
 ];
+
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {

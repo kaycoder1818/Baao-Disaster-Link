@@ -50,6 +50,35 @@
     }
   </style>
 
+  <style>
+    .pulsing-marker {
+      width: 20px;
+      height: 20px;
+      position: absolute;
+      background: rgba(255, 0, 0, 0.6);
+      border: 2px solid red;
+      border-radius: 50%;
+      animation: pulse 0.5s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.8);
+        opacity: 1;
+      }
+      70% {
+        transform: scale(2.2);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(2.5);
+        opacity: 0;
+      }
+    }
+  </style>
+
+
 
   <script>
     const script = document.createElement('script');
@@ -77,89 +106,7 @@
     <i class="fas fa-search icon" title="Search" onclick="triggerSearch()"></i>
   </div>
 
-    <!-- <gmp-map
-    id="map"
-    center="13.4525,123.3658"
-    zoom="14"
-    map-id="YOUR_MAP_ID_IF_NEEDED"
-    ></gmp-map> -->
-
-  <!-- <script
-    async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoVrxrSQxLYbGR7YJq17NYyWTOd4npOIA&libraries=places,marker&callback=initMap&loading=async">
-  </script>
-
-  <script>
-    let map;
-    let marker;
-    let searchBox;
-
-    // Callback from Google Maps API
-    function initMap() {
-      map = document.querySelector("#map");
-
-      const input = document.getElementById("autocomplete");
-      searchBox = new google.maps.places.SearchBox(input);
-
-      map.addEventListener("bounds_changed", () => {
-        searchBox.setBounds(map.bounds);
-      });
-
-      searchBox.addListener("places_changed", () => {
-        const places = searchBox.getPlaces();
-
-        if (places.length === 0) return;
-
-        const place = places[0];
-        if (!place.geometry || !place.geometry.location) {
-          alert("No geometry found for selected place.");
-          return;
-        }
-
-        map.center = place.geometry.location;
-        map.zoom = 15;
-
-        if (marker) marker.map = null;
-
-        marker = new google.maps.marker.AdvancedMarkerElement({
-          map: map,
-          position: place.geometry.location,
-          title: place.name,
-        });
-      });
-
-      input.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          triggerSearch();
-        }
-      });
-    }
-
-    // Expose functions globally
-    function triggerSearch() {
-      const input = document.getElementById("autocomplete");
-      google.maps.event.trigger(input, 'focus');
-      google.maps.event.trigger(input, 'keydown', { keyCode: 13 });
-    }
-
-    function handleBackClick() {
-      window.location.href = "/home";
-    }
-
-    // Expose to HTML
-    window.triggerSearch = triggerSearch;
-    window.handleBackClick = handleBackClick;
-    window.initMap = initMap;
-  </script> -->
-
   <div id="map" style="width: 100%; height: 100vh;"></div>
-
-  <!-- <script
-    async
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoVrxrSQxLYbGR7YJq17NYyWTOd4npOIA&callback=initMap"
-  ></script> -->
-
 
 </body>
 </html>

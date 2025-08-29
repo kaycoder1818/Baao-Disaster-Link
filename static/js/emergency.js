@@ -156,3 +156,25 @@ if (document.readyState === 'loading') {
 } else {
   document.getElementById('app').style.display = 'block';
 }
+
+
+function handleHotlineClick(element) {
+  const title = element.getAttribute('data-title');
+  const number = element.getAttribute('data-number');
+  showModal(title, number);
+}
+
+function showModal(title, number) {
+  document.getElementById("modal-title").innerText = title;
+  document.getElementById("modal-number").innerText = "Hotline: " + number;
+  document.getElementById("modal-overlay").style.display = "flex";
+}
+
+function hideModal() {
+  document.getElementById("modal-overlay").style.display = "none";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("modal-ok-button").onclick = hideModal;
+});
+

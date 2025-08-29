@@ -47,7 +47,35 @@
 
 </head>
 <body>
+
   <div id="app" style="display: none;">
+
+    <!-- Modal + Overlay -->
+    <div id="modal-overlay" class="modal-overlay" style="display: none;">
+      <div class="modal-content">
+        <h2 id="modal-title">Emergency Contact</h2>
+        <p id="modal-number">Hotline: 00000000000</p>
+        <div 
+          id="modal-call-button" 
+          style="
+            background-color: #28a745; 
+            color: white; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            border-radius: 5px; 
+            display: inline-block;
+            text-align: center;
+            user-select: none;
+          "
+          onclick="document.getElementById('modal-overlay').style.display='none'"
+        >
+          Call
+        </div>
+
+      </div>
+    </div>
+
+
     <div class="container">
 
       <div class="horizontal-box">
@@ -82,8 +110,7 @@
         <div class="subheader">+ HOTLINE NUMBERS</div>
       </div>
 
-      <div class="horizontal-box" onclick="alert('I have clicked MDRRMO BAAO')"> 
-
+      <div class="horizontal-box hotline-button" onclick="handleHotlineClick(this)" data-title="MDRRMO BAAO" data-number="092178030605">
           <div class="nested-box">
               <div class="hotline-img">
                   <!-- <img src="{{ url_for('static', filename='images/RHU.webp') }}" alt="MDRRMO" /> -->
@@ -102,8 +129,8 @@
 
       </div>
 
-      <div class="horizontal-box" onclick="alert('I have clicked BAAO PNP')"> 
 
+      <div class="horizontal-box hotline-button" onclick="handleHotlineClick(this)" data-title="BAAO PNP" data-number="09291084883">
           <div class="nested-box">
               <div class="hotline-img">
                   <!-- <img src="{{ url_for('static', filename='images/PNP.webp') }}" alt="BAAO PNP" /> -->
@@ -122,7 +149,7 @@
 
       </div>
 
-      <div class="horizontal-box" onclick="alert('I have clicked BAAO BFP')"s> 
+       <div class="horizontal-box hotline-button" onclick="handleHotlineClick(this)" data-title="BFP BAAO" data-number="09185153517">
 
           <div class="nested-box" >
               <div class="hotline-img">
@@ -143,7 +170,8 @@
       </div>
 
       
-      <div class="horizontal-box" onclick="alert('I have clicked RHU')"> 
+      <!-- <div class="horizontal-box" onclick="alert('I have clicked RHU')">  -->
+      <div class="horizontal-box hotline-button" onclick="handleHotlineClick(this)" data-title="RHU/MESU" data-number="09567556374">
 
           <div class="nested-box" >
               <div class="hotline-img">
@@ -163,7 +191,7 @@
 
       </div>
 
-      <div class="horizontal-box" onclick="alert('I have clicked BAAO DOH')"> 
+      <div class="horizontal-box hotline-button" onclick="handleHotlineClick(this)" data-title="AMBULANCE" data-number="09108605537">
 
           <div class="nested-box" >
               <div class="hotline-img">

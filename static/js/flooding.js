@@ -8,15 +8,63 @@ const currentLocation = { lat: 13.4539341516119, lng: 123.36561660818849 };
 // List of stations
 const stations = [
   {
-    name: "Station A",
-    position: { lat: 13.449154848182909, lng: 123.38967744292196 },
+    name: "Agdangan ES",
+    position: { lat: 13.49378, lng: 123.32579 },
   },
   {
-    name: "Station B",
-    position: { lat: 13.456543058905588, lng: 123.36814776984579 },
+    name: "Agdangan NHS",
+    position: { lat: 13.49533, lng: 123.32157 },
   },
-  // Add more stations here if needed
+  {
+    name: "Antipolo ES",
+    position: { lat: 13.48785, lng: 123.38278 },
+  },
+  {
+    name: "Bagumbayan ES",
+    position: { lat: 13.48309, lng: 123.27788 },
+  },
+  {
+    name: "Buluang ES",
+    position: { lat: 13.47000, lng: 123.35697 },
+  },
+  {
+    name: "EPAMHS",
+    position: { lat: 13.47276, lng: 123.35546 },
+  },
+  {
+    name: "Cristo Rey ES",
+    position: { lat: 13.53634, lng: 123.43127 },
+  },
+  {
+    name: "Caranday HS",
+    position: { lat: 13.50164, lng: 123.38023 },
+  },
+  {
+    name: "Kalahi School Building",
+    position: { lat: 13.50064, lng: 123.39628 },
+  },
+  {
+    name: "West Central School",
+    position: { lat: 13.45471, lng: 123.36836 },
+  },
+  {
+    name: "Rosary School",
+    position: { lat: 13.45339, lng: 123.36797 },
+  },
+  {
+    name: "Iyagan ES",
+    position: { lat: 13.52921, lng: 123.38679 },
+  },
+  {
+    name: "Iyagan HS",
+    position: { lat: 13.53113, lng: 123.38899 },
+  },
+  {
+    name: "Lourdes ES",
+    position: { lat: 13.49938, lng: 123.36135 },
+  },
 ];
+
 
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
@@ -41,22 +89,85 @@ function initMap() {
   });
 
   // Add markers for stations
+  // stations.forEach((station) => {
+  //   const marker = new google.maps.Marker({
+  //     position: station.position,
+  //     map: map,
+  //     title: station.name,
+  //     icon: {
+  //       url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+  //     },
+  //   });
+
+  //   marker.addListener("click", () => {
+  //     calculateAndDisplayRoute(station.position);
+  //   });
+
+  //   markers.push(marker);
+  // });
+
+  // Add pulsing overlay markers for stations
+
+  class PulsingMarker extends google.maps.OverlayView {
+    constructor(position, map) {
+      super();
+      this.position = position;
+      this.map = map;
+      this.div = null;
+      this.setMap(map);
+    }
+
+    onAdd() {
+      this.div = document.createElement("div");
+      this.div.className = "pulsing-marker";
+      this.getPanes().overlayMouseTarget.appendChild(this.div);
+    }
+
+    draw() {
+      const overlayProjection = this.getProjection();
+      const pos = overlayProjection.fromLatLngToDivPixel(this.position);
+
+      if (pos && this.div) {
+        this.div.style.left = `${pos.x - 10}px`;
+        this.div.style.top = `${pos.y - 10}px`;
+      }
+    }
+
+    onRemove() {
+      if (this.div) {
+        this.div.remove();
+        this.div = null;
+      }
+    }
+  }
+
+
   stations.forEach((station) => {
-    const marker = new google.maps.Marker({
+    const pulsing = new PulsingMarker(
+      new google.maps.LatLng(station.position.lat, station.position.lng),
+      map
+    );
+
+    // Store custom overlay so we can clear it later if needed
+    markers.push(pulsing);
+
+    // Optional: make pulsing marker clickable by adding an invisible clickable marker
+    const invisibleMarker = new google.maps.Marker({
       position: station.position,
       map: map,
       title: station.name,
-      icon: {
-        url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-      },
+      opacity: 0, // Invisible but clickable
     });
 
-    marker.addListener("click", () => {
+    invisibleMarker.addListener("click", () => {
       calculateAndDisplayRoute(station.position);
     });
 
-    markers.push(marker);
+    markers.push(invisibleMarker);
   });
+
+
+
 }
 
 function calculateAndDisplayRoute(destination) {
@@ -88,17 +199,59 @@ function calculateAndDisplayRoute(destination) {
         })
       );
 
-      // Destination marker (red)
-      markers.push(
-        new google.maps.Marker({
-          position: destination,
-          map: map,
-          title: "Destination",
-          icon: {
-            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-          },
-        })
+      // // Destination marker (red)
+      // markers.push(
+      //   new google.maps.Marker({
+      //     position: destination,
+      //     map: map,
+      //     title: "Destination",
+      //     icon: {
+      //       url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+      //     },
+      //   })
+      // );
+
+      // Create red pulsing marker using OverlayView
+      class PulsingMarker extends google.maps.OverlayView {
+        constructor(position, map) {
+          super();
+          this.position = position;
+          this.map = map;
+          this.div = null;
+          this.setMap(map);
+        }
+
+        onAdd() {
+          this.div = document.createElement("div");
+          this.div.className = "pulsing-marker";
+          this.getPanes().overlayMouseTarget.appendChild(this.div);
+        }
+
+        draw() {
+          const overlayProjection = this.getProjection();
+          const pos = overlayProjection.fromLatLngToDivPixel(this.position);
+
+          if (pos && this.div) {
+            this.div.style.left = `${pos.x - 10}px`; // offset to center
+            this.div.style.top = `${pos.y - 10}px`;
+          }
+        }
+
+        onRemove() {
+          if (this.div) {
+            this.div.remove();
+            this.div = null;
+          }
+        }
+      }
+
+      // Create pulsing marker
+      const pulsing = new PulsingMarker(
+        new google.maps.LatLng(destination.lat, destination.lng),
+        map
       );
+
+
     } else {
       console.error("Directions request failed due to " + status);
       alert("Sorry, directions request failed.");
