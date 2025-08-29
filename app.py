@@ -432,30 +432,62 @@ def weather_data():
         return jsonify({"error": "Location data not found or not supported"}), 404
 
 
-@app.route('/forecast', methods=['POST']) # Changed to POST method
+# @app.route('/forecast', methods=['POST']) # Changed to POST method
+# def get_weather():
+#     """
+#     API endpoint to get weather data based on location.
+#     It now expects a POST request with location in the JSON body.
+#     If the location is 'baao', it returns a specific forecast.
+#     Otherwise, it returns a message indicating no data.
+#     """
+#     # Get JSON data from the request body
+#     data = request.json 
+#     location = data.get('location') # Access 'location' from the JSON body
+
+#     if location and location.lower() == 'baao':
+#         # Return the specified forecast data for 'baao'
+#         forecast_data = {
+#             "outsideTemp": "23°C",
+#             "outsideWeather": "Cloudy",
+#             "windSpeed": "2Km/h",
+#             "humidity": "62%",
+#             "visibility": "2Km",
+#         }
+#         return jsonify({"forecastData": forecast_data})
+#     else:
+#         # Return a message for other locations or no location provided
+#         return jsonify({"message": "No forecast data available for this location. Try 'baao'."}), 404
+
+
+@app.route('/forecast', methods=['POST'])
 def get_weather():
-    """
-    API endpoint to get weather data based on location.
-    It now expects a POST request with location in the JSON body.
-    If the location is 'baao', it returns a specific forecast.
-    Otherwise, it returns a message indicating no data.
-    """
-    # Get JSON data from the request body
     data = request.json 
-    location = data.get('location') # Access 'location' from the JSON body
+    location = data.get('location')
 
     if location and location.lower() == 'baao':
-        # Return the specified forecast data for 'baao'
-        forecast_data = {
-            "outsideTemp": "23°C",
-            "outsideWeather": "Cloudy",
-            "windSpeed": "2Km/h",
-            "humidity": "62%",
-            "visibility": "2Km",
-        }
-        return jsonify({"forecastData": forecast_data})
+        try:
+            api_key = os.environ.get("ACCUWEATHER_API_KEY")
+            location_key = "262585"
+            url = f"http://dataservice.accuweather.com/currentconditions/v1/{location_key}?apikey={api_key}&details=true"
+            
+            response = requests.get(url)
+            response.raise_for_status()
+            current = response.json()[0]
+
+            forecast_data = {
+                "outsideTemp": f"{current['Temperature']['Metric']['Value']}°C",
+                "outsideWeather": current['WeatherText'],
+                "windSpeed": f"{current['Wind']['Speed']['Metric']['Value']} km/h",
+                "humidity": f"{current['RelativeHumidity']}%",
+                "visibility": f"{current['Visibility']['Metric']['Value']} km"
+            }
+
+            return jsonify({"forecastData": forecast_data})
+        
+        except Exception as e:
+            return jsonify({"error": f"Failed to fetch forecast: {str(e)}"}), 500
+
     else:
-        # Return a message for other locations or no location provided
         return jsonify({"message": "No forecast data available for this location. Try 'baao'."}), 404
 
 
