@@ -108,6 +108,9 @@ function startWeatherCardFetch(endpoint) {
       if (!res.ok) throw new Error(`Weather card fetch failed: ${res.status}`);
       const { weatherData, weatherLabel } = await res.json();
 
+      console.log("weatherData:", weatherData);
+      console.log("weatherLabel:", weatherLabel);
+
       const getImageFilename = (cond) => {
         const map = {
           cloudy: 'cloudy.svg',

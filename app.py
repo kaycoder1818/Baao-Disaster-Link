@@ -5,7 +5,8 @@ import os
 # from swagger.swaggerui import setup_swagger
 import random
 import string
-from datetime import datetime
+from datetime import datetime, timedelta
+import requests
 import pytz
 from dotenv import load_dotenv  ## pip install python-dotenv
 import openai  ## pip install openai==0.28.0
@@ -303,9 +304,44 @@ def get_current_date():
     
     return jsonify({'date': formatted_date})
     
+# @app.route("/weather_data", methods=["POST"])
+# def weather_data():
+#     # Ensure the request body is JSON
+#     if not request.is_json:
+#         return jsonify({"error": "Request must be JSON"}), 400
+
+#     data = request.get_json()
+#     location = data.get("location")
+
+#     if location and location.lower() == "baao":
+#         response_data = {
+#             "weatherData": {
+#                 "todayDate": "June 14",
+#                 "todayWeather": "Cloudy",
+#                 "todayTemp": "22",
+#                 "tomorrowDate": "June 13",
+#                 "tomorrowWeather": "Thunder",
+#                 "tomorrowTemp": "25",
+#                 "lastDate": "June 12",
+#                 "lastWeather": "Rain",
+#                 "lastTemp": "23",
+#                 "lastTwoDayDate": "June 11",
+#                 "lastTwoDayWeather": "Sunny",
+#                 "lastTwoDayTemp": "28"
+#             },
+#             "weatherLabel": {
+#                 "lastDay" : "SSunday",
+#                 "lastTwoDay": "SSaturday"
+#             }
+#         }
+#         return jsonify(response_data), 200
+#     else:
+#         return jsonify({"error": "Location data not found or not supported"}), 404
+
+
+
 @app.route("/weather_data", methods=["POST"])
 def weather_data():
-    # Ensure the request body is JSON
     if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
 
@@ -313,27 +349,85 @@ def weather_data():
     location = data.get("location")
 
     if location and location.lower() == "baao":
-        response_data = {
-            "weatherData": {
-                "todayDate": "June 14",
-                "todayWeather": "Cloudy",
-                "todayTemp": "22",
-                "tomorrowDate": "June 13",
-                "tomorrowWeather": "Thunder",
-                "tomorrowTemp": "25",
-                "lastDate": "June 12",
-                "lastWeather": "Rain",
-                "lastTemp": "23",
-                "lastTwoDayDate": "June 11",
-                "lastTwoDayWeather": "Sunny",
-                "lastTwoDayTemp": "28"
-            },
-            "weatherLabel": {
-                "lastDay" : "SSunday",
-                "lastTwoDay": "SSaturday"
+        try:
+            # Setup timezone
+            manila_tz = pytz.timezone("Asia/Manila")
+            now = datetime.now(manila_tz)
+
+            # Get dynamic dates
+            today = now
+            tomorrow = today + timedelta(days=1)
+            yesterday = today - timedelta(days=1)
+            two_days_ago = today - timedelta(days=2)
+
+            # Format dates
+            def format_day(dt):
+                return dt.strftime("%A")
+
+            def format_date(dt):
+                return dt.strftime("%B %d").lstrip("0").replace(" 0", " ")
+
+
+            # Normalize icon phrase
+            def normalize_phrase(phrase):
+                phrase = phrase.lower()
+                if "sun" in phrase:
+                    return "Sunny"
+                elif "thunder" in phrase:
+                    return "Thunder"
+                elif "rain" in phrase:
+                    return "Rain"
+                elif "cloud" in phrase or "dreary" in phrase or "overcast" in phrase:
+                    return "Cloudy"
+                else:
+                    return "Cloudy"  # default fallback
+
+            def f_to_c(f):
+                return round((f - 32) * 5 / 9)
+
+            # Fetch AccuWeather 5-day forecast
+            api_key = os.environ.get("ACCUWEATHER_API_KEY")
+            location_key = "262585"  # Baao
+            accuweather_url = f"http://dataservice.accuweather.com/forecasts/v1/daily/5day/{location_key}?apikey={api_key}"
+            response = requests.get(accuweather_url)
+            response.raise_for_status()
+            forecast_data = response.json()["DailyForecasts"]
+
+            # Today and tomorrow forecasts
+            today_forecast = forecast_data[0]
+            tomorrow_forecast = forecast_data[1]
+
+            weatherData = {
+                "todayDate": format_date(today),
+                "todayWeather": normalize_phrase(forecast_data[0]["Day"]["IconPhrase"]),
+                "todayTemp": str(f_to_c(forecast_data[0]["Temperature"]["Maximum"]["Value"])),
+
+                "tomorrowDate": format_date(tomorrow),
+                "tomorrowWeather": normalize_phrase(forecast_data[1]["Day"]["IconPhrase"]),
+                "tomorrowTemp": str(f_to_c(forecast_data[1]["Temperature"]["Maximum"]["Value"])),
+
+                "lastDate": format_date(today + timedelta(days=2)),  # Aug 31
+                "lastWeather": normalize_phrase(forecast_data[2]["Day"]["IconPhrase"]),
+                "lastTemp": str(f_to_c(forecast_data[2]["Temperature"]["Maximum"]["Value"])),
+
+                "lastTwoDayDate": format_date(today + timedelta(days=3)),  # Sep 1
+                "lastTwoDayWeather": normalize_phrase(forecast_data[3]["Day"]["IconPhrase"]),
+                "lastTwoDayTemp": str(f_to_c(forecast_data[3]["Temperature"]["Maximum"]["Value"]))
             }
-        }
-        return jsonify(response_data), 200
+
+            weatherLabel = {
+                "lastDay": format_day(today + timedelta(days=2)),       # SUNDAY
+                "lastTwoDay": format_day(today + timedelta(days=3))     # MONDAY
+            }
+
+            return jsonify({
+                "weatherData": weatherData,
+                "weatherLabel": weatherLabel
+            }), 200
+
+        except Exception as e:
+            return jsonify({"error": f"Failed to fetch or process weather data: {str(e)}"}), 500
+
     else:
         return jsonify({"error": "Location data not found or not supported"}), 404
 
