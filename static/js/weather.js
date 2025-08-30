@@ -716,8 +716,6 @@ async function checkServerAndSetupNav() {
   }
 }
 
-// Start the check immediately
-checkServerAndSetupNav();
 
 
 async function updateBackLink() {
@@ -743,7 +741,18 @@ try {
 }
 
 if (document.readyState === "loading") {
-document.addEventListener("DOMContentLoaded", updateBackLink);
+  document.addEventListener("DOMContentLoaded", updateBackLink);
+  document.addEventListener("DOMContentLoaded", checkServerAndSetupNav);
 } else {
-updateBackLink();
+  updateBackLink();
+  checkServerAndSetupNav();
+}
+
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('app').style.display = 'block';
+  });
+} else {
+  document.getElementById('app').style.display = 'block';
 }
