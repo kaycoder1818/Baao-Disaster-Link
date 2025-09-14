@@ -468,13 +468,13 @@ body, html {
 
 
 @media (max-width: 768px) {
+ 
   .container {
-    .container {
     display: block;
     height: auto;       /* Let content determine height */
     overflow: visible;  /* Allow scrolling if needed */
   }
-  }
+  
 
   .main-content {
     height: calc(100vh - [sidebar height]); /* Optional */
