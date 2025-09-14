@@ -35,7 +35,7 @@
     </button>
 
     <!-- Sidebar -->
-    <!-- <div class="sidebar" id="sidebar">
+    <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <img src="{{ url_for('static', filename='images/ReChargeLOGO(2).png') }}" class="sidebar-logo" />
             <button class="close-sidebar" id="closeSidebarBtn">
@@ -72,39 +72,14 @@
                 <span>Logout</span>
             </a>
         </nav>
-    </div> -->
+    </div>
 
-    <!-- Sidebar -->
-    <nav class="sidebar-nav">
-        <a href="{{ url_for('dashboard') }}" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
-            <i class="fas fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
-        <a href="{{ url_for('evacuation_sidepage') }}" class="nav-item {% if active_page == 'evacuation' %}active{% endif %}">
-            <i class="fas fa-route"></i>
-            <span>Evacuation</span>
-        </a>
-        <a href="{{ url_for('flooding_sidepage') }}" class="nav-item {% if active_page == 'flooding' %}active{% endif %}">
-            <i class="fas fa-water"></i>
-            <span>Flooding Area</span>
-        </a>
-        <a href="{{ url_for('broadcast_sidepage') }}" class="nav-item {% if active_page == 'broadcast' %}active{% endif %}">
-            <i class="fas fa-broadcast-tower"></i>
-            <span>Broadcast</span>
-        </a>
-        <a href="{{ url_for('forecast_sidepage') }}" class="nav-item {% if active_page == 'forecast' %}active{% endif %}">
-            <i class="fas fa-cloud-sun"></i>
-            <span>Forecast</span>
-        </a>
-        <a href="{{ url_for('settings_sidepage') }}" class="nav-item {% if active_page == 'settings' %}active{% endif %}">
-            <i class="fas fa-cogs"></i>
-            <span>Settings</span>
-        </a>
-        <a href="#" id="logout_btn" class="nav-item logout">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Logout</span>
-        </a>
-    </nav>
+    <!-- Main Content -->
+    <div class="main-content">
+    <iframe id="mainFrame" src="/page/dashboard" frameborder="0" style="width: 100%; height: 100vh;"></iframe>
+    </div>
+
+
 
 
     <!-- Overlay for mobile -->
@@ -187,6 +162,46 @@
         });
 
 
+    </script>
+
+
+    <script>
+    const navItems = document.querySelectorAll('.nav-item');
+    const mainFrame = document.getElementById('mainFrame');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const label = item.innerText.trim();
+
+        let page = label.toLowerCase().replace(/\s+/g, ''); // "Flooding Area" -> "floodingarea"
+
+        // Special case for 'Dashboard'
+        if (page === 'dashboard') {
+            mainFrame.src = '/page/dashboard';
+        } else if (page === 'floodingarea') {
+            mainFrame.src = '/page/flooding';
+        } else if (page === 'evacuation') {
+            mainFrame.src = '/page/evacuation';
+        } else if (page === 'broadcast') {
+            mainFrame.src = '/page/broadcast';
+        } else if (page === 'forecast') {
+            mainFrame.src = '/page/forecast';
+        } else if (page === 'settings') {
+            mainFrame.src = '/page/settings';
+        }
+
+        // Highlight selected item
+        document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+        item.classList.add('active');
+
+        // Close sidebar on mobile
+        if (window.innerWidth <= 768) {
+            closeSidebar();
+        }
+        });
+    });
     </script>
 
 
