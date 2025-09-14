@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ active_page|capitalize }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- Logout Modal -->
+  <div id="logoutModalOverlay" class="modal-overlay">
+    <div class="modal-content">
+      <h3>Confirm Logout</h3>
+      <p>Are you sure you want to logout?</p>
+      <div class="modal-actions">
+        <button id="confirmLogoutBtn">Yes, Logout</button>
+        <button id="cancelLogoutBtn">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hamburger Menu -->
+  <button class="hamburger-menu" id="hamburgerBtn">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <button class="close-sidebar" id="closeSidebarBtn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <nav class="sidebar-nav">
+    <a href="{{ url_for('dashboard_sidepage') }}" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+        <i class="fas fa-tachometer-alt"></i>
+        <span>Dashboard</span>
+    </a>
+    <a href="{{ url_for('evacuation_sidepage') }}" class="nav-item {% if active_page == 'evacuation' %}active{% endif %}">
+        <i class="fas fa-route"></i>
+        <span>Evacuation</span>
+    </a>
+    <a href="{{ url_for('flooding_sidepage') }}" class="nav-item {% if active_page == 'flooding' %}active{% endif %}">
+        <i class="fas fa-water"></i>
+        <span>Flooding Area</span>
+    </a>
+    <a href="{{ url_for('broadcast_sidepage') }}" class="nav-item {% if active_page == 'broadcast' %}active{% endif %}">
+        <i class="fas fa-broadcast-tower"></i>
+        <span>Broadcast</span>
+    </a>
+    <a href="{{ url_for('forecast_sidepage') }}" class="nav-item {% if active_page == 'forecast' %}active{% endif %}">
+        <i class="fas fa-cloud-sun"></i>
+        <span>Forecast</span>
+    </a>
+    <a href="{{ url_for('settings_sidepage') }}" class="nav-item {% if active_page == 'settings' %}active{% endif %}">
+        <i class="fas fa-cogs"></i>
+        <span>Settings</span>
+    </a>
+    <a href="#" id="logout_btn" class="nav-item logout">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+    </a>
+    </nav>
+
+  </div>
+
+  <!-- Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    {% block content %}{% endblock %}
+  </div>
+
+  <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    function openSidebar() {
+      sidebar.classList.add('active');
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('active');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    hamburgerBtn.addEventListener('click', openSidebar);
+    closeSidebarBtn.addEventListener('click', closeSidebar);
+    overlay.addEventListener('click', closeSidebar);
+
+    document.getElementById('logout_btn').addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('logoutModalOverlay').style.display = 'flex';
+    });
+
+    document.getElementById('logoutModalOverlay').addEventListener('click', function (e) {
+      if (e.target === this) {
+        this.style.display = 'none';
+      }
+    });
+
+    document.getElementById('cancelLogoutBtn').addEventListener('click', function () {
+      document.getElementById('logoutModalOverlay').style.display = 'none';
+    });
+
+    document.getElementById('confirmLogoutBtn').addEventListener('click', function () {
+      window.location.href = "/api/logout";
+    });
+  </script>
+
+</body>
+</html>
