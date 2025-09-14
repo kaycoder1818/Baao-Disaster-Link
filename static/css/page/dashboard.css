@@ -472,12 +472,6 @@ body, html {
     flex-direction: column;
   }
 
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-  }
-
   .main-content {
     height: calc(100vh - [sidebar height]); /* Optional */
   }
