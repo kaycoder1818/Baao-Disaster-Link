@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, session, redirect, url_for, flash
 # from dotenv import load_dotenv
 import mysql.connector
 import os
@@ -12,6 +12,8 @@ from dotenv import load_dotenv  ## pip install python-dotenv
 import openai  ## pip install openai==0.28.0
 from flask_cors import CORS ## pip install flask-cors
 import json 
+import hashlib
+
 
 
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/static')
@@ -20,6 +22,10 @@ CORS(app)  # This allows all origins (wildcard)
 
 # Set up Swagger
 # setup_swagger(app)
+
+
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev_secret_key")  # Set a strong secret key
+
 
 #Load environment variables from .env file
 load_dotenv()
@@ -1065,6 +1071,75 @@ def chat():
 
     except Exception as e:
         return jsonify({'reply': f"Error: {str(e)}"}), 500
+
+
+
+@app.route('/api/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login_page'))
+
+
+@app.route('/api/login', methods=['POST'])
+def login_api():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+    
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        data = request.form  # Handles form data from the login page
+        username = data.get('userName')
+        password = data.get('password')
+
+        if not username or not password:
+            return jsonify({"error": "Missing credentials"}), 400
+
+        # Hash password to compare with stored hash
+        # password_hash = hashlib.sha256(password.encode()).hexdigest()
+        password_hash = password
+
+        # Query user
+        query = """
+            SELECT * FROM auth WHERE userName = %s AND passwordHash = %s AND status = 'active' LIMIT 1;
+        """
+        cursor.execute(query, (username, password_hash))
+        user = cursor.fetchone()
+
+        if user:
+            # Store essential info in session
+            session['user'] = {
+                "id": user[0],
+                "uID": user[1],
+                "userName": user[9],
+                "role": user[3],
+                "email": user[5]
+            }
+            return redirect(url_for('dashboard'))  # Redirect to a protected page (example)
+        else:
+            flash("Invalid username or password", "danger")
+            return redirect(url_for('login_page'))
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user' not in session:
+        return redirect(url_for('login_page'))
+    return f"Welcome, {session['user']['userName']}!"
+
+
+@app.route('/page/login', methods=['GET'])
+def login_page():
+    return render_template('page/login.html')  
+
 
 if __name__ == '__main__':
     app.run(debug=True)
