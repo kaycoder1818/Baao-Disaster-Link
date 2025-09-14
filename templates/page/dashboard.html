@@ -30,22 +30,25 @@
             </button>
         </div>
         <nav class="sidebar-nav">
-            <!-- <a href="/admin-dashboard" class="nav-item active">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="/some-other-page" class="nav-item">
-                <i class="fas fa-cogs"></i>
-                <span>Settings</span>
-            </a>
-            <a href="#" id="logout_btn" class="nav-item logout" onclick="handleLogout(event)">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
-            </a> -->
-
             <a href="#" class="nav-item active">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-route"></i>
+                <span>Evacuation</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-water"></i>
+                <span>Flooding Area</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-broadcast-tower"></i>
+                <span>Broadcast</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cloud-sun"></i>
+                <span>Forecast</span>
             </a>
             <a href="#" class="nav-item">
                 <i class="fas fa-cogs"></i>
@@ -97,13 +100,52 @@
             });
         });
 
+        // function handleLogout(event) {
+        //     event.preventDefault();
+        //     // Put your logout logic here, or redirect
+        //     if (confirm("Are you sure you want to logout?")) {
+        //         window.location.href = "/api/logout";
+        //     }
+        // }
+
         function handleLogout(event) {
             event.preventDefault();
-            // Put your logout logic here, or redirect
-            if (confirm("Are you sure you want to logout?")) {
-                window.location.href = "/logout";
-            }
+            const modal = document.getElementById('logoutModalOverlay');
+            modal.style.display = 'flex'; // Show the modal
         }
+
+        // Close modal when clicking overlay (but not when clicking modal content)
+        document.getElementById('logoutModalOverlay').addEventListener('click', function (e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        // Cancel button
+        document.getElementById('cancelLogoutBtn').addEventListener('click', function () {
+            document.getElementById('logoutModalOverlay').style.display = 'none';
+        });
+
+        // Confirm logout
+        document.getElementById('confirmLogoutBtn').addEventListener('click', function () {
+            window.location.href = "/api/logout";
+        });
+
     </script>
+
+
 </body>
+
+<!-- Logout Modal -->
+<div id="logoutModalOverlay" class="modal-overlay">
+    <div class="modal-content">
+        <h3>Confirm Logout</h3>
+        <p>Are you sure you want to logout?</p>
+        <div class="modal-actions">
+            <button id="confirmLogoutBtn">Yes, Logout</button>
+            <button id="cancelLogoutBtn">Cancel</button>
+        </div>
+    </div>
+</div>
+
 </html>
