@@ -1159,33 +1159,37 @@ def dashboard():
 def login_page():
     return render_template('page/login.html')  
 
-@login_required
+
 @app.route('/page-content/dashboard')
+@login_required
 def dashboard_sidepage():
     return render_template('page-content/dashboard.html', active_page='dashboard')
 
-@login_required
+
 @app.route('/page-content/evacuation')
+@login_required
 def evacuation_sidepage():
     return render_template('page-content/evacuation.html', active_page='evacuation')
 
-@login_required
+
 @app.route('/page-content/flooding')
+@login_required
 def flooding_sidepage():
     return render_template('page-content/flooding.html', active_page='flooding')
 
-@login_required
+
 @app.route('/page-content/broadcast')
+@login_required
 def broadcast_sidepage():
     return render_template('page-content/broadcast.html', active_page='broadcast')
 
-@login_required
 @app.route('/page-content/forecast')
+@login_required
 def forecast_sidepage():
     return render_template('page-content/forecast.html', active_page='forecast')
 
-@login_required
 @app.route('/page-content/settings')
+@login_required
 def settings_sidepage():
     return render_template('page-content/settings.html', active_page='settings')
 
