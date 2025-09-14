@@ -1150,5 +1150,30 @@ def login_page():
     return render_template('page/login.html')  
 
 
+@app.route('/page-content/dashboard')
+def dashboard_sidepage():
+    return render_template('page-content/dashboard.html', active_page='dashboard')
+
+@app.route('/page-content/evacuation')
+def evacuation_sidepage():
+    return render_template('page-content/evacuation.html', active_page='evacuation')
+
+@app.route('/page-content/flooding')
+def flooding_sidepage():
+    return render_template('page-content/flooding.html', active_page='flooding')
+
+@app.route('/page-content/broadcast')
+def broadcast_sidepage():
+    return render_template('page-content/broadcast.html', active_page='broadcast')
+
+@app.route('/page-content/forecast')
+def forecast_sidepage():
+    return render_template('page-content/forecast.html', active_page='forecast')
+
+@app.route('/page-content/settings')
+def settings_sidepage():
+    return render_template('page-content/settings.html', active_page='settings')
+
+
 if __name__ == '__main__':
     app.run(debug=True)

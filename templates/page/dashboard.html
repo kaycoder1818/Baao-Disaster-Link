@@ -35,9 +35,9 @@
     </button>
 
     <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
+    <!-- <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <!-- <img src="{{ url_for('static', filename='images/ReChargeLOGO(2).png') }}" class="sidebar-logo" /> -->
+            <img src="{{ url_for('static', filename='images/ReChargeLOGO(2).png') }}" class="sidebar-logo" />
             <button class="close-sidebar" id="closeSidebarBtn">
                 <i class="fas fa-times"></i>
             </button>
@@ -72,7 +72,40 @@
                 <span>Logout</span>
             </a>
         </nav>
-    </div>
+    </div> -->
+
+    <!-- Sidebar -->
+    <nav class="sidebar-nav">
+        <a href="{{ url_for('dashboard') }}" class="nav-item {% if active_page == 'dashboard' %}active{% endif %}">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="{{ url_for('evacuation_sidepage') }}" class="nav-item {% if active_page == 'evacuation' %}active{% endif %}">
+            <i class="fas fa-route"></i>
+            <span>Evacuation</span>
+        </a>
+        <a href="{{ url_for('flooding_sidepage') }}" class="nav-item {% if active_page == 'flooding' %}active{% endif %}">
+            <i class="fas fa-water"></i>
+            <span>Flooding Area</span>
+        </a>
+        <a href="{{ url_for('broadcast_sidepage') }}" class="nav-item {% if active_page == 'broadcast' %}active{% endif %}">
+            <i class="fas fa-broadcast-tower"></i>
+            <span>Broadcast</span>
+        </a>
+        <a href="{{ url_for('forecast_sidepage') }}" class="nav-item {% if active_page == 'forecast' %}active{% endif %}">
+            <i class="fas fa-cloud-sun"></i>
+            <span>Forecast</span>
+        </a>
+        <a href="{{ url_for('settings_sidepage') }}" class="nav-item {% if active_page == 'settings' %}active{% endif %}">
+            <i class="fas fa-cogs"></i>
+            <span>Settings</span>
+        </a>
+        <a href="#" id="logout_btn" class="nav-item logout">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+    </nav>
+
 
     <!-- Overlay for mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>

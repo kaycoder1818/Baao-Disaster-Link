@@ -363,3 +363,34 @@ body {
     background-color: #6c757d;
     color: white;
 }
+
+
+.page-content {
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.page-content h2 {
+  font-size: 24px;
+  color: #4caf50;
+  margin-bottom: 10px;
+}
+
+.page-content p {
+  font-size: 16px;
+  color: #555;
+}
+
+
+.sidebar-nav .nav-item.active {
+  background-color: #e4f0a0;
+  color: #349e00;
+  font-weight: bold;
+}
+
+.sidebar-nav .nav-item.active i {
+  color: #349e00;
+}
