@@ -34,50 +34,57 @@
         <i class="fas fa-bars"></i>
     </button>
 
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <img src="{{ url_for('static', filename='images/ReChargeLOGO(2).png') }}" class="sidebar-logo" />
-            <button class="close-sidebar" id="closeSidebarBtn">
-                <i class="fas fa-times"></i>
-            </button>
+    <div class="container">
+
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="{{ url_for('static', filename='images/ReChargeLOGO(2).png') }}" class="sidebar-logo" />
+                <button class="close-sidebar" id="closeSidebarBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-route"></i>
+                    <span>Evacuation</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-water"></i>
+                    <span>Flooding Area</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-broadcast-tower"></i>
+                    <span>Broadcast</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span>Forecast</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fas fa-cogs"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" id="logout_btn" class="nav-item logout" onclick="handleLogout(event)">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
         </div>
-        <nav class="sidebar-nav">
-            <a href="#" class="nav-item">
-                <i class="fas fa-tachometer-alt"></i>
-                <span>Dashboard</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-route"></i>
-                <span>Evacuation</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-water"></i>
-                <span>Flooding Area</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-broadcast-tower"></i>
-                <span>Broadcast</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-cloud-sun"></i>
-                <span>Forecast</span>
-            </a>
-            <a href="#" class="nav-item">
-                <i class="fas fa-cogs"></i>
-                <span>Settings</span>
-            </a>
-            <a href="#" id="logout_btn" class="nav-item logout" onclick="handleLogout(event)">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
-            </a>
-        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+        <iframe id="mainFrame" src="/page/dashboard" frameborder="0" style="width: 100%; height: 100vh;"></iframe>
+        </div>
+
+    
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-    <iframe id="mainFrame" src="/page/dashboard" frameborder="0" style="width: 100%; height: 100vh;"></iframe>
-    </div>
+
 
 
 
@@ -179,17 +186,17 @@
 
         // Special case for 'Dashboard'
         if (page === 'dashboard') {
-            mainFrame.src = '/page/dashboard';
+            mainFrame.src = '/page-content/dashboard';
         } else if (page === 'floodingarea') {
-            mainFrame.src = '/page/flooding';
+            mainFrame.src = '/page-content/flooding';
         } else if (page === 'evacuation') {
-            mainFrame.src = '/page/evacuation';
+            mainFrame.src = '/page-content/evacuation';
         } else if (page === 'broadcast') {
-            mainFrame.src = '/page/broadcast';
+            mainFrame.src = '/page-content/broadcast';
         } else if (page === 'forecast') {
-            mainFrame.src = '/page/forecast';
+            mainFrame.src = '/page-content/forecast';
         } else if (page === 'settings') {
-            mainFrame.src = '/page/settings';
+            mainFrame.src = '/page-content/settings';
         }
 
         // Highlight selected item
