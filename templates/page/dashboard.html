@@ -43,7 +43,7 @@
             </button>
         </div>
         <nav class="sidebar-nav">
-            <a href="#" class="nav-item active">
+            <a href="#" class="nav-item">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
@@ -83,6 +83,8 @@
         const closeSidebarBtn = document.getElementById('closeSidebarBtn');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebarOverlay');
+
+        
 
         function openSidebar() {
             sidebar.classList.add('active');
@@ -143,6 +145,14 @@
         document.getElementById('confirmLogoutBtn').addEventListener('click', function () {
             window.location.href = "/api/logout";
         });
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function () {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
 
     </script>
 
