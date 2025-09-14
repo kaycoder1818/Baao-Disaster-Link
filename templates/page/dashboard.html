@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard Sidebar</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/page/dashboard.css') }}" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ url_for('static', filename='images/ReChargeLOGO(2).ico') }}"
+    /> -->
+</head>
+<body>
+    <!-- Hamburger Menu Button -->
+    <button class="hamburger-menu" id="hamburgerBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <!-- <img src="{{ url_for('static', filename='images/ReChargeLOGO(2).png') }}" class="sidebar-logo" />
+            <button class="close-sidebar" id="closeSidebarBtn">
+                <i class="fas fa-times"></i>
+            </button> -->
+        </div>
+        <nav class="sidebar-nav">
+            <!-- <a href="/admin-dashboard" class="nav-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/some-other-page" class="nav-item">
+                <i class="fas fa-cogs"></i>
+                <span>Settings</span>
+            </a>
+            <a href="#" id="logout_btn" class="nav-item logout" onclick="handleLogout(event)">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a> -->
+
+            <a href="#" class="nav-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cogs"></i>
+                <span>Settings</span>
+            </a>
+            <a href="#" id="logout_btn" class="nav-item logout" onclick="handleLogout(event)">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Overlay for mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- JavaScript -->
+    <script>
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+
+        function openSidebar() {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            hamburgerBtn.style.opacity = '0';
+            hamburgerBtn.style.visibility = 'hidden';
+        }
+
+        function closeSidebar() {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            hamburgerBtn.style.opacity = '1';
+            hamburgerBtn.style.visibility = 'visible';
+        }
+
+        hamburgerBtn.addEventListener('click', openSidebar);
+        closeSidebarBtn.addEventListener('click', closeSidebar);
+        overlay.addEventListener('click', closeSidebar);
+
+        // Close sidebar on nav click for mobile
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    closeSidebar();
+                }
+            });
+        });
+
+        function handleLogout(event) {
+            event.preventDefault();
+            // Put your logout logic here, or redirect
+            if (confirm("Are you sure you want to logout?")) {
+                window.location.href = "/logout";
+            }
+        }
+    </script>
+</body>
+</html>

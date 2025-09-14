@@ -1129,12 +1129,21 @@ def login_api():
         cursor.close()
 
 
-@app.route('/dashboard')
+# @app.route('/dashboard')
+# def dashboard_old():
+#     if 'user' not in session:
+#         return redirect(url_for('login_page'))
+#     return f"Welcome, {session['user']['userName']}!"
+
+
+
+@app.route('/page/dashboard')
 def dashboard():
     if 'user' not in session:
         return redirect(url_for('login_page'))
-    return f"Welcome, {session['user']['userName']}!"
-
+    
+    # Pass the username to the template to personalize the page if needed
+    return render_template('page/dashboard.html', username=session['user']['userName'])
 
 @app.route('/page/login', methods=['GET'])
 def login_page():
