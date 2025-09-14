@@ -384,8 +384,6 @@ body {
 }
 
 
-
-
 /* styles for main content with iframe */
 .main-content {
   flex-grow: 1;
@@ -406,13 +404,6 @@ body, html {
   height: 100%;
   margin: 0;
 }
-
-/* .container {
-  display: flex;
-  min-height: 100vh;
-} */
-
-
 
 /* Responsive: Sidebar always visible on wider screens */
 @media(min-width: 769px) {
@@ -439,14 +430,6 @@ body, html {
       position: relative; /* remove fixed if flex */
       height: auto; /* adjust */
     }
-
-    /* .main-content {
-      flex-grow: 1;
-      padding: 20px;
-      overflow: auto;
-      background-color: #f9f9f9;
-    } */
-
 
     .main-content {
       flex-grow: 1;

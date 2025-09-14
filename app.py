@@ -13,6 +13,7 @@ import openai  ## pip install openai==0.28.0
 from flask_cors import CORS ## pip install flask-cors
 import json 
 import hashlib
+from functools import wraps
 
 
 
@@ -699,6 +700,15 @@ else:
 # def index():
 #     return jsonify({"message": "Welcome to the baao disaster link"})
 
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user' not in session:
+            return redirect(url_for('login_page'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.route("/home")
 def home():
     # Render the HTML template for the /ui route
@@ -1149,27 +1159,32 @@ def dashboard():
 def login_page():
     return render_template('page/login.html')  
 
-
+@login_required
 @app.route('/page-content/dashboard')
 def dashboard_sidepage():
     return render_template('page-content/dashboard.html', active_page='dashboard')
 
+@login_required
 @app.route('/page-content/evacuation')
 def evacuation_sidepage():
     return render_template('page-content/evacuation.html', active_page='evacuation')
 
+@login_required
 @app.route('/page-content/flooding')
 def flooding_sidepage():
     return render_template('page-content/flooding.html', active_page='flooding')
 
+@login_required
 @app.route('/page-content/broadcast')
 def broadcast_sidepage():
     return render_template('page-content/broadcast.html', active_page='broadcast')
 
+@login_required
 @app.route('/page-content/forecast')
 def forecast_sidepage():
     return render_template('page-content/forecast.html', active_page='forecast')
 
+@login_required
 @app.route('/page-content/settings')
 def settings_sidepage():
     return render_template('page-content/settings.html', active_page='settings')
