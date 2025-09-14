@@ -11,6 +11,8 @@ import pytz
 from dotenv import load_dotenv  ## pip install python-dotenv
 import openai  ## pip install openai==0.28.0
 from flask_cors import CORS ## pip install flask-cors
+import json 
+
 
 app = Flask(__name__, template_folder='templates', static_folder='static', static_url_path='/static')
 
@@ -120,47 +122,541 @@ def handle_mysql_error(e):
 
 
 ## ------ create table ---------------- ##
-@app.route('/create-table-users', methods=['GET'])
-def create_users_table():
+@app.route('/create-auth-table', methods=['POST'])
+def create_auth_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
     try:
-        if not is_mysql_available():
-            return jsonify({"error": "MySQL database not responding, please check the database service"}), 500
-        
-        cursor = get_cursor()
-        if cursor:
-            # Check if table 'users' exists
-            cursor.execute("SHOW TABLES LIKE 'users'")
-            table_exists = cursor.fetchone()
-            
-            if table_exists:
-                cursor.close()
-                return jsonify({"message": "Table 'users' already exists"}), 200
-            else:
-                # Define SQL query to create table if it doesn't exist
-                sql_create_table = """
-                CREATE TABLE users (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    userId TEXT NOT NULL,
-                    passwordHash TEXT NOT NULL,
-                    fingerPrintId TEXT,
-                    role TEXT,
-                    groupId TEXT,
-                    email TEXT,
-                    lockerAssigned TEXT,
-                    status TEXT,
-                    token TEXT,
-                    resetCode TEXT,
-                    timestamp TIMESTAMP  DEFAULT CURRENT_TIMESTAMP
-                )
-                """
-                cursor.execute(sql_create_table)
-                db_connection.commit()
-                cursor.close()
-                return jsonify({"message": "Table 'users' created successfully"}), 200
-        else:
-            return jsonify({"error": "Database connection not available"}), 500
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS auth (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            uID TEXT,
+            passwordHash TEXT,
+            role TEXT,
+            groupId TEXT,
+            email TEXT,
+            status TEXT,
+            token TEXT,
+            resetCode TEXT,
+            userName TEXT,
+            organizationName TEXT,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        );
+        """
+        cursor.execute(create_table_query)
+        db_connection.commit()
+        return jsonify({"message": "auth table created successfully."}), 200
+
     except mysql.connector.Error as e:
         return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/create-subscribers-table', methods=['POST'])
+def create_subscribers_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS subscribers (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            uID TEXT,
+            mobileNumber TEXT,
+            userID TEXT,
+            status TEXT,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        );
+        """
+        cursor.execute(create_table_query)
+        db_connection.commit()
+        return jsonify({"message": "subscribers table created successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/create-weather-data-table', methods=['POST'])
+def create_weather_data_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS weather_data (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            uID TEXT,
+            locationID TEXT,
+            weatherData LONGTEXT,
+            status TEXT,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        );
+        """
+        cursor.execute(create_table_query)
+        db_connection.commit()
+        return jsonify({"message": "weather_data table created successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/create-evacuation-data-table', methods=['POST'])
+def create_evacuation_data_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS evacuation_data (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            uID TEXT,
+            locationID TEXT,
+            evacuationData LONGTEXT,
+            status TEXT,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        );
+        """
+        cursor.execute(create_table_query)
+        db_connection.commit()
+        return jsonify({"message": "evacuation_data table created successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/create-flooding-data-table', methods=['POST'])
+def create_flooding_data_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS flooding_data (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            uID TEXT,
+            locationID TEXT,
+            floodingData LONGTEXT,
+            status TEXT,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        );
+        """
+        cursor.execute(create_table_query)
+        db_connection.commit()
+        return jsonify({"message": "flooding_data table created successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/create-forecast-data-table', methods=['POST'])
+def create_forecast_data_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS forecast_data (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            uID TEXT,
+            locationID TEXT,
+            forecastData LONGTEXT,
+            status TEXT,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        );
+        """
+        cursor.execute(create_table_query)
+        db_connection.commit()
+        return jsonify({"message": "forecast_data table created successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
+## ------ insert record ---------------- ##
+@app.route('/insert-mock-auth', methods=['POST'])
+def insert_mock_auth():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        mock_data = {
+            "uID": generate_random_string(12),
+            "passwordHash": "admin1234",
+            "role": "admin",
+            "groupId": "group-001",
+            "email": "yvendee2020@gmail.com",
+            "status": "active",
+            "token": generate_random_string(40),
+            "resetCode": generate_random_string(6),
+            "userName": "testuser",
+            "organizationName": "test organization"
+        }
+
+        insert_query = """
+        INSERT INTO auth (
+            uID, passwordHash, role, groupId, email, status, token, resetCode, userName, organizationName
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+        """
+        cursor.execute(insert_query, (
+            mock_data["uID"],
+            mock_data["passwordHash"],
+            mock_data["role"],
+            mock_data["groupId"],
+            mock_data["email"],
+            mock_data["status"],
+            mock_data["token"],
+            mock_data["resetCode"],
+            mock_data["userName"],
+            mock_data["organizationName"]
+        ))
+
+        db_connection.commit()
+        return jsonify({"message": "Mock auth record inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/insert-mock-subscriber', methods=['POST'])
+def insert_mock_subscriber():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        mock_data = {
+            "uID": generate_random_string(12),
+            # "mobileNumber": f"+1{random.randint(1000000000, 9999999999)}",
+            "mobileNumber": "09107666192",
+            "userID": generate_random_string(10),
+            "status": "active"
+        }
+
+        insert_query = """
+        INSERT INTO subscribers (
+            uID, mobileNumber, userID, status
+        ) VALUES (%s, %s, %s, %s);
+        """
+        cursor.execute(insert_query, (
+            mock_data["uID"],
+            mock_data["mobileNumber"],
+            mock_data["userID"],
+            mock_data["status"]
+        ))
+
+        db_connection.commit()
+        return jsonify({"message": "Mock subscriber record inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/insert-mock-weather', methods=['POST'])
+def insert_mock_weather():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Define the mock weather data
+        response_data = {
+            "weatherData": {
+                "todayDate": "June 14",
+                "todayWeather": "Cloudy",
+                "todayTemp": "22",
+                "tomorrowDate": "June 13",
+                "tomorrowWeather": "Thunder",
+                "tomorrowTemp": "25",
+                "lastDate": "June 12",
+                "lastWeather": "Rain",
+                "lastTemp": "23",
+                "lastTwoDayDate": "June 11",
+                "lastTwoDayWeather": "Sunny",
+                "lastTwoDayTemp": "28"
+            },
+            "weatherLabel": {
+                "lastDay": "Sunday",
+                "lastTwoDay": "Saturday"
+            }
+        }
+
+        mock_data = {
+            "uID": generate_random_string(12),
+            "locationID": "Baao",
+            "weatherData": json.dumps(response_data),  # Convert dict to JSON string
+            "status": "active"
+        }
+
+        insert_query = """
+        INSERT INTO weather_data (
+            uID, locationID, weatherData, status
+        ) VALUES (%s, %s, %s, %s);
+        """
+        cursor.execute(insert_query, (
+            mock_data["uID"],
+            mock_data["locationID"],
+            mock_data["weatherData"],
+            mock_data["status"]
+        ))
+
+        db_connection.commit()
+        return jsonify({"message": "Mock weather_data record inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/insert-mock-evacuation', methods=['POST'])
+def insert_mock_evacuation():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        stations = [
+            {"name": "Agdangan ES", "position": {"lat": 13.49378, "lng": 123.32579}},
+            {"name": "Agdangan NHS", "position": {"lat": 13.49533, "lng": 123.32157}},
+            {"name": "Antipolo ES", "position": {"lat": 13.48785, "lng": 123.38278}},
+            {"name": "Bagumbayan ES", "position": {"lat": 13.48309, "lng": 123.27788}},
+            {"name": "Buluang ES", "position": {"lat": 13.47000, "lng": 123.35697}},
+            {"name": "EPAMHS", "position": {"lat": 13.47276, "lng": 123.35546}},
+            {"name": "Cristo Rey ES", "position": {"lat": 13.53634, "lng": 123.43127}},
+            {"name": "Caranday HS", "position": {"lat": 13.50164, "lng": 123.38023}},
+            {"name": "Kalahi School Building", "position": {"lat": 13.50064, "lng": 123.39628}},
+            {"name": "West Central School", "position": {"lat": 13.45471, "lng": 123.36836}},
+            {"name": "Rosary School", "position": {"lat": 13.45339, "lng": 123.36797}},
+            {"name": "Iyagan ES", "position": {"lat": 13.52921, "lng": 123.38679}},
+            {"name": "Iyagan HS", "position": {"lat": 13.53113, "lng": 123.38899}},
+            {"name": "Lourdes ES", "position": {"lat": 13.49938, "lng": 123.36135}}
+        ]
+
+        mock_data = {
+            "uID": generate_random_string(12),
+            "locationID": "Baao",
+            "evacuationData": json.dumps(stations),  # Convert to JSON string
+            "status": "active"
+        }
+
+        insert_query = """
+        INSERT INTO evacuation_data (
+            uID, locationID, evacuationData, status
+        ) VALUES (%s, %s, %s, %s);
+        """
+        cursor.execute(insert_query, (
+            mock_data["uID"],
+            mock_data["locationID"],
+            mock_data["evacuationData"],
+            mock_data["status"]
+        ))
+
+        db_connection.commit()
+        return jsonify({"message": "Mock evacuation_data record inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/insert-mock-flooding', methods=['POST'])
+def insert_mock_flooding():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        stations = [
+            {"name": "Agdangan ES", "position": {"lat": 13.49378, "lng": 123.32579}},
+            {"name": "Agdangan NHS", "position": {"lat": 13.49533, "lng": 123.32157}},
+            {"name": "Antipolo ES", "position": {"lat": 13.48785, "lng": 123.38278}},
+            {"name": "Bagumbayan ES", "position": {"lat": 13.48309, "lng": 123.27788}},
+            {"name": "Buluang ES", "position": {"lat": 13.47000, "lng": 123.35697}},
+            {"name": "EPAMHS", "position": {"lat": 13.47276, "lng": 123.35546}},
+            {"name": "Cristo Rey ES", "position": {"lat": 13.53634, "lng": 123.43127}},
+            {"name": "Caranday HS", "position": {"lat": 13.50164, "lng": 123.38023}},
+            {"name": "Kalahi School Building", "position": {"lat": 13.50064, "lng": 123.39628}},
+            {"name": "West Central School", "position": {"lat": 13.45471, "lng": 123.36836}},
+            {"name": "Rosary School", "position": {"lat": 13.45339, "lng": 123.36797}},
+            {"name": "Iyagan ES", "position": {"lat": 13.52921, "lng": 123.38679}},
+            {"name": "Iyagan HS", "position": {"lat": 13.53113, "lng": 123.38899}},
+            {"name": "Lourdes ES", "position": {"lat": 13.49938, "lng": 123.36135}}
+        ]
+
+        mock_data = {
+            "uID": generate_random_string(12),
+            "locationID": "Baao",
+            "floodingData": json.dumps(stations),  # Convert Python list to JSON string
+            "status": "active"
+        }
+
+        insert_query = """
+        INSERT INTO flooding_data (
+            uID, locationID, floodingData, status
+        ) VALUES (%s, %s, %s, %s);
+        """
+        cursor.execute(insert_query, (
+            mock_data["uID"],
+            mock_data["locationID"],
+            mock_data["floodingData"],
+            mock_data["status"]
+        ))
+
+        db_connection.commit()
+        return jsonify({"message": "Mock flooding_data record inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+@app.route('/insert-mock-forecast', methods=['POST'])
+def insert_mock_forecast():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Define the mock forecast data
+        forecast_data = {
+            "outsideTemp": "22°C",
+            "outsideWeather": "Sunny",
+            "windSpeed": "10 km/h",
+            "humidity": "20%",
+            "visibility": "2 km"
+        }
+
+        mock_data = {
+            "uID": generate_random_string(12),
+            "locationID": "Baao",
+            "forecastData": json.dumps(forecast_data),  # Convert dict to JSON string
+            "status": "active"
+        }
+
+        insert_query = """
+        INSERT INTO forecast_data (
+            uID, locationID, forecastData, status
+        ) VALUES (%s, %s, %s, %s);
+        """
+        cursor.execute(insert_query, (
+            mock_data["uID"],
+            mock_data["locationID"],
+            mock_data["forecastData"],
+            mock_data["status"]
+        ))
+
+        db_connection.commit()
+        return jsonify({"message": "Mock forecast_data record inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+## ------ show records ---------------- ##
+@app.route('/show-content/<table_name>', methods=['GET'])
+def show_table_content(table_name):
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Validate table name to prevent SQL injection (only allow known safe table names)
+        allowed_tables = [
+            'auth', 'subscribers', 'weather_data',
+            'evacuation_data', 'flooding_data', 'forecast_data'
+        ]
+
+        if table_name not in allowed_tables:
+            return jsonify({"error": "Invalid table name"}), 400
+
+        query = f"SELECT * FROM {table_name};"
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        column_names = [desc[0] for desc in cursor.description]
+
+        results = [dict(zip(column_names, row)) for row in rows]
+
+        return jsonify({ "table": table_name, "data": results }), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
 
 # Route to reconnect to MySQL
 @app.route('/reconnect-mysql', methods=['GET'])
