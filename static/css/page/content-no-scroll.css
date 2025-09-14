@@ -1,0 +1,30 @@
+/* Remove vertical scrollbar and prevent overflow */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-y: hidden; /* Hide vertical scrollbar */
+  overflow-x: hidden; /* Optional: hide horizontal scroll */
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+}
+
+/* Optional: styling for the page content */
+.page-content {
+  padding: 30px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  margin: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.page-content h2 {
+  font-size: 24px;
+  color: #4caf50;
+  margin-bottom: 10px;
+}
+
+.page-content p {
+  font-size: 16px;
+  color: #555;
+}
