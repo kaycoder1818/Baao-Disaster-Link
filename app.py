@@ -852,96 +852,97 @@ def get_current_date():
 
 
 
-@app.route("/weather_data", methods=["POST"])
-def weather_data():
-    if not request.is_json:
-        return jsonify({"error": "Request must be JSON"}), 400
+# @app.route("/weather_data", methods=["POST"])
+# def weather_data():
+#     if not request.is_json:
+#         return jsonify({"error": "Request must be JSON"}), 400
 
-    data = request.get_json()
-    location = data.get("location")
+#     data = request.get_json()
+#     location = data.get("location")
 
-    if location and location.lower() == "baao":
-        try:
-            # Setup timezone
-            manila_tz = pytz.timezone("Asia/Manila")
-            now = datetime.now(manila_tz)
+#     if location and location.lower() == "baao":
+#         try:
+#             # Setup timezone
+#             manila_tz = pytz.timezone("Asia/Manila")
+#             now = datetime.now(manila_tz)
 
-            # Get dynamic dates
-            today = now
-            tomorrow = today + timedelta(days=1)
-            yesterday = today - timedelta(days=1)
-            two_days_ago = today - timedelta(days=2)
+#             # Get dynamic dates
+#             today = now
+#             tomorrow = today + timedelta(days=1)
+#             yesterday = today - timedelta(days=1)
+#             two_days_ago = today - timedelta(days=2)
 
-            # Format dates
-            def format_day(dt):
-                return dt.strftime("%A")
+#             # Format dates
+#             def format_day(dt):
+#                 return dt.strftime("%A")
 
-            def format_date(dt):
-                return dt.strftime("%B %d").lstrip("0").replace(" 0", " ")
+#             def format_date(dt):
+#                 return dt.strftime("%B %d").lstrip("0").replace(" 0", " ")
 
 
-            # Normalize icon phrase
-            def normalize_phrase(phrase):
-                phrase = phrase.lower()
-                if "sun" in phrase:
-                    return "Sunny"
-                elif "thunder" in phrase:
-                    return "Thunder"
-                elif "rain" in phrase:
-                    return "Rain"
-                elif "cloud" in phrase or "dreary" in phrase or "overcast" in phrase:
-                    return "Cloudy"
-                else:
-                    return "Cloudy"  # default fallback
+#             # Normalize icon phrase
+#             def normalize_phrase(phrase):
+#                 phrase = phrase.lower()
+#                 if "sun" in phrase:
+#                     return "Sunny"
+#                 elif "thunder" in phrase:
+#                     return "Thunder"
+#                 elif "rain" in phrase:
+#                     return "Rain"
+#                 elif "cloud" in phrase or "dreary" in phrase or "overcast" in phrase:
+#                     return "Cloudy"
+#                 else:
+#                     return "Cloudy"  # default fallback
 
-            def f_to_c(f):
-                return round((f - 32) * 5 / 9)
+#             def f_to_c(f):
+#                 return round((f - 32) * 5 / 9)
 
-            # Fetch AccuWeather 5-day forecast
-            api_key = os.environ.get("ACCUWEATHER_API_KEY")
-            location_key = "262585"  # Baao
-            accuweather_url = f"http://dataservice.accuweather.com/forecasts/v1/daily/5day/{location_key}?apikey={api_key}"
-            response = requests.get(accuweather_url)
-            response.raise_for_status()
-            forecast_data = response.json()["DailyForecasts"]
+#             # Fetch AccuWeather 5-day forecast
+#             api_key = os.environ.get("ACCUWEATHER_API_KEY")
+#             location_key = "262585"  # Baao
+#             accuweather_url = f"http://dataservice.accuweather.com/forecasts/v1/daily/5day/{location_key}?apikey={api_key}"
+#             response = requests.get(accuweather_url)
+#             response.raise_for_status()
+#             forecast_data = response.json()["DailyForecasts"]
 
-            # Today and tomorrow forecasts
-            today_forecast = forecast_data[0]
-            tomorrow_forecast = forecast_data[1]
+#             # Today and tomorrow forecasts
+#             today_forecast = forecast_data[0]
+#             tomorrow_forecast = forecast_data[1]
 
-            weatherData = {
-                "todayDate": format_date(today),
-                "todayWeather": normalize_phrase(forecast_data[0]["Day"]["IconPhrase"]),
-                "todayTemp": str(f_to_c(forecast_data[0]["Temperature"]["Maximum"]["Value"])),
+#             weatherData = {
+#                 "todayDate": format_date(today),
+#                 "todayWeather": normalize_phrase(forecast_data[0]["Day"]["IconPhrase"]),
+#                 "todayTemp": str(f_to_c(forecast_data[0]["Temperature"]["Maximum"]["Value"])),
 
-                "tomorrowDate": format_date(tomorrow),
-                "tomorrowWeather": normalize_phrase(forecast_data[1]["Day"]["IconPhrase"]),
-                "tomorrowTemp": str(f_to_c(forecast_data[1]["Temperature"]["Maximum"]["Value"])),
+#                 "tomorrowDate": format_date(tomorrow),
+#                 "tomorrowWeather": normalize_phrase(forecast_data[1]["Day"]["IconPhrase"]),
+#                 "tomorrowTemp": str(f_to_c(forecast_data[1]["Temperature"]["Maximum"]["Value"])),
 
-                "lastDate": format_date(today + timedelta(days=2)),  # Aug 31
-                "lastWeather": normalize_phrase(forecast_data[2]["Day"]["IconPhrase"]),
-                "lastTemp": str(f_to_c(forecast_data[2]["Temperature"]["Maximum"]["Value"])),
+#                 "lastDate": format_date(today + timedelta(days=2)),  # Aug 31
+#                 "lastWeather": normalize_phrase(forecast_data[2]["Day"]["IconPhrase"]),
+#                 "lastTemp": str(f_to_c(forecast_data[2]["Temperature"]["Maximum"]["Value"])),
 
-                "lastTwoDayDate": format_date(today + timedelta(days=3)),  # Sep 1
-                "lastTwoDayWeather": normalize_phrase(forecast_data[3]["Day"]["IconPhrase"]),
-                "lastTwoDayTemp": str(f_to_c(forecast_data[3]["Temperature"]["Maximum"]["Value"]))
-            }
+#                 "lastTwoDayDate": format_date(today + timedelta(days=3)),  # Sep 1
+#                 "lastTwoDayWeather": normalize_phrase(forecast_data[3]["Day"]["IconPhrase"]),
+#                 "lastTwoDayTemp": str(f_to_c(forecast_data[3]["Temperature"]["Maximum"]["Value"]))
+#             }
 
-            weatherLabel = {
-                "lastDay": format_day(today + timedelta(days=2)),       # SUNDAY
-                "lastTwoDay": format_day(today + timedelta(days=3))     # MONDAY
-            }
+#             weatherLabel = {
+#                 "lastDay": format_day(today + timedelta(days=2)),       # SUNDAY
+#                 "lastTwoDay": format_day(today + timedelta(days=3))     # MONDAY
+#             }
 
-            return jsonify({
-                "weatherData": weatherData,
-                "weatherLabel": weatherLabel
-            }), 200
+#             return jsonify({
+#                 "weatherData": weatherData,
+#                 "weatherLabel": weatherLabel
+#             }), 200
 
-        except Exception as e:
-            return jsonify({"error": f"Failed to fetch or process weather data: {str(e)}"}), 500
+#         except Exception as e:
+#             return jsonify({"error": f"Failed to fetch or process weather data: {str(e)}"}), 500
 
-    else:
-        return jsonify({"error": "Location data not found or not supported"}), 404
+#     else:
+#         return jsonify({"error": "Location data not found or not supported"}), 404
+
 
 
 # @app.route('/forecast', methods=['POST']) # Changed to POST method
@@ -1001,6 +1002,45 @@ def weather_data():
 
 #     else:
 #         return jsonify({"message": "No forecast data available for this location. Try 'baao'."}), 404
+
+
+@app.route("/weather_data", methods=["POST"])
+def weather_data():
+    if not request.is_json:
+        return jsonify({"error": "Request must be JSON"}), 400
+
+    data = request.get_json()
+    location = data.get("location")
+
+    if location and location.lower() == "baao":
+        try:
+            if not is_mysql_available():
+                return handle_mysql_error("MySQL not available")
+
+            cursor = get_cursor()
+            if not cursor:
+                return handle_mysql_error("Unable to get MySQL cursor")
+
+            uID = "oNhx5SjHE3BE"
+            select_query = "SELECT weatherData FROM weather_data WHERE uID = %s AND status = 'active';"
+            cursor.execute(select_query, (uID,))
+            result = cursor.fetchone()
+
+            if result:
+                weather_data_json = result[0]
+                weather_data = json.loads(weather_data_json)
+                return jsonify(weather_data), 200
+            else:
+                return jsonify({"error": "No weather data found for the specified uID."}), 404
+
+        except mysql.connector.Error as e:
+            return handle_mysql_error(e)
+
+        finally:
+            if cursor:
+                cursor.close()
+    else:
+        return jsonify({"error": "Location data not found or not supported"}), 404
 
 
 @app.route('/forecast', methods=['POST'])
