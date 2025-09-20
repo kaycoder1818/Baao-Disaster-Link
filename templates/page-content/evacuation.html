@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/page/content-no-scroll.css') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
-    /* Custom evacuation table styling */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -38,18 +37,26 @@
       cursor: pointer;
     }
 
-    .add-btn {
-      background-color: green;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      cursor: pointer;
-      border-radius: 6px;
-      float: right;
-      margin-top: 15px;
+    .add-button-container {
+      margin-bottom: 15px;
+      text-align: left;
     }
 
-    /* Modal styles */
+    .green-btn {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .green-btn:hover {
+      background-color: #45a049;
+    }
+
     .modal-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -114,41 +121,51 @@
     }
 
     .table-scroll-container {
-      max-height: 400px; /* You can adjust height as needed */
+      max-height: 400px;
       overflow-y: auto;
       border: 1px solid #ddd;
       border-radius: 6px;
     }
 
-    /* Optional: fix table header when scrolling */
     .table-scroll-container thead {
       position: sticky;
       top: 0;
       z-index: 1;
     }
 
-
-    .add-button-container {
-      margin-bottom: 15px;   /* Space between button and table */
-      text-align: left;      /* Left-align the button */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: bold;
+      display: none;
+      z-index: 9999;
+      animation: fadein 0.3s ease, fadeout 0.3s ease 2.7s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
 
-    .green-btn {
+    .toast-error {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .toast-success {
       background-color: #4caf50;
       color: white;
-      padding: 10px 16px;
-      font-size: 14px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
     }
 
-    .green-btn:hover {
-      background-color: #45a049;
+    @keyframes fadein {
+      from { opacity: 0; top: 10px; }
+      to { opacity: 1; top: 20px; }
     }
 
-
+    @keyframes fadeout {
+      from { opacity: 1; top: 20px; }
+      to { opacity: 0; top: 10px; }
+    }
   </style>
 </head>
 <body>
@@ -176,9 +193,6 @@
       </tbody>
     </table>
   </div>
-
-
-  
 </main>
 
 <!-- Modal -->
@@ -197,6 +211,8 @@
   </div>
 </div>
 
+<div id="toast" class="toast"></div>
+
 <script>
   let evacuationData = [];
 
@@ -204,7 +220,6 @@
     try {
       const response = await fetch('/api/evacuation');
       const data = await response.json();
-
       evacuationData = data.evacuationData;
       renderTable();
     } catch (error) {
@@ -228,11 +243,74 @@
     });
   }
 
-  function deleteRow(index) {
+  async function deleteRow(index) {
     const item = evacuationData[index];
-    console.log(`Deleted Index: ${index}, Name: ${item.name}, Position:`, item.position);
-    evacuationData.splice(index, 1);
-    renderTable();
+
+    try {
+      const response = await fetch('/api/evacuation/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: item.name,
+          position: item.position
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        evacuationData.splice(index, 1);
+        renderTable();
+        showToast(`${item.name} (${item.position.lat}, ${item.position.lng}) has been deleted`, 'error');
+      } else {
+        alert(result.error || 'Error deleting item.');
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('Network or server error.');
+    }
+  }
+
+  async function addRecord() {
+    const name = document.getElementById('station-name').value.trim();
+    const lat = parseFloat(document.getElementById('station-lat').value);
+    const lng = parseFloat(document.getElementById('station-lng').value);
+
+    if (!name || isNaN(lat) || isNaN(lng)) {
+      alert("Please enter valid data.");
+      return;
+    }
+
+    const newItem = {
+      name,
+      position: { lat, lng }
+    };
+
+    try {
+      const response = await fetch('/api/evacuation/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newItem)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        evacuationData.push(newItem);
+        renderTable();
+        closeModal();
+        showToast(`${name} (${lat}, ${lng}) has been added`, 'success');
+      } else {
+        alert(result.error || 'Failed to add item.');
+      }
+    } catch (error) {
+      console.error('Add record error:', error);
+      alert('Network or server error.');
+    }
   }
 
   function openModal() {
@@ -252,27 +330,19 @@
     document.getElementById('station-lng').value = '';
   }
 
-  function addRecord() {
-    const name = document.getElementById('station-name').value.trim();
-    const lat = parseFloat(document.getElementById('station-lat').value);
-    const lng = parseFloat(document.getElementById('station-lng').value);
+  function showToast(message, type = 'error') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
 
-    if (!name || isNaN(lat) || isNaN(lng)) {
-      alert("Please enter valid data.");
-      return;
-    }
+    toast.className = `toast toast-${type}`;
+    toast.style.display = 'block';
 
-    const newItem = {
-      name,
-      position: { lat, lng }
-    };
-
-    console.log("New Record:", newItem);
-    evacuationData.push(newItem);
-    renderTable();
-    closeModal();
+    setTimeout(() => {
+      toast.style.display = 'none';
+    }, 3000);
   }
 
+  // Initial fetch
   fetchEvacuationData();
 </script>
 
