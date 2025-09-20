@@ -101,6 +101,13 @@ async function fetchStations() {
       localStorage.setItem("evacuationStations", JSON.stringify(stations));
 
       initMap(); // Initialize map only after stations are loaded
+
+      if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", loadGoogleMapsScript);
+      } else {
+          loadGoogleMapsScript();
+      }
+
     } else {
       console.error("[fetchStations] Failed to fetch evacuation data:", data.error || "Unknown error");
       alert("Unable to load evacuation stations.");
@@ -153,7 +160,7 @@ function initMap() {
     map: map,
     title: "Current Location",
     icon: {
-      url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+      url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
     },
   });
 
@@ -164,7 +171,7 @@ function initMap() {
       map: map,
       title: station.name,
       icon: {
-        url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+        url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
       },
     });
 
@@ -242,8 +249,6 @@ async function handleBackClick() {
     } 
 }
 
-
-
 function loadGoogleMapsScript() {
     const script = document.createElement("script");
     script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAoVrxrSQxLYbGR7YJq17NYyWTOd4npOIA&callback=initMap";
@@ -251,8 +256,3 @@ function loadGoogleMapsScript() {
     document.head.appendChild(script);
 }
 
-if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", loadGoogleMapsScript);
-} else {
-    loadGoogleMapsScript();
-}
