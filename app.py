@@ -862,7 +862,7 @@ def delete_evacuation_item():
             return handle_mysql_error("Unable to get MySQL cursor")
 
         # Hardcoded uID inside the route
-        uID = "UYBryWCCRCWF"
+        uID = "kBTJb3QjS1zD"
         cursor.execute("SELECT evacuationData FROM evacuation_data WHERE uID = %s AND status = 'active';", (uID,))
         result = cursor.fetchone()
 
@@ -910,7 +910,7 @@ def add_evacuation_item():
             return handle_mysql_error("Unable to get MySQL cursor")
 
         # Hardcoded uID inside the route
-        uID = "UYBryWCCRCWF"
+        uID = "kBTJb3QjS1zD"
         cursor.execute("SELECT evacuationData FROM evacuation_data WHERE uID = %s AND status = 'active';", (uID,))
         result = cursor.fetchone()
 
