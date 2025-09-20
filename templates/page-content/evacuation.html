@@ -127,6 +127,28 @@
       z-index: 1;
     }
 
+
+    .add-button-container {
+      margin-bottom: 15px;   /* Space between button and table */
+      text-align: left;      /* Left-align the button */
+    }
+
+    .green-btn {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .green-btn:hover {
+      background-color: #45a049;
+    }
+
+
   </style>
 </head>
 <body>
@@ -135,25 +157,26 @@
   <h2>Evacuation Center</h2>
   <p>Manage evacuation routes, shelters, and logistics during emergencies.</p>
 
-    <div class="table-scroll-container">
+  <div class="add-button-container">
+    <button id="add-button" class="green-btn">Add</button>
+  </div>
 
-      <table id="evacuation-table">
-        <thead>
-          <tr>
-            <th>Station Name</th>
-            <th>Latitude</th>
-            <th>Longitude</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody id="table-body">
-          <!-- Data rows go here -->
-        </tbody>
-      </table>
+  <div class="table-scroll-container">
+    <table id="evacuation-table">
+      <thead>
+        <tr>
+          <th>Station Name</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- Rows inserted here -->
+      </tbody>
+    </table>
+  </div>
 
-      <button class="add-btn" onclick="openModal()">Add</button>
-
-    </div>
 
   
 </main>
