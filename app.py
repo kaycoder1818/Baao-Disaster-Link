@@ -805,7 +805,7 @@ def settings():
 
 
 @app.route("/get_current_date")
-def get_current_date():
+def get_current_date(): 
     # Get the current time in the desired timezone (e.g., Asia/Manila for Taguig)
     manila_tz = pytz.timezone('Asia/Manila')
     now = datetime.now(manila_tz)
