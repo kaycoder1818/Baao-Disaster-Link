@@ -81,59 +81,7 @@ const currentLocation = { lat: 13.4539341516119, lng: 123.36561660818849 };
 // ];
 
 
-// Fetch station data from backend
-async function fetchStations() {
-  console.log("[fetchStations] Attempting to fetch evacuation data from /api/evacuation");
 
-  try {
-    const res = await fetch(`/api/evacuation`);
-    console.log(`[fetchStations] Response status: ${res.status}`);
-
-    const data = await res.json();
-    console.log("[fetchStations] Response JSON:", data);
-
-    if (res.ok && data.evacuationData) {
-      console.log(`[fetchStations] Successfully fetched ${data.evacuationData.length} stations`);
-      
-      stations = data.evacuationData;
-
-      // Store fetched data in localStorage
-      localStorage.setItem("evacuationStations", JSON.stringify(stations));
-
-      initMap(); // Initialize map only after stations are loaded
-
-    } else {
-      console.error("[fetchStations] Failed to fetch evacuation data:", data.error || "Unknown error");
-      alert("Unable to load evacuation stations.");
-
-      // Try fallback from localStorage
-      loadStationsFromLocalStorage();
-    }
-  } catch (err) {
-    console.error("[fetchStations] Network error while fetching stations:", err);
-    alert("Network error while loading evacuation stations.");
-
-    // Try fallback from localStorage
-    loadStationsFromLocalStorage();
-  }
-}
-
-// Load station data from localStorage fallback
-function loadStationsFromLocalStorage() {
-  const storedStations = localStorage.getItem("evacuationStations");
-
-  if (storedStations) {
-    try {
-      stations = JSON.parse(storedStations);
-      console.log(`[fetchStations] Loaded ${stations.length} stations from localStorage as fallback`);
-      initMap();
-    } catch (parseError) {
-      console.error("[fetchStations] Error parsing stations from localStorage:", parseError);
-    }
-  } else {
-    console.warn("[fetchStations] No evacuation stations found in localStorage.");
-  }
-}
 
 
 function initMap() {
@@ -201,7 +149,7 @@ function calculateAndDisplayRoute(destination) {
           map: map,
           title: "Current Location",
           icon: {
-            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+            url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png",
           },
         })
       );
@@ -213,7 +161,7 @@ function calculateAndDisplayRoute(destination) {
           map: map,
           title: "Destination",
           icon: {
-            url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+            url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
           },
         })
       );
@@ -248,6 +196,61 @@ function loadGoogleMapsScript() {
     script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAoVrxrSQxLYbGR7YJq17NYyWTOd4npOIA&callback=initMap";
     script.async = true;
     document.head.appendChild(script);
+}
+
+
+// Fetch station data from backend
+async function fetchStations() {
+  console.log("[fetchStations] Attempting to fetch evacuation data from /api/evacuation");
+
+  try {
+    const res = await fetch(`/api/evacuation`);
+    console.log(`[fetchStations] Response status: ${res.status}`);
+
+    const data = await res.json();
+    console.log("[fetchStations] Response JSON:", data);
+
+    if (res.ok && data.evacuationData) {
+      console.log(`[fetchStations] Successfully fetched ${data.evacuationData.length} stations`);
+      
+      stations = data.evacuationData;
+
+      // Store fetched data in localStorage
+      localStorage.setItem("evacuationStations", JSON.stringify(stations));
+
+      initMap(); // Initialize map only after stations are loaded
+
+    } else {
+      console.error("[fetchStations] Failed to fetch evacuation data:", data.error || "Unknown error");
+      alert("Unable to load evacuation stations.");
+
+      // Try fallback from localStorage
+      loadStationsFromLocalStorage();
+    }
+  } catch (err) {
+    console.error("[fetchStations] Network error while fetching stations:", err);
+    alert("Network error while loading evacuation stations.");
+
+    // Try fallback from localStorage
+    loadStationsFromLocalStorage();
+  }
+}
+
+// Load station data from localStorage fallback
+function loadStationsFromLocalStorage() {
+  const storedStations = localStorage.getItem("evacuationStations");
+
+  if (storedStations) {
+    try {
+      stations = JSON.parse(storedStations);
+      console.log(`[fetchStations] Loaded ${stations.length} stations from localStorage as fallback`);
+      initMap();
+    } catch (parseError) {
+      console.error("[fetchStations] Error parsing stations from localStorage:", parseError);
+    }
+  } else {
+    console.warn("[fetchStations] No evacuation stations found in localStorage.");
+  }
 }
 
 
