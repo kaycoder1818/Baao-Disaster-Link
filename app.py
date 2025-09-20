@@ -815,7 +815,67 @@ def get_current_date():
     formatted_date = now.strftime("%A, %d %B %Y")
     
     return jsonify({'date': formatted_date})
-    
+
+
+@app.route('/api/evacuation', methods=['GET'])
+def get_evacuation_data_api():
+    try:
+        if not is_mysql_available():
+            return handle_mysql_error("MySQL not available")
+
+        cursor = get_cursor()
+        if not cursor:
+            return handle_mysql_error("Unable to get MySQL cursor")
+
+        uID = "kBTJb3QjS1zD"
+        select_query = "SELECT evacuationData FROM evacuation_data WHERE uID = %s AND status = 'active';"
+        cursor.execute(select_query, (uID,))
+        result = cursor.fetchone()
+
+        if result:
+            evacuation_data_json = result[0]
+            evacuation_data = json.loads(evacuation_data_json)
+            return jsonify({"evacuationData": evacuation_data}), 200
+        else:
+            return jsonify({"error": "No evacuation data found for the specified uID."}), 404
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        if cursor:
+            cursor.close()
+
+
+@app.route('/api/flooding', methods=['GET'])
+def get_flooding_data():
+    try:
+        if not is_mysql_available():
+            return handle_mysql_error("MySQL not available")
+
+        cursor = get_cursor()
+        if not cursor:
+            return handle_mysql_error("Unable to get MySQL cursor")
+
+        uID = "UYBryWCCRCWF"
+        select_query = "SELECT floodingData FROM flooding_data WHERE uID = %s AND status = 'active';"
+        cursor.execute(select_query, (uID,))
+        result = cursor.fetchone()
+
+        if result:
+            flooding_data_json = result[0]
+            flooding_data = json.loads(flooding_data_json)
+            return jsonify({"floodingData": flooding_data}), 200
+        else:
+            return jsonify({"error": "No flooding data found for the specified uID."}), 404
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        if cursor:
+            cursor.close()
+
 # @app.route("/weather_data", methods=["POST"])
 # def weather_data():
 #     # Ensure the request body is JSON
