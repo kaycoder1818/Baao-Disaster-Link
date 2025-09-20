@@ -112,6 +112,21 @@
     .modal-buttons .cancel {
       background-color: #ccc;
     }
+
+    .table-scroll-container {
+      max-height: 400px; /* You can adjust height as needed */
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+
+    /* Optional: fix table header when scrolling */
+    .table-scroll-container thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
   </style>
 </head>
 <body>
@@ -120,19 +135,23 @@
   <h2>Evacuation Center</h2>
   <p>Manage evacuation routes, shelters, and logistics during emergencies.</p>
 
-  <table id="evacuation-table">
-    <thead>
-      <tr>
-        <th>Station Name</th>
-        <th>Latitude</th>
-        <th>Longitude</th>
-        <th>Delete</th>
-      </tr>
-    </thead>
-    <tbody id="table-body">
-      <!-- Data rows go here -->
-    </tbody>
-  </table>
+    <div class="table-scroll-container">
+
+      <table id="evacuation-table">
+        <thead>
+          <tr>
+            <th>Station Name</th>
+            <th>Latitude</th>
+            <th>Longitude</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- Data rows go here -->
+        </tbody>
+      </table>
+
+    </div>
 
   <button class="add-btn" onclick="openModal()">Add</button>
 </main>
