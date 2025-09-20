@@ -102,12 +102,6 @@ async function fetchStations() {
 
       initMap(); // Initialize map only after stations are loaded
 
-      if (document.readyState === "loading") {
-          document.addEventListener("DOMContentLoaded", loadGoogleMapsScript);
-      } else {
-          loadGoogleMapsScript();
-      }
-
     } else {
       console.error("[fetchStations] Failed to fetch evacuation data:", data.error || "Unknown error");
       alert("Unable to load evacuation stations.");
@@ -259,3 +253,9 @@ function loadGoogleMapsScript() {
 
 
 fetchStations();
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadGoogleMapsScript);
+} else {
+    loadGoogleMapsScript();
+}
