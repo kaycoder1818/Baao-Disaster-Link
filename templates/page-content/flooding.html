@@ -6,13 +6,254 @@
   <title>Flooding Area Map</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/page/content-no-scroll.css') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    thead {
+      background-color: red;
+      color: white;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    td {
+      color: black;
+    }
+
+    .delete-btn {
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .add-button-container {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .green-btn {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 16px;
+      font-size: 14px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .green-btn:hover {
+      background-color: #45a049;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.4);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      width: 400px;
+      position: relative;
+    }
+
+    .modal h3 {
+      margin-top: 0;
+    }
+
+    .modal input[type="text"] {
+      width: calc(100% - 20px);
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    .lat-lng-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    .lat-lng-container input {
+      flex: 1;
+    }
+
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .modal-buttons button {
+      padding: 6px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+      border: none;
+    }
+
+    .modal-buttons .add-record {
+      background-color: green;
+      color: white;
+    }
+
+    .modal-buttons .cancel {
+      background-color: #ccc;
+    }
+
+    .table-scroll-container {
+      max-height: 400px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+
+    .table-scroll-container thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+  </style>
 </head>
 <body>
 
-  <main class="page-content">
-    <h2>Flooding Area</h2>
-    <p>View flood-prone zones and current flooding alerts.</p>
-  </main>
+<main class="page-content">
+  <h2>Flooding Area</h2>
+  <p>View flood-prone zones and current flooding alerts.</p>
+
+  <div class="add-button-container">
+    <button id="add-button" class="green-btn" onclick="openModal()">Add</button>
+  </div>
+
+  <div class="table-scroll-container">
+    <table id="flooding-table">
+      <thead>
+        <tr>
+          <th>Station Name</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+        <!-- Rows inserted here -->
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h3>Add New Station</h3>
+    <input type="text" id="station-name" placeholder="Station Name" />
+    <div class="lat-lng-container">
+      <input type="text" id="station-lat" placeholder="Latitude" />
+      <input type="text" id="station-lng" placeholder="Longitude" />
+    </div>
+    <div class="modal-buttons">
+      <button class="add-record" onclick="addRecord()">Add Record</button>
+      <button class="cancel" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let floodingData = [];
+
+  async function fetchFloodingData() {
+    try {
+      const response = await fetch('/api/flooding');
+      const data = await response.json();
+      floodingData = data.floodingData;
+      renderTable();
+    } catch (error) {
+      console.error('Error fetching flooding data:', error);
+    }
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+
+    floodingData.forEach((item, index) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.position.lat}</td>
+        <td>${item.position.lng}</td>
+        <td><button class="delete-btn" onclick="deleteRow(${index})">Delete</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function deleteRow(index) {
+    const item = floodingData[index];
+    console.log(`Deleted Index: ${index}, Name: ${item.name}, Position:`, item.position);
+    floodingData.splice(index, 1);
+    renderTable();
+  }
+
+  function openModal() {
+    document.getElementById('modal-overlay').style.display = 'flex';
+  }
+
+  function closeModal(event) {
+    if (!event || event.target.id === 'modal-overlay') {
+      document.getElementById('modal-overlay').style.display = 'none';
+      clearModalInputs();
+    }
+  }
+
+  function clearModalInputs() {
+    document.getElementById('station-name').value = '';
+    document.getElementById('station-lat').value = '';
+    document.getElementById('station-lng').value = '';
+  }
+
+  function addRecord() {
+    const name = document.getElementById('station-name').value.trim();
+    const lat = parseFloat(document.getElementById('station-lat').value);
+    const lng = parseFloat(document.getElementById('station-lng').value);
+
+    if (!name || isNaN(lat) || isNaN(lng)) {
+      alert("Please enter valid data.");
+      return;
+    }
+
+    const newItem = {
+      name,
+      position: { lat, lng }
+    };
+
+    console.log("New Record:", newItem);
+    floodingData.push(newItem);
+    renderTable();
+    closeModal();
+  }
+
+  fetchFloodingData();
+</script>
 
 </body>
 </html>
