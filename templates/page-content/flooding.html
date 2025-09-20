@@ -132,6 +132,42 @@
       top: 0;
       z-index: 1;
     }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: bold;
+      display: none;
+      z-index: 9999;
+      animation: fadein 0.3s ease, fadeout 0.3s ease 2.7s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .toast-error {
+      background-color: #f44336; /* red */
+      color: white;
+    }
+
+    .toast-success {
+      background-color: #4caf50; /* green */
+      color: white;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; top: 10px; }
+      to { opacity: 1; top: 20px; }
+    }
+
+    @keyframes fadeout {
+      from { opacity: 1; top: 20px; }
+      to { opacity: 0; top: 10px; }
+    }
+
+
   </style>
 </head>
 <body>
@@ -177,7 +213,10 @@
   </div>
 </div>
 
-<script>
+<div id="toast" class="toast"></div>
+
+
+<!-- <script>
   let floodingData = [];
 
   async function fetchFloodingData() {
@@ -251,6 +290,196 @@
     renderTable();
     closeModal();
   }
+
+  fetchFloodingData();
+</script> -->
+
+
+
+<script>
+  let floodingData = [];
+
+  async function fetchFloodingData() {
+    try {
+      const response = await fetch('/api/flooding');
+      const data = await response.json();
+      floodingData = data.floodingData;
+      renderTable();
+    } catch (error) {
+      console.error('Error fetching flooding data:', error);
+    }
+  }
+
+  function renderTable() {
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+
+    floodingData.forEach((item, index) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.position.lat}</td>
+        <td>${item.position.lng}</td>
+        <td><button class="delete-btn" onclick="deleteRow(${index})">Delete</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  async function deleteRow(index) {
+    const item = floodingData[index];
+    console.log(`Deleted Index: ${index}, Name: ${item.name}, Position:`, item.position);
+
+    try {
+      const response = await fetch('/api/flooding/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: item.name,
+          position: item.position
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        floodingData.splice(index, 1);
+        renderTable();
+        showToast(`${item.name} (${item.position.lat}, ${item.position.lng}) has been deleted`);
+      } else {
+        alert(result.error || 'Error deleting item.');
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('Network or server error.');
+    }
+  }
+
+  function openModal() {
+    document.getElementById('modal-overlay').style.display = 'flex';
+  }
+
+  function closeModal(event) {
+    if (!event || event.target.id === 'modal-overlay') {
+      document.getElementById('modal-overlay').style.display = 'none';
+      clearModalInputs();
+    }
+  }
+
+  function clearModalInputs() {
+    document.getElementById('station-name').value = '';
+    document.getElementById('station-lat').value = '';
+    document.getElementById('station-lng').value = '';
+  }
+
+  // function addRecord() {
+  //   const name = document.getElementById('station-name').value.trim();
+  //   const lat = parseFloat(document.getElementById('station-lat').value);
+  //   const lng = parseFloat(document.getElementById('station-lng').value);
+
+  //   if (!name || isNaN(lat) || isNaN(lng)) {
+  //     alert("Please enter valid data.");
+  //     return;
+  //   }
+
+  //   const newItem = {
+  //     name,
+  //     position: { lat, lng }
+  //   };
+
+  //   console.log("New Record:", newItem);
+  //   floodingData.push(newItem);
+  //   renderTable();
+  //   closeModal();
+  // }
+
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerText = message;
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
+
+
+
+  async function addRecord() {
+    const name = document.getElementById('station-name').value.trim();
+    const lat = parseFloat(document.getElementById('station-lat').value);
+    const lng = parseFloat(document.getElementById('station-lng').value);
+
+    if (!name || isNaN(lat) || isNaN(lng)) {
+      alert("Please enter valid data.");
+      return;
+    }
+
+    const newItem = {
+      name,
+      position: { lat, lng }
+    };
+
+    try {
+      const response = await fetch('/api/flooding/add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newItem)
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        floodingData.push(newItem);
+        renderTable();
+        closeModal();
+        showToast(`${name} (${lat}, ${lng}) has been added`, 'success');
+      } else {
+        alert(result.error || 'Failed to add item.');
+      }
+    } catch (error) {
+      console.error('Add record error:', error);
+      alert('Network or server error.');
+    }
+  }
+
+  async function deleteRow(index) {
+    const item = floodingData[index];
+    console.log(`Deleted Index: ${index}, Name: ${item.name}, Position:`, item.position);
+
+    try {
+      const response = await fetch('/api/flooding/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: item.name,
+          position: item.position
+        })
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        floodingData.splice(index, 1);
+        renderTable();
+        showToast(`${item.name} (${item.position.lat}, ${item.position.lng}) has been deleted`, 'error');
+      } else {
+        alert(result.error || 'Error deleting item.');
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      alert('Network or server error.');
+    }
+  }
+
+
 
   fetchFloodingData();
 </script>

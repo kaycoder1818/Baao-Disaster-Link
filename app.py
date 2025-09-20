@@ -876,6 +876,98 @@ def get_flooding_data():
         if cursor:
             cursor.close()
 
+@app.route('/api/flooding/delete', methods=['POST'])
+def delete_flooding_item():
+    try:
+        data = request.get_json()
+        name = data.get('name')
+        position = data.get('position')
+
+        if not (name and position):
+            return jsonify({"error": "Missing required fields"}), 400
+
+        cursor = get_cursor()
+        if not cursor:
+            return handle_mysql_error("Unable to get MySQL cursor")
+
+        # Fetch current flooding data
+        uID = "UYBryWCCRCWF"
+        cursor.execute("SELECT floodingData FROM flooding_data WHERE uID = %s AND status = 'active';", (uID,))
+        result = cursor.fetchone()
+
+        if not result:
+            return jsonify({"error": "No data found"}), 404
+
+        flooding_data = json.loads(result[0])
+
+        # Filter out the item to delete
+        updated_data = [
+            item for item in flooding_data
+            if not (item['name'] == name and
+                    item['position']['lat'] == position['lat'] and
+                    item['position']['lng'] == position['lng'])
+        ]
+
+        # Update the database
+        update_query = "UPDATE flooding_data SET floodingData = %s WHERE uID = %s AND status = 'active';"
+        cursor.execute(update_query, (json.dumps(updated_data), uID))
+        db_connection.commit()
+
+        return jsonify({"message": "Item deleted successfully"}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        if cursor:
+            cursor.close()
+
+@app.route('/api/flooding/add', methods=['POST'])
+def add_flooding_item():
+    try:
+        data = request.get_json()
+        name = data.get('name')
+        position = data.get('position')
+
+        if not (name and position):
+            return jsonify({"error": "Missing required fields"}), 400
+
+        cursor = get_cursor()
+        if not cursor:
+            return handle_mysql_error("Unable to get MySQL cursor")
+
+        uID = "UYBryWCCRCWF"
+        cursor.execute("SELECT floodingData FROM flooding_data WHERE uID = %s AND status = 'active';", (uID,))
+        result = cursor.fetchone()
+
+        if not result:
+            return jsonify({"error": "No flooding data found for the specified uID"}), 404
+
+        flooding_data = json.loads(result[0])
+
+        # Append new item
+        flooding_data.append({
+            "name": name,
+            "position": {
+                "lat": position["lat"],
+                "lng": position["lng"]
+            }
+        })
+
+        # Update the record
+        update_query = "UPDATE flooding_data SET floodingData = %s WHERE uID = %s AND status = 'active';"
+        cursor.execute(update_query, (json.dumps(flooding_data), uID))
+        db_connection.commit()
+
+        return jsonify({"message": "Item added successfully"}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        if cursor:
+            cursor.close()
+
 # @app.route("/weather_data", methods=["POST"])
 # def weather_data():
 #     # Ensure the request body is JSON
