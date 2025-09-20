@@ -1004,6 +1004,162 @@ def get_current_date():
 #         return jsonify({"message": "No forecast data available for this location. Try 'baao'."}), 404
 
 
+
+@app.route("/update-weather", methods=["POST"])
+def update_weather_data():
+    try:
+        if not is_mysql_available():
+            return handle_mysql_error("MySQL not available")
+
+        cursor = get_cursor()
+        if not cursor:
+            return handle_mysql_error("Unable to get MySQL cursor")
+
+        # Timezone setup
+        manila_tz = pytz.timezone("Asia/Manila")
+        now = datetime.now(manila_tz)
+
+        # Date helpers
+        today = now
+        tomorrow = today + timedelta(days=1)
+
+        def format_day(dt):
+            return dt.strftime("%A")
+
+        def format_date(dt):
+            return dt.strftime("%B %d").lstrip("0").replace(" 0", " ")
+
+        def normalize_phrase(phrase):
+            phrase = phrase.lower()
+            if "sun" in phrase:
+                return "Sunny"
+            elif "thunder" in phrase:
+                return "Thunder"
+            elif "rain" in phrase:
+                return "Rain"
+            elif "cloud" in phrase or "dreary" in phrase or "overcast" in phrase:
+                return "Cloudy"
+            else:
+                return "Cloudy"
+
+        def f_to_c(f):
+            return round((f - 32) * 5 / 9)
+
+        # Fetch AccuWeather 5-day forecast
+        api_key = os.environ.get("ACCUWEATHER_API_KEY")
+        location_key = "262585"  # Baao
+        accuweather_url = f"http://dataservice.accuweather.com/forecasts/v1/daily/5day/{location_key}?apikey={api_key}"
+        response = requests.get(accuweather_url)
+        response.raise_for_status()
+        forecast_data = response.json()["DailyForecasts"]
+
+        # Build weatherData and weatherLabel
+        weatherData = {
+            "todayDate": format_date(today),
+            "todayWeather": normalize_phrase(forecast_data[0]["Day"]["IconPhrase"]),
+            "todayTemp": str(f_to_c(forecast_data[0]["Temperature"]["Maximum"]["Value"])),
+
+            "tomorrowDate": format_date(tomorrow),
+            "tomorrowWeather": normalize_phrase(forecast_data[1]["Day"]["IconPhrase"]),
+            "tomorrowTemp": str(f_to_c(forecast_data[1]["Temperature"]["Maximum"]["Value"])),
+
+            "lastDate": format_date(today + timedelta(days=2)),
+            "lastWeather": normalize_phrase(forecast_data[2]["Day"]["IconPhrase"]),
+            "lastTemp": str(f_to_c(forecast_data[2]["Temperature"]["Maximum"]["Value"])),
+
+            "lastTwoDayDate": format_date(today + timedelta(days=3)),
+            "lastTwoDayWeather": normalize_phrase(forecast_data[3]["Day"]["IconPhrase"]),
+            "lastTwoDayTemp": str(f_to_c(forecast_data[3]["Temperature"]["Maximum"]["Value"]))
+        }
+
+        weatherLabel = {
+            "lastDay": format_day(today + timedelta(days=2)),
+            "lastTwoDay": format_day(today + timedelta(days=3))
+        }
+
+        # Combine into one JSON
+        full_weather_data = {
+            "weatherData": weatherData,
+            "weatherLabel": weatherLabel
+        }
+
+        # Update database
+        uID = "oNhx5SjHE3BE"
+        update_query = """
+            UPDATE weather_data
+            SET weatherData = %s
+            WHERE uID = %s AND status = 'active';
+        """
+        cursor.execute(update_query, (json.dumps(full_weather_data), uID))
+        db_connection.commit()
+
+        return jsonify({
+            "message": "weatherData updated successfully",
+            "weatherData": full_weather_data
+        }), 200
+
+    except requests.RequestException as e:
+        return jsonify({"error": f"Failed to fetch weather from AccuWeather: {str(e)}"}), 500
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        if cursor:
+            cursor.close()
+
+
+@app.route('/update-forecast', methods=['POST'])
+def update_forecast_data():
+    try:
+        if not is_mysql_available():
+            return handle_mysql_error("MySQL not available")
+
+        cursor = get_cursor()
+        if not cursor:
+            return handle_mysql_error("Unable to get MySQL cursor")
+
+        # Fetch forecast from AccuWeather
+        api_key = os.environ.get("ACCUWEATHER_API_KEY")
+        location_key = "262585"  # Baao
+        url = f"http://dataservice.accuweather.com/currentconditions/v1/{location_key}?apikey={api_key}&details=true"
+        
+        response = requests.get(url)
+        response.raise_for_status()
+        current = response.json()[0]
+
+        # Extract data
+        forecast_data = {
+            "outsideTemp": f"{current['Temperature']['Metric']['Value']}°C",
+            "outsideWeather": current['WeatherText'],
+            "windSpeed": f"{current['Wind']['Speed']['Metric']['Value']} km/h",
+            "humidity": f"{current['RelativeHumidity']}%",
+            "visibility": f"{current['Visibility']['Metric']['Value']} km"
+        }
+
+        # Update database
+        uID = "3xPTPsa6sglt"
+        update_query = """
+            UPDATE forecast_data
+            SET forecastData = %s
+            WHERE uID = %s AND status = 'active';
+        """
+        cursor.execute(update_query, (json.dumps(forecast_data), uID))
+        db_connection.commit()
+
+        return jsonify({"message": "forecastData updated successfully", "forecastData": forecast_data}), 200
+
+    except requests.RequestException as e:
+        return jsonify({"error": f"Failed to fetch forecast from AccuWeather: {str(e)}"}), 500
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        if cursor:
+            cursor.close()
+
+
 @app.route("/weather_data", methods=["POST"])
 def weather_data():
     if not request.is_json:
