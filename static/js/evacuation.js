@@ -256,3 +256,6 @@ function loadGoogleMapsScript() {
     document.head.appendChild(script);
 }
 
+
+
+fetchStations();
