@@ -971,36 +971,66 @@ def weather_data():
 #         return jsonify({"message": "No forecast data available for this location. Try 'baao'."}), 404
 
 
+# @app.route('/forecast', methods=['POST'])
+# def get_weather():
+#     data = request.json 
+#     location = data.get('location')
+
+#     if location and location.lower() == 'baao':
+#         try:
+#             api_key = os.environ.get("ACCUWEATHER_API_KEY")
+#             location_key = "262585"
+#             url = f"http://dataservice.accuweather.com/currentconditions/v1/{location_key}?apikey={api_key}&details=true"
+            
+#             response = requests.get(url)
+#             response.raise_for_status()
+#             current = response.json()[0]
+
+#             forecast_data = {
+#                 "outsideTemp": f"{current['Temperature']['Metric']['Value']}°C",
+#                 "outsideWeather": current['WeatherText'],
+#                 "windSpeed": f"{current['Wind']['Speed']['Metric']['Value']} km/h",
+#                 "humidity": f"{current['RelativeHumidity']}%",
+#                 "visibility": f"{current['Visibility']['Metric']['Value']} km"
+#             }
+
+#             return jsonify({"forecastData": forecast_data})
+        
+#         except Exception as e:
+#             return jsonify({"error": f"Failed to fetch forecast: {str(e)}"}), 500
+
+#     else:
+#         return jsonify({"message": "No forecast data available for this location. Try 'baao'."}), 404
+
+
 @app.route('/forecast', methods=['POST'])
 def get_weather():
-    data = request.json 
-    location = data.get('location')
+    try:
+        if not is_mysql_available():
+            return handle_mysql_error("MySQL not available")
 
-    if location and location.lower() == 'baao':
-        try:
-            api_key = os.environ.get("ACCUWEATHER_API_KEY")
-            location_key = "262585"
-            url = f"http://dataservice.accuweather.com/currentconditions/v1/{location_key}?apikey={api_key}&details=true"
-            
-            response = requests.get(url)
-            response.raise_for_status()
-            current = response.json()[0]
+        cursor = get_cursor()
+        if not cursor:
+            return handle_mysql_error("Unable to get MySQL cursor")
 
-            forecast_data = {
-                "outsideTemp": f"{current['Temperature']['Metric']['Value']}°C",
-                "outsideWeather": current['WeatherText'],
-                "windSpeed": f"{current['Wind']['Speed']['Metric']['Value']} km/h",
-                "humidity": f"{current['RelativeHumidity']}%",
-                "visibility": f"{current['Visibility']['Metric']['Value']} km"
-            }
+        uID = "3xPTPsa6sglt"
+        select_query = "SELECT forecastData FROM forecast_data WHERE uID = %s AND status = 'active';"
+        cursor.execute(select_query, (uID,))
+        result = cursor.fetchone()
 
+        if result:
+            forecast_data_json = result[0]
+            forecast_data = json.loads(forecast_data_json)  # Convert JSON string to dict
             return jsonify({"forecastData": forecast_data})
-        
-        except Exception as e:
-            return jsonify({"error": f"Failed to fetch forecast: {str(e)}"}), 500
+        else:
+            return jsonify({"message": "No forecast data found for the specified uID."}), 404
 
-    else:
-        return jsonify({"message": "No forecast data available for this location. Try 'baao'."}), 404
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        if cursor:
+            cursor.close()
 
 
 @app.route('/accident-area')
