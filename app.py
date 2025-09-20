@@ -847,19 +847,23 @@ def get_evacuation_data_api():
             cursor.close()
 
 @app.route('/api/evacuation/delete', methods=['POST'])
-def delete_evacuation_record():
+def delete_evacuation_item():
+    cursor = None
     try:
         data = request.get_json()
         name = data.get('name')
         position = data.get('position')
-        uID = "kBTJb3QjS1zD"
 
-        if not name or not position:
-            return jsonify({"error": "Invalid data"}), 400
+        if not (name and position):
+            return jsonify({"error": "Missing required fields"}), 400
 
         cursor = get_cursor()
-        select_query = "SELECT evacuationData FROM evacuation_data WHERE uID = %s AND status = 'active';"
-        cursor.execute(select_query, (uID,))
+        if not cursor:
+            return handle_mysql_error("Unable to get MySQL cursor")
+
+        # Hardcoded uID inside the route
+        uID = "UYBryWCCRCWF"
+        cursor.execute("SELECT evacuationData FROM evacuation_data WHERE uID = %s AND status = 'active';", (uID,))
         result = cursor.fetchone()
 
         if not result:
@@ -867,63 +871,76 @@ def delete_evacuation_record():
 
         evacuation_data = json.loads(result[0])
 
-        evacuation_data = [
+        # Filter out the item to delete
+        updated_data = [
             item for item in evacuation_data
-            if not (item["name"] == name and item["position"] == position)
+            if not (item['name'] == name and
+                    item['position']['lat'] == position['lat'] and
+                    item['position']['lng'] == position['lng'])
         ]
 
+        # Update the database
         update_query = "UPDATE evacuation_data SET evacuationData = %s WHERE uID = %s AND status = 'active';"
-        cursor.execute(update_query, (json.dumps(evacuation_data), uID))
-        mysql.connection.commit()
+        cursor.execute(update_query, (json.dumps(updated_data), uID))
+        db_connection.commit()
 
-        return jsonify({"message": "Record deleted"}), 200
+        return jsonify({"message": "Item deleted successfully"}), 200
 
-    except Exception as e:
+    except mysql.connector.Error as e:
         return handle_mysql_error(e)
 
     finally:
         if cursor:
             cursor.close()
 
+
 @app.route('/api/evacuation/add', methods=['POST'])
-def add_evacuation_record():
+def add_evacuation_item():
+    cursor = None
     try:
         data = request.get_json()
         name = data.get('name')
         position = data.get('position')
-        uID = "kBTJb3QjS1zD"
 
-        if not name or not position:
-            return jsonify({"error": "Invalid data"}), 400
+        if not (name and position):
+            return jsonify({"error": "Missing required fields"}), 400
 
         cursor = get_cursor()
-        select_query = "SELECT evacuationData FROM evacuation_data WHERE uID = %s AND status = 'active';"
-        cursor.execute(select_query, (uID,))
+        if not cursor:
+            return handle_mysql_error("Unable to get MySQL cursor")
+
+        # Hardcoded uID inside the route
+        uID = "UYBryWCCRCWF"
+        cursor.execute("SELECT evacuationData FROM evacuation_data WHERE uID = %s AND status = 'active';", (uID,))
         result = cursor.fetchone()
 
         if not result:
-            return jsonify({"error": "No data found"}), 404
+            return jsonify({"error": "No evacuation data found for the specified uID"}), 404
 
         evacuation_data = json.loads(result[0])
+
+        # Append new item
         evacuation_data.append({
             "name": name,
-            "position": position
+            "position": {
+                "lat": position["lat"],
+                "lng": position["lng"]
+            }
         })
 
+        # Update the record
         update_query = "UPDATE evacuation_data SET evacuationData = %s WHERE uID = %s AND status = 'active';"
         cursor.execute(update_query, (json.dumps(evacuation_data), uID))
-        mysql.connection.commit()
+        db_connection.commit()
 
-        return jsonify({"message": "Record added"}), 200
+        return jsonify({"message": "Item added successfully"}), 200
 
-    except Exception as e:
+    except mysql.connector.Error as e:
         return handle_mysql_error(e)
 
     finally:
         if cursor:
             cursor.close()
-
-
 
 
 @app.route('/api/flooding', methods=['GET'])
