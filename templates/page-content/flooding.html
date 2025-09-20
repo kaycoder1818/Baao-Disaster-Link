@@ -395,17 +395,28 @@
   //   closeModal();
   // }
 
-  function showToast(message) {
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.innerText = message;
-    document.body.appendChild(toast);
+  // function showToast(message) {
+  //   const toast = document.createElement('div');
+  //   toast.className = 'toast';
+  //   toast.innerText = message;
+  //   document.body.appendChild(toast);
+
+  //   setTimeout(() => {
+  //     toast.remove();
+  //   }, 3000);
+  // }
+
+  function showToast(message, type = 'error') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+
+    toast.className = `toast toast-${type}`;
+    toast.style.display = 'block';
 
     setTimeout(() => {
-      toast.remove();
+      toast.style.display = 'none';
     }, 3000);
   }
-
 
 
   async function addRecord() {
