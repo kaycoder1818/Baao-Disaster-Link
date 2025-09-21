@@ -73,11 +73,63 @@ function initDarkModeToggle() {
 }
 
 
+function initSmsAlertToggle() {
+    const smsToggle = document.getElementById('sms-alert-toggle');
+
+    if (!smsToggle) {
+        console.error("SMS alert toggle not found!");
+        return;
+    }
+
+    // Load saved state from localStorage
+    const savedState = localStorage.getItem('smsAlertEnabled');
+    if (savedState !== null) {
+        smsToggle.checked = savedState === 'true';
+    }
+
+    // Listen for changes and update localStorage
+    smsToggle.addEventListener('change', () => {
+        localStorage.setItem('smsAlertEnabled', smsToggle.checked);
+    });
+}
+
+
+function initLanguageSelect() {
+    const languageSelect = document.getElementById('language-select');
+
+    if (!languageSelect) {
+        console.error("Language select element not found!");
+        return;
+    }
+
+    // Load saved language from localStorage
+    const savedLanguage = localStorage.getItem('selectedLanguage');
+    if (savedLanguage) {
+        languageSelect.value = savedLanguage;
+    } else {
+        // Set to English by default
+        languageSelect.value = 'en';
+        localStorage.setItem('selectedLanguage', 'en');
+    }
+
+    // Save new selection on change
+    languageSelect.addEventListener('change', () => {
+        const selectedValue = languageSelect.value;
+        localStorage.setItem('selectedLanguage', selectedValue);
+    });
+}
+
+
+
 
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", updateBackLink);
     initDarkModeToggle();
+    initSmsAlertToggle();
+    initLanguageSelect(); 
 } else {
     updateBackLink();
     initDarkModeToggle();
+    initSmsAlertToggle();
+    initLanguageSelect(); 
 }

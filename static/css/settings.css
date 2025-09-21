@@ -327,3 +327,9 @@ body.dark-mode span {
     color: #f0f0f0;
 }
 
+/* Force all text to be black */
+body, body * {
+    color: #000 !important;
+}
+
+
