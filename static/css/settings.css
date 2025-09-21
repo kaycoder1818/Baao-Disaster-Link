@@ -347,8 +347,9 @@ input:checked + .slider:before {
     background: #fff;
     padding: 25px;
     border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
+    width: 200px;
+    max-width: 300px;
+    height: 150px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
@@ -388,6 +389,38 @@ input:checked + .slider:before {
 .hidden {
     display: none !important;
 }
+
+
+/* Common button style */
+.modal-buttons button {
+    padding: 10px 20px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: white;           /* White text */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* Green "Register" button */
+#register-btn {
+    background-color: #68fe8b; /* Green */
+}
+
+#register-btn:hover {
+    background-color: #218838;
+}
+
+/* Red "Close" button */
+#close-btn {
+    background-color: #f9929c; /* Red */
+}
+
+#close-btn:hover {
+    background-color: #c82333;
+}
+
 
 
 

@@ -19,6 +19,9 @@
 //     }
 // });
 
+const spinner = document.getElementById('sms-loading-spinner');
+
+
 
 async function updateBackLink() {
 const backLink = document.getElementById('back-link');
