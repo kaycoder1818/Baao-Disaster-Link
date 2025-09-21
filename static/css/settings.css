@@ -406,7 +406,7 @@ input:checked + .slider:before {
 
 /* Green "Register" button */
 #register-btn {
-    background-color: #68fe8b; /* Green */
+    background-color: #19d445; /* Green */
 }
 
 #register-btn:hover {
@@ -415,7 +415,7 @@ input:checked + .slider:before {
 
 /* Red "Close" button */
 #close-btn {
-    background-color: #f9929c; /* Red */
+    background-color: #f70f26; /* Red */
 }
 
 #close-btn:hover {
