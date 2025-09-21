@@ -305,3 +305,25 @@ input:checked + .slider:before {
   border-color: #2196F3;
   box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);
 }
+
+
+
+
+/* dark-mode */
+
+body.dark-mode {
+    background-color: #121212;
+    color: #f0f0f0;
+}
+
+body.dark-mode .add-background-white {
+    background-color: #1e1e1e !important;
+}
+
+body.dark-mode select,
+body.dark-mode input,
+body.dark-mode label,
+body.dark-mode span {
+    color: #f0f0f0;
+}
+

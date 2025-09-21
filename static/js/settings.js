@@ -42,8 +42,42 @@ try {
 }
 }
 
+
+
+function initDarkModeToggle() {
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+
+    if (!darkModeToggle) {
+        console.error("Dark mode toggle not found!");
+        return;
+    }
+
+    // Load state from localStorage
+    const savedState = localStorage.getItem('darkModeEnabled');
+    if (savedState !== null) {
+        const isEnabled = savedState === 'true';
+        darkModeToggle.checked = isEnabled;
+
+        // Reflect visually (optional: add a class to body or any theme logic)
+        document.body.classList.toggle('dark-mode', isEnabled);
+    }
+
+    // Listen for toggle changes
+    darkModeToggle.addEventListener('change', () => {
+        const isChecked = darkModeToggle.checked;
+        localStorage.setItem('darkModeEnabled', isChecked);
+
+        // Reflect change immediately
+        document.body.classList.toggle('dark-mode', isChecked);
+    });
+}
+
+
+
 if (document.readyState === "loading") {
-document.addEventListener("DOMContentLoaded", updateBackLink);
+    document.addEventListener("DOMContentLoaded", updateBackLink);
+    initDarkModeToggle();
 } else {
-updateBackLink();
+    updateBackLink();
+    initDarkModeToggle();
 }
