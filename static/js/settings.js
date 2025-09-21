@@ -120,6 +120,143 @@ function initLanguageSelect() {
 }
 
 
+function showSmsModal() {
+    const modal = document.getElementById('sms-modal-overlay');
+    const closeBtn = document.getElementById('close-btn');
+    const registerBtn = document.getElementById('register-btn');
+    const input = document.getElementById('sms-number-input');
+    const message = document.getElementById('sms-modal-message');
+
+    if (!modal || !closeBtn || !registerBtn || !input || !message) return;
+
+    // Reset fields
+    input.value = '';
+    message.textContent = '';
+    message.className = 'message-text';
+
+    // Show modal
+    modal.classList.remove('hidden');
+
+    // Register click
+    registerBtn.onclick = async () => {
+        const number = input.value.trim();
+        message.textContent = '';
+        message.className = 'message-text';
+
+        // Only allow digits
+        if (!/^\d+$/.test(number)) {
+            message.textContent = "Please enter a valid number.";
+            message.classList.add("error");
+            return;
+        }
+
+        // Show spinner and disable button
+        spinner.classList.remove('hidden');
+        registerBtn.disabled = true;
+
+        try {
+            const res = await fetch('/api/add-subscriber', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mobileNumber: number })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                message.textContent = data.message || "Successfully subscribed!";
+                message.classList.add("success");
+            } else {
+                message.textContent = data.error || "Subscription failed.";
+                message.classList.add("error");
+            }
+        } catch (err) {
+            message.textContent = "Request error. Try again.";
+            message.classList.add("error");
+        } finally {
+            spinner.classList.add('hidden');       // Hide spinner
+            registerBtn.disabled = false;          // Re-enable button
+        }
+    };
+
+    // registerBtn.onclick = async () => {
+    //     const number = input.value.trim();
+
+    //     // Only allow digits
+    //     if (!/^\d+$/.test(number)) {
+    //         message.textContent = "Please enter a valid number.";
+    //         message.classList.add("error");
+    //         return;
+    //     }
+
+    //     try {
+    //         const res = await fetch('/api/add-subscriber', {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify({ mobileNumber: number })
+    //         });
+
+    //         const data = await res.json();
+
+    //         if (res.ok) {
+    //             message.textContent = data.message || "Successfully subscribed!";
+    //             message.classList.add("success");
+    //         } else {
+    //             message.textContent = data.error || "Subscription failed.";
+    //             message.classList.add("error");
+    //         }
+    //     } catch (err) {
+    //         message.textContent = "Request error. Try again.";
+    //         message.classList.add("error");
+    //     }
+    // };
+
+    // Close button
+    closeBtn.onclick = () => {
+        modal.classList.add('hidden');
+    };
+
+    // Close modal by clicking outside
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+        }
+    };
+}
+
+
+
+function initSmsAlertToggle() {
+    const smsToggle = document.getElementById('sms-alert-toggle');
+    const modal = document.getElementById('sms-modal-overlay');
+
+    if (!smsToggle || !modal) {
+        console.error("SMS toggle or modal not found!");
+        return;
+    }
+
+    // Load saved state from localStorage
+    const savedState = localStorage.getItem('smsAlertEnabled');
+    if (savedState !== null) {
+        smsToggle.checked = savedState === 'true';
+
+        // Show modal if enabled
+        if (smsToggle.checked) {
+            showSmsModal();
+        }
+    }
+
+    // Listen for changes and update localStorage
+    smsToggle.addEventListener('change', () => {
+        localStorage.setItem('smsAlertEnabled', smsToggle.checked);
+
+        if (smsToggle.checked) {
+            showSmsModal();
+        }
+    });
+}
+
+
 
 
 if (document.readyState === "loading") {

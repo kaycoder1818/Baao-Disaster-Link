@@ -57,6 +57,9 @@
 
     <body>
 
+        <div id="sms-loading-spinner" class="spinner hidden"></div>
+
+
 
 
         <div class="page-container">
@@ -124,6 +127,21 @@
             </div>
 
         </div>
+
+
+        <!-- Modal Overlay -->
+        <div id="sms-modal-overlay" class="modal-overlay hidden">
+            <div class="modal-content">
+                <label for="sms-number-input">Subscribe to the important announcement!</label>
+                <input type="text" id="sms-number-input" placeholder="Enter mobile number" />
+                <div class="modal-buttons">
+                    <button id="register-btn">Register</button>
+                    <button id="close-btn">Close</button>
+                </div>
+                <p id="sms-modal-message" class="message-text"></p>
+            </div>
+        </div>
+
 
 
     </body>

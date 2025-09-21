@@ -817,6 +817,42 @@ def get_current_date():
     return jsonify({'date': formatted_date})
 
 
+
+@app.route('/api/add-subscriber', methods=['POST'])
+def add_subscriber():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    data = request.get_json()
+    mobile_number = data.get("mobileNumber")
+
+    if not mobile_number:
+        return jsonify({"error": "mobileNumber is required"}), 400
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        insert_query = """
+        INSERT INTO subscribers (uID, mobileNumber, userID, status)
+        VALUES (%s, %s, %s, %s);
+        """
+        cursor.execute(insert_query, (
+            generate_random_string(12),
+            mobile_number,
+            generate_random_string(10),
+            "active"
+        ))
+        db_connection.commit()
+        return jsonify({"message": "Subscriber added successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
 @app.route('/api/evacuation', methods=['GET'])
 def get_evacuation_data_api():
     try:
