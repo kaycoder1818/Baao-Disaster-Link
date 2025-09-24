@@ -260,16 +260,42 @@ function initSmsAlertToggle() {
 }
 
 
+function initLocationToggle() {
+  const locationToggle = document.getElementById('location-toggle');
+
+  if (!locationToggle) {
+    console.error("Location toggle not found!");
+    return;
+  }
+
+  // Load saved state from localStorage
+  const savedState = localStorage.getItem('locationTrackingEnabled');
+  if (savedState !== null) {
+    locationToggle.checked = savedState === 'true';
+  }
+
+  // Listen for toggle changes and save to localStorage
+  locationToggle.addEventListener('change', () => {
+    const isEnabled = locationToggle.checked;
+    localStorage.setItem('locationTrackingEnabled', isEnabled);
+    console.log(`Location tracking ${isEnabled ? 'enabled' : 'disabled'}.`);
+  });
+}
+
+
+
 
 
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", updateBackLink);
     initDarkModeToggle();
     initSmsAlertToggle();
-    initLanguageSelect(); 
+    initLanguageSelect();
+    initLocationToggle();
 } else {
     updateBackLink();
     initDarkModeToggle();
     initSmsAlertToggle();
-    initLanguageSelect(); 
+    initLanguageSelect();
+    initLocationToggle();
 }
