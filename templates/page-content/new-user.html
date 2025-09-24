@@ -8,41 +8,49 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
   <style>
     .form-container {
-      max-width: 400px;
+      max-width: 500px;
       margin: 50px auto;
       background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
     }
 
     .form-container input {
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      margin-bottom: 15px;
+      padding: 16px;
+      margin-top: 20px;
+      font-size: 16px;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 6px;
+      box-sizing: border-box;
+    }
+
+    .form-container .button-row {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
     }
 
     .form-container button {
-      width: 100%;
-      padding: 12px;
-      background-color: #4caf50;
-      color: white;
-      border: none;
-      border-radius: 4px;
+      flex: 1;
+      padding: 14px;
+      font-size: 16px;
       font-weight: bold;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
     }
 
-    .form-container button:hover {
-      background-color: #45a049;
+    .broadcast-btn {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .clear-btn {
+      background-color: #f44336;
+      color: white;
     }
 
     .toast {
@@ -87,7 +95,7 @@
     <h2>Create New User</h2>
     <p>Add user credentials to grant access to the system.</p>
 
-    <div class="broadcast-container">
+    <div class="form-container">
       <input type="text" id="username" placeholder="Username" />
       <input type="password" id="password" placeholder="Password" />
       <input type="password" id="confirmPassword" placeholder="Confirm Password" />
@@ -107,7 +115,6 @@
       toast.textContent = message;
       toast.className = `toast toast-${type}`;
       toast.style.display = 'block';
-
       setTimeout(() => {
         toast.style.display = 'none';
       }, 3000);
@@ -158,5 +165,4 @@
   </script>
 
 </body>
-
 </html>
