@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, session, redirect, url_for, flash
+from flask import Flask, jsonify, request, render_template, session, redirect, url_for, flash, send_from_directory
 # from dotenv import load_dotenv
 import mysql.connector
 import os
@@ -1231,6 +1231,73 @@ def update_broadcast():
         cursor.close()
 
 
+@app.route('/api/get-broadcast', methods=['GET'])
+def get_latest_broadcast_for_user():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Set your desired user ID here
+        user_id = "user123"
+
+        # Query the latest broadcastData for the given user
+        query = """
+        SELECT broadcastData FROM broadcast
+        WHERE uID = %s AND status = 'active'
+        ORDER BY createdAt DESC
+        LIMIT 1
+        """
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchone()
+
+        if result and result[0]:
+            return jsonify({"broadcastData": result[0]}), 200
+        else:
+            return jsonify({"broadcastData": ""}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
+@app.route('/api/get-all-mobiles', methods=['GET'])
+def get_all_mobiles():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        query = """
+        SELECT mobileNumber FROM subscribers
+        WHERE status = 'active'
+        """
+        cursor.execute(query)
+        results = cursor.fetchall()
+
+        mobile_list = [row[0] for row in results if row[0]]
+
+        return jsonify({"mobileNumbers": mobile_list}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
+@app.route('/api/image/typhoon', methods=['GET'])
+def get_typhoon_image():
+    return send_from_directory('static/images', 'typhoon.png')
+    
 # @app.route("/weather_data", methods=["POST"])
 # def weather_data():
 #     # Ensure the request body is JSON
