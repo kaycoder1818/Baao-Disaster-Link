@@ -742,6 +742,90 @@ try {
 }
 }
 
+
+const btn = document.getElementById('weekly-forecast-btn');
+
+btn.addEventListener('click', () => {
+  // Create modal elements
+  const modalOverlay = document.createElement('div');
+  modalOverlay.style = `
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center;
+    z-index: 9999;
+  `;
+
+  const modal = document.createElement('div');
+  modal.style = `
+    position: relative; background: white; padding: 1rem; border-radius: 8px;
+    max-width: 90vw; max-height: 90vh; box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    display: flex; justify-content: center; align-items: center;
+    flex-direction: column;
+  `;
+
+  // Close button
+  const closeBtn = document.createElement('div');
+  closeBtn.textContent = '×';
+  closeBtn.style = `
+    position: absolute; top: 10px; right: 10px; font-size: 1.5rem;
+    font-weight: bold; cursor: pointer; user-select: none;
+  `;
+  closeBtn.addEventListener('click', () => {
+    document.body.removeChild(modalOverlay);
+  });
+
+  // Spinner element (simple CSS spinner)
+  const spinner = document.createElement('div');
+  spinner.style = `
+    border: 4px solid #f3f3f3; /* Light grey */
+    border-top: 4px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 50px; height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 2rem;
+  `;
+
+  // Add spinner keyframes to document if not exists
+  if (!document.getElementById('spinner-style')) {
+    const style = document.createElement('style');
+    style.id = 'spinner-style';
+    style.textContent = `
+      @keyframes spin {
+        0% { transform: rotate(0deg);}
+        100% { transform: rotate(360deg);}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  modal.appendChild(closeBtn);
+  modal.appendChild(spinner);
+  modalOverlay.appendChild(modal);
+  document.body.appendChild(modalOverlay);
+
+  // Load the image from Flask route
+  const img = new Image();
+  img.src = '/api/image/typhoon';
+  img.style.maxWidth = '80vw';
+  img.style.maxHeight = '80vh';
+  img.style.display = 'none'; // Hide until loaded
+
+  img.onload = () => {
+    spinner.style.display = 'none'; // Hide spinner
+    img.style.display = 'block'; // Show image
+    modal.appendChild(img);
+  };
+
+  img.onerror = () => {
+    spinner.style.display = 'none';
+    const errMsg = document.createElement('div');
+    errMsg.textContent = 'Failed to load image.';
+    errMsg.style.color = 'red';
+    modal.appendChild(errMsg);
+  };
+});
+
+
+
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", updateBackLink);
   document.addEventListener("DOMContentLoaded", checkServerAndSetupNav);
