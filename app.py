@@ -1162,7 +1162,46 @@ def add_flooding_item():
             cursor.close()
 
 
-@app.route('/update-broadcast', methods=['POST'])
+@app.route('/api/create-user', methods=['POST'])
+def create_user():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    if not username or not password:
+        return jsonify({"error": "Username and password are required"}), 400
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        # Check if username already exists
+        check_query = "SELECT id FROM auth WHERE uID = %s"
+        cursor.execute(check_query, (username,))
+        if cursor.fetchone():
+            return jsonify({"error": "Username already exists"}), 409
+
+        # Insert new user
+        insert_query = """
+        INSERT INTO auth (uID, userName, passwordHash, status)
+        VALUES (%s, %s, %s, %s)
+        """
+        cursor.execute(insert_query, (username, username, password, "active"))
+        db_connection.commit()
+        return jsonify({"message": "User created successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
+@app.route('/api/update-broadcast', methods=['POST'])
 def update_broadcast():
     if not is_mysql_available():
         return handle_mysql_error("MySQL not available")
@@ -1794,6 +1833,12 @@ def forecast_sidepage():
 @login_required
 def settings_sidepage():
     return render_template('page-content/settings.html', active_page='settings')
+
+@app.route('/page-content/new-user')
+@login_required
+def new_user_sidepage():
+    return render_template('page-content/new-user.html', active_page='new-user')
+
 
 
 if __name__ == '__main__':

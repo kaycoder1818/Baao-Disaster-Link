@@ -86,7 +86,7 @@
       btn.innerHTML = 'Broadcasting <span class="spinner"></span>';
       btn.disabled = true;
 
-      fetch('/update-broadcast', {
+      fetch('/api/update-broadcast', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

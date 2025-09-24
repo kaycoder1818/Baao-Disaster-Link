@@ -1,0 +1,77 @@
+<body>
+
+  <main class="page-content">
+    <h2>Create New User</h2>
+    <p>Add user credentials to grant access to the system.</p>
+
+    <div class="broadcast-container">
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" />
+
+      <div class="button-row">
+        <button class="clear-btn" onclick="clearInputs()">Clear</button>
+        <button class="broadcast-btn" onclick="createUser()">Create</button>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    function showToast(message, type = 'error') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast toast-${type}`;
+      toast.style.display = 'block';
+
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+
+    function clearInputs() {
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('confirmPassword').value = '';
+    }
+
+    async function createUser() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (!username || !password || !confirmPassword) {
+        showToast("All fields are required.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showToast("Passwords do not match.");
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/create-user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          showToast(result.message || "User created successfully.", 'success');
+          clearInputs();
+        } else {
+          showToast(result.error || "Failed to create user.");
+        }
+
+      } catch (error) {
+        console.error("Error:", error);
+        showToast("Server error.");
+      }
+    }
+  </script>
+
+</body>
