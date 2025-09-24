@@ -1161,6 +1161,37 @@ def add_flooding_item():
         if cursor:
             cursor.close()
 
+
+@app.route('/update-broadcast', methods=['POST'])
+def update_broadcast():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        data = request.get_json()
+        new_broadcast_data = data.get('broadcastData', '')
+
+        update_query = """
+        UPDATE broadcast
+        SET broadcastData = %s, modifiedAt = CURRENT_TIMESTAMP
+        WHERE uID = %s;
+        """
+        cursor.execute(update_query, (new_broadcast_data, "user123"))
+        db_connection.commit()
+
+        return jsonify({"message": "Broadcast updated successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
 # @app.route("/weather_data", methods=["POST"])
 # def weather_data():
 #     # Ensure the request body is JSON

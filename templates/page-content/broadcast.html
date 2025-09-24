@@ -5,19 +5,43 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Broadcast Center</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/page/content-no-scroll.css') }}" />
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: bold;
+      display: none;
+      z-index: 9999;
+      animation: fadein 0.3s ease, fadeout 0.3s ease 2.7s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .toast-error {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .toast-success {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; top: 10px; }
+      to { opacity: 1; top: 20px; }
+    }
+
+    @keyframes fadeout {
+      from { opacity: 1; top: 20px; }
+      to { opacity: 0; top: 10px; }
+    }
+  </style>
 </head>
-<!-- <body>
-
-  <main class="page-content">
-    <h2>Broadcast Center</h2>
-    <p>Send real-time emergency notifications to the public.</p>
-  </main>
-
-</body> -->
 
 <body>
 
@@ -35,20 +59,56 @@
     </div>
   </main>
 
+  <div id="toast" class="toast"></div>
+
   <script>
+    function showToast(message, type = 'error') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast toast-${type}`;
+      toast.style.display = 'block';
+
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3000);
+    }
+
     function broadcastMessage() {
       const btn = document.getElementById('broadcastBtn');
       const originalText = btn.innerHTML;
+      const message = document.getElementById('broadcastMessage').value;
 
-      // Change to spinner
+      if (!message.trim()) {
+        showToast("Please enter a message.", "error");
+        return;
+      }
+
       btn.innerHTML = 'Broadcasting <span class="spinner"></span>';
       btn.disabled = true;
 
-      // Simulate broadcast delay (3s)
-      setTimeout(() => {
+      fetch('/update-broadcast', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ broadcastData: message })
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Failed to update broadcast");
+        }
+        return response.json();
+      })
+      .then(data => {
+        showToast(data.message || "Broadcast updated.", "success");
+      })
+      .catch(error => {
+        showToast("Error: " + error.message, "error");
+      })
+      .finally(() => {
         btn.innerHTML = originalText;
         btn.disabled = false;
-      }, 3000);
+      });
     }
 
     function clearMessage() {
