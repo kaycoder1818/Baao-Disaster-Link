@@ -771,7 +771,7 @@ btn.addEventListener('click', () => {
   typhoonImage.onerror = () => {
     spinner.style.display = 'none';
     typhoonImage.style.display = 'none';
-    alert('Failed to load typhoon image.');
+    // alert('Failed to load typhoon image.');
     modal.classList.add('hidden');
   };
 });

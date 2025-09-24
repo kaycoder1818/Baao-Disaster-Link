@@ -529,9 +529,6 @@ body {
     /* border: 1px solid blue; */ /* For debugging */
 }
 
-.weekly-forecast-text {
-    /* No specific styles needed here, uses parent styles */
-}
 
 .arrow-icon {
     font-size: 24px;
@@ -610,7 +607,7 @@ body {
 
 .weekly-forecast-text {
   padding: 0.5rem 1rem;
-  background-color: #007bff;
+  /* background-color: #007bff; */
   color: white;
   border-radius: 4px;
   user-select: none;
