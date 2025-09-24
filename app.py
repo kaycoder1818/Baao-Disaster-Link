@@ -321,6 +321,36 @@ def create_forecast_data_table():
     finally:
         cursor.close()
 
+@app.route('/create-broadcast-table', methods=['POST'])
+def create_broadcast_table():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS broadcast (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            uID TEXT,
+            broadcastData LONGTEXT,
+            status TEXT,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            modifiedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        );
+        """
+        cursor.execute(create_table_query)
+        db_connection.commit()
+        return jsonify({"message": "broadcast table created successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
 
 ## ------ insert record ---------------- ##
 @app.route('/insert-mock-auth', methods=['POST'])
@@ -628,6 +658,37 @@ def insert_mock_forecast():
 
     finally:
         cursor.close()
+
+
+@app.route('/insert-mock-broadcast', methods=['POST'])
+def insert_mock_broadcast():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        insert_query = """
+        INSERT INTO broadcast (uID, broadcastData, status)
+        VALUES (%s, %s, %s);
+        """
+        mock_data = (
+            "user123",
+            '{"title": "Public Announcement", "message": "Scheduled maintenance at 2 AM UTC."}',
+            "active"
+        )
+        cursor.execute(insert_query, mock_data)
+        db_connection.commit()
+        return jsonify({"message": "Mock broadcast data inserted successfully."}), 201
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
 
 ## ------ show records ---------------- ##
 @app.route('/show-content/<table_name>', methods=['GET'])
