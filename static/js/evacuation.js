@@ -3,8 +3,59 @@ let directionsService;
 let directionsRenderer;
 let markers = [];
 let stations = [];
+let currentLocation;
 
-const currentLocation = { lat: 13.4539341516119, lng: 123.36561660818849 };
+
+// const currentLocation = { lat: 13.4539341516119, lng: 123.36561660818849 };
+
+
+function getStoredCoordinates() {
+  try {
+    const stored = localStorage.getItem('coordinates');
+    if (!stored) return null;
+
+    const coords = JSON.parse(stored);
+
+    // Validate structure and numbers
+    if (
+      coords &&
+      typeof coords.latitude === 'string' &&
+      typeof coords.longitude === 'string'
+    ) {
+      const lat = parseFloat(coords.latitude);
+      const lng = parseFloat(coords.longitude);
+
+      if (!isNaN(lat) && !isNaN(lng)) {
+        return { lat, lng };
+      }
+    }
+  } catch (e) {
+    console.warn('Error parsing coordinates from localStorage', e);
+  }
+  return null;
+}
+
+
+
+function determineCurrentLocation() {
+  const locationTrackingEnabled = localStorage.getItem('locationTrackingEnabled') === 'true';
+
+  if (locationTrackingEnabled) {
+    const storedCoords = getStoredCoordinates();
+    if (storedCoords) {
+      console.log('[+] Using stored coordinates for current location:', storedCoords);
+      currentLocation = storedCoords;
+      return;
+    } else {
+      console.warn('[!] locationTrackingEnabled is true but no valid coordinates found. Using fallback.');
+    }
+  }
+
+  // Fallback hardcoded location
+  currentLocation = { lat: 13.4539341516119, lng: 123.36561660818849 };
+  console.log('[+] Using hardcoded fallback current location:', currentLocation);
+}
+
 
 // // List of stations
 // const stations = [
@@ -218,6 +269,8 @@ async function fetchStations() {
       // Store fetched data in localStorage
       localStorage.setItem("evacuationStations", JSON.stringify(stations));
 
+      determineCurrentLocation();  // Set currentLocation here
+      
       initMap(); // Initialize map only after stations are loaded
 
     } else {

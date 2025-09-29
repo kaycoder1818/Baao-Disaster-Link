@@ -168,6 +168,17 @@ function showModal(title, number) {
   document.getElementById("modal-title").innerText = title;
   document.getElementById("modal-number").innerText = "Hotline: " + number;
   document.getElementById("modal-overlay").style.display = "flex";
+
+    // Set the onclick for the Call button
+    const callButton = document.getElementById("modal-call-button");
+    callButton.onclick = function () {
+      if (typeof Android !== "undefined" && Android.dialPhoneNumber) {
+        Android.dialPhoneNumber(number);
+      } else {
+        alert("Dial function not available. Are you running this in the Android app?");
+      }
+    };
+
 }
 
 function hideModal() {
