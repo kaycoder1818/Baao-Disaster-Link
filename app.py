@@ -914,6 +914,38 @@ def add_subscriber():
     finally:
         cursor.close()
 
+@app.route('/api/remove-subscriber', methods=['DELETE'])
+def remove_subscriber():
+    if not is_mysql_available():
+        return handle_mysql_error("MySQL not available")
+
+    data = request.get_json()
+    mobile_number = data.get("mobileNumber")
+
+    if not mobile_number:
+        return jsonify({"error": "mobileNumber is required"}), 400
+
+    cursor = get_cursor()
+    if not cursor:
+        return handle_mysql_error("Unable to get MySQL cursor")
+
+    try:
+        delete_query = "DELETE FROM subscribers WHERE mobileNumber = %s;"
+        cursor.execute(delete_query, (mobile_number,))
+        db_connection.commit()
+
+        if cursor.rowcount == 0:
+            return jsonify({"message": "No subscriber found with that mobile number."}), 404
+
+        return jsonify({"message": "Subscriber removed successfully."}), 200
+
+    except mysql.connector.Error as e:
+        return handle_mysql_error(e)
+
+    finally:
+        cursor.close()
+
+
 @app.route('/api/evacuation', methods=['GET'])
 def get_evacuation_data_api():
     try:

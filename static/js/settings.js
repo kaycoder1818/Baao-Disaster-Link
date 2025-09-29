@@ -1,5 +1,7 @@
 // static\js\settings.js
 
+const REMOTE_API_BASE_URL = 'https://baao-disaster-link.vercel.app'; // same remote base url
+
 
 // document.addEventListener("DOMContentLoaded", function () {
 //     const routes = {
@@ -47,33 +49,33 @@ try {
 
 
 
-function initDarkModeToggle() {
-    const darkModeToggle = document.getElementById('dark-mode-toggle');
+// function initDarkModeToggle() {
+//     const darkModeToggle = document.getElementById('dark-mode-toggle');
 
-    if (!darkModeToggle) {
-        console.error("Dark mode toggle not found!");
-        return;
-    }
+//     if (!darkModeToggle) {
+//         console.error("Dark mode toggle not found!");
+//         return;
+//     }
 
-    // Load state from localStorage
-    const savedState = localStorage.getItem('darkModeEnabled');
-    if (savedState !== null) {
-        const isEnabled = savedState === 'true';
-        darkModeToggle.checked = isEnabled;
+//     // Load state from localStorage
+//     const savedState = localStorage.getItem('darkModeEnabled');
+//     if (savedState !== null) {
+//         const isEnabled = savedState === 'true';
+//         darkModeToggle.checked = isEnabled;
 
-        // Reflect visually (optional: add a class to body or any theme logic)
-        document.body.classList.toggle('dark-mode', isEnabled);
-    }
+//         // Reflect visually (optional: add a class to body or any theme logic)
+//         document.body.classList.toggle('dark-mode', isEnabled);
+//     }
 
-    // Listen for toggle changes
-    darkModeToggle.addEventListener('change', () => {
-        const isChecked = darkModeToggle.checked;
-        localStorage.setItem('darkModeEnabled', isChecked);
+//     // Listen for toggle changes
+//     darkModeToggle.addEventListener('change', () => {
+//         const isChecked = darkModeToggle.checked;
+//         localStorage.setItem('darkModeEnabled', isChecked);
 
-        // Reflect change immediately
-        document.body.classList.toggle('dark-mode', isChecked);
-    });
-}
+//         // Reflect change immediately
+//         document.body.classList.toggle('dark-mode', isChecked);
+//     });
+// }
 
 
 function initSmsAlertToggle() {
@@ -141,6 +143,7 @@ function showSmsModal() {
     modal.classList.remove('hidden');
 
     // Register click
+
     registerBtn.onclick = async () => {
         const number = input.value.trim();
         message.textContent = '';
@@ -153,12 +156,27 @@ function showSmsModal() {
             return;
         }
 
-        // Show spinner and disable button
         spinner.classList.remove('hidden');
         registerBtn.disabled = true;
 
         try {
-            const res = await fetch('/api/add-subscriber', {
+            // Check if local "/" is available
+            let apiUrl = '/api/add-subscriber';
+
+            try {
+                console.log("Checking availability of '/' route for add subscriber...");
+                const check = await fetch('/', { method: 'GET' });
+                if (!check.ok) {
+                    console.log("Local '/' route returned non-ok response.");
+                    throw new Error('Local "/" route unavailable');
+                }
+                console.log("Local '/' route is available.");
+            } catch (err) {
+                console.log("Local '/' route unavailable, falling back to remote URL:", `${REMOTE_API_BASE_URL}/api/add-subscriber`);
+                apiUrl = `${REMOTE_API_BASE_URL}/api/add-subscriber`;
+            }
+
+            const res = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ mobileNumber: number })
@@ -177,10 +195,52 @@ function showSmsModal() {
             message.textContent = "Request error. Try again.";
             message.classList.add("error");
         } finally {
-            spinner.classList.add('hidden');       // Hide spinner
-            registerBtn.disabled = false;          // Re-enable button
+            spinner.classList.add('hidden');
+            registerBtn.disabled = false;
         }
     };
+
+
+    // registerBtn.onclick = async () => {
+    //     const number = input.value.trim();
+    //     message.textContent = '';
+    //     message.className = 'message-text';
+
+    //     // Only allow digits
+    //     if (!/^\d+$/.test(number)) {
+    //         message.textContent = "Please enter a valid number.";
+    //         message.classList.add("error");
+    //         return;
+    //     }
+
+    //     // Show spinner and disable button
+    //     spinner.classList.remove('hidden');
+    //     registerBtn.disabled = true;
+
+    //     try {
+    //         const res = await fetch('/api/add-subscriber', {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify({ mobileNumber: number })
+    //         });
+
+    //         const data = await res.json();
+
+    //         if (res.ok) {
+    //             message.textContent = data.message || "Successfully subscribed!";
+    //             message.classList.add("success");
+    //         } else {
+    //             message.textContent = data.error || "Subscription failed.";
+    //             message.classList.add("error");
+    //         }
+    //     } catch (err) {
+    //         message.textContent = "Request error. Try again.";
+    //         message.classList.add("error");
+    //     } finally {
+    //         spinner.classList.add('hidden');       // Hide spinner
+    //         registerBtn.disabled = false;          // Re-enable button
+    //     }
+    // };
 
     // registerBtn.onclick = async () => {
     //     const number = input.value.trim();
@@ -229,6 +289,185 @@ function showSmsModal() {
 
 
 
+// function initSmsAlertToggle() {
+//     const smsToggle = document.getElementById('sms-alert-toggle');
+//     const modal = document.getElementById('sms-modal-overlay');
+
+//     if (!smsToggle || !modal) {
+//         console.error("SMS toggle or modal not found!");
+//         return;
+//     }
+
+//     // Load saved state from localStorage
+//     const savedState = localStorage.getItem('smsAlertEnabled');
+//     if (savedState !== null) {
+//         smsToggle.checked = savedState === 'true';
+
+//         // Show modal if enabled
+//         if (smsToggle.checked) {
+//             showSmsModal();
+//         }
+//     }
+
+//     // Listen for changes and update localStorage
+//     smsToggle.addEventListener('change', () => {
+//         localStorage.setItem('smsAlertEnabled', smsToggle.checked);
+
+//         if (smsToggle.checked) {
+//             showSmsModal();
+//         }
+//     });
+// }
+
+// function initSmsAlertToggle() {
+//     const smsToggle = document.getElementById('sms-alert-toggle');
+//     const modal = document.getElementById('sms-modal-overlay');
+
+//     if (!smsToggle || !modal) {
+//         console.error("SMS toggle or modal not found!");
+//         return;
+//     }
+
+//     // Load saved state from localStorage
+//     const savedState = localStorage.getItem('smsAlertEnabled');
+//     if (savedState !== null) {
+//         smsToggle.checked = savedState === 'true';
+//     }
+
+//     // Track whether modal has been shown this session
+//     let modalAlreadyShown = false;
+
+//     // Only show modal on user-initiated toggle to true
+//     smsToggle.addEventListener('change', () => {
+//         const isEnabled = smsToggle.checked;
+//         localStorage.setItem('smsAlertEnabled', isEnabled);
+
+//         if (isEnabled && !modalAlreadyShown) {
+//             modalAlreadyShown = true;
+//             showSmsModal();
+//         }
+//     });
+// }
+
+
+function showRemoveSmsModal() {
+    const modal = document.getElementById('sms-remove-modal-overlay');
+    const closeBtn = document.getElementById('close-remove-btn');
+    const removeBtn = document.getElementById('remove-btn');
+    const input = document.getElementById('sms-remove-number-input');
+    const message = document.getElementById('sms-remove-modal-message');
+
+    if (!modal || !closeBtn || !removeBtn || !input || !message) return;
+
+    input.value = '';
+    message.textContent = '';
+    message.className = 'message-text';
+
+    modal.classList.remove('hidden');
+
+    // removeBtn.onclick = async () => {
+    //     const number = input.value.trim();
+    //     message.textContent = '';
+    //     message.className = 'message-text';
+
+    //     if (!/^\d+$/.test(number)) {
+    //         message.textContent = "Please enter a valid number.";
+    //         message.classList.add("error");
+    //         return;
+    //     }
+
+    //     spinner.classList.remove('hidden');
+    //     removeBtn.disabled = true;
+
+    //     try {
+    //         const res = await fetch('/api/remove-subscriber', {
+    //             method: 'DELETE',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify({ mobileNumber: number })
+    //         });
+
+    //         const data = await res.json();
+
+    //         if (res.ok) {
+    //             message.textContent = data.message || "Successfully unsubscribed!";
+    //             message.classList.add("success");
+    //         } else {
+    //             message.textContent = data.error || "Unsubscribe failed.";
+    //             message.classList.add("error");
+    //         }
+    //     } catch (err) {
+    //         message.textContent = "Request error. Try again.";
+    //         message.classList.add("error");
+    //     } finally {
+    //         spinner.classList.add('hidden');
+    //         removeBtn.disabled = false;
+    //     }
+    // };
+
+
+    removeBtn.onclick = async () => {
+        const number = input.value.trim();
+        message.textContent = '';
+        message.className = 'message-text';
+
+        if (!/^\d+$/.test(number)) {
+            message.textContent = "Please enter a valid number.";
+            message.classList.add("error");
+            return;
+        }
+
+        spinner.classList.remove('hidden');
+        removeBtn.disabled = true;
+
+        try {
+            // First, check if local "/" is available
+            let apiUrl = '/api/remove-subscriber';
+
+            try {
+                const check = await fetch('/', { method: 'GET' });
+                if (!check.ok) throw new Error('Local "/" route unavailable');
+            } catch {
+                // Fallback to remote URL if local "/" is not available
+                apiUrl = `${REMOTE_API_BASE_URL}/api/remove-subscriber`;
+            }
+
+            const res = await fetch(apiUrl, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mobileNumber: number })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                message.textContent = data.message || "Successfully unsubscribed!";
+                message.classList.add("success");
+            } else {
+                message.textContent = data.error || "Unsubscribe failed.";
+                message.classList.add("error");
+            }
+        } catch (err) {
+            message.textContent = "Request error. Try again.";
+            message.classList.add("error");
+        } finally {
+            spinner.classList.add('hidden');
+            removeBtn.disabled = false;
+        }
+    };
+
+
+    closeBtn.onclick = () => {
+        modal.classList.add('hidden');
+    };
+
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+        }
+    };
+}
+
+
 function initSmsAlertToggle() {
     const smsToggle = document.getElementById('sms-alert-toggle');
     const modal = document.getElementById('sms-modal-overlay');
@@ -242,22 +481,26 @@ function initSmsAlertToggle() {
     const savedState = localStorage.getItem('smsAlertEnabled');
     if (savedState !== null) {
         smsToggle.checked = savedState === 'true';
-
-        // Show modal if enabled
-        if (smsToggle.checked) {
-            showSmsModal();
-        }
     }
 
-    // Listen for changes and update localStorage
-    smsToggle.addEventListener('change', () => {
-        localStorage.setItem('smsAlertEnabled', smsToggle.checked);
+    let addModalShown = false;
+    let removeModalShown = false;
 
-        if (smsToggle.checked) {
-            showSmsModal();
+    smsToggle.addEventListener('change', () => {
+        const isEnabled = smsToggle.checked;
+        localStorage.setItem('smsAlertEnabled', isEnabled);
+
+        if (isEnabled && !addModalShown) {
+            addModalShown = true;
+            showSmsModal(); // Show "add subscriber"
+        } else if (!isEnabled && !removeModalShown) {
+            removeModalShown = true;
+            showRemoveSmsModal(); // Show "remove subscriber"
         }
     });
 }
+
+
 
 
 function initLocationToggle() {
@@ -288,13 +531,13 @@ function initLocationToggle() {
 
 if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", updateBackLink);
-    initDarkModeToggle();
+    // initDarkModeToggle();
     initSmsAlertToggle();
     initLanguageSelect();
     initLocationToggle();
 } else {
     updateBackLink();
-    initDarkModeToggle();
+    // initDarkModeToggle();
     initSmsAlertToggle();
     initLanguageSelect();
     initLocationToggle();

@@ -424,6 +424,36 @@ input:checked + .slider:before {
 
 
 
+/* Remove Subscriber Buttons */
+
+#remove-btn {
+    background-color: #900916; /* Red */
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#remove-btn:hover {
+    background-color: #c82333;
+}
+
+#close-remove-btn {
+    background-color: #1d5e2c; /* Green */
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#close-remove-btn:hover {
+    background-color: #218838;
+}
+
 
 
 /* dark-mode */
