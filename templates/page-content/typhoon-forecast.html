@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Typhoon Forecast</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/page/content-no-scroll.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+
+<body>
+
+  <main class="page-content">
+    <h2>Typhoon Forecast</h2>
+    <p>Upload an image for the latest typhoon forecast.</p>
+
+    <div class="upload-container">
+      <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file" accept=".jpg, .png, .gif" required />
+        <button type="submit" id="uploadBtn" class="upload-btn">Upload</button>
+      </form>
+    </div>
+
+    <div id="toast" class="toast"></div>
+  </main>
+
+  <script>
+    const uploadForm = document.getElementById('uploadForm');
+    const uploadBtn = document.getElementById('uploadBtn');
+    const fileInput = document.getElementById('fileInput');
+    const toast = document.getElementById('toast');
+
+    function showToast(message, type = 'error') {
+      toast.textContent = message;
+      toast.className = `toast toast-${type}`;
+      toast.style.display = 'block';
+      setTimeout(() => toast.style.display = 'none', 3000);
+    }
+
+    uploadForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const file = fileInput.files[0];
+
+      if (!file) {
+        showToast('Please select a file to upload.', 'error');
+        return;
+      }
+
+      // Get the file extension
+      const extension = file.name.split('.').pop().toLowerCase();
+
+      // Determine the new file name based on the extension
+      let newFileName = 'typhoon.jpg';  // Default to .jpg
+      if (extension === 'png') {
+        newFileName = 'typhoon.png';
+      } else if (extension === 'gif') {
+        newFileName = 'typhoon.gif';
+      } else if (extension !== 'jpg' && extension !== 'jpeg') {
+        showToast('Invalid file type. Only .jpg, .png, or .gif are allowed.', 'error');
+        return;
+      }
+
+      // Create a new FormData object to send the file with the renamed name
+      const formData = new FormData();
+      formData.append('file', file, newFileName);
+
+      uploadBtn.innerHTML = 'Uploading... <span class="spinner"></span>';
+      uploadBtn.disabled = true;
+
+      // Send the renamed file to the server
+      fetch('http://104.248.11.135/api/file-upload/typhoon-forecast', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          showToast(data.error, 'error');
+        } else {
+          showToast(data.message || 'File uploaded and renamed successfully!', 'success');
+        }
+      })
+      .catch(error => {
+        showToast('Error: ' + error.message, 'error');
+      })
+      .finally(() => {
+        uploadBtn.innerHTML = 'Upload';
+        uploadBtn.disabled = false;
+      });
+    });
+  </script>
+
+  <style>
+    .upload-container {
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .upload-container input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .upload-btn {
+      margin-top: 20px;
+      padding: 10px 18px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .upload-btn:disabled {
+      background-color: #a5d6a7;
+      cursor: not-allowed;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid white;
+      border-top: 2px solid transparent;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+
+</body>
+</html>

@@ -62,6 +62,10 @@
                     <span>Broadcast</span>
                 </a>
                 <a href="#" class="nav-item">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span>Typhoon Forecast</span>
+                </a>
+                <a href="#" class="nav-item">
                     <i class="fas fa-user-plus"></i>
                     <span>New User</span>
                 </a>
@@ -198,6 +202,8 @@
             mainFrame.src = '/page-content/forecast';
         } else if (page === 'settings') {
             mainFrame.src = '/page-content/settings';
+        } else if (page === 'typhoonforecast') {
+            mainFrame.src = '/page-content/typhoon-forecast';
         } else if (page === 'newuser') {
             mainFrame.src = '/page-content/new-user';
         }

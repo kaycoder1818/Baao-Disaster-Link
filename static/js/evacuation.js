@@ -5,6 +5,7 @@ let markers = [];
 let stations = [];
 let currentLocation;
 
+const remote_url = "https://baao-disaster-link.vercel.app/api/evacuation"; // replace with your actual remote URL
 
 // const currentLocation = { lat: 13.4539341516119, lng: 123.36561660818849 };
 
@@ -255,39 +256,102 @@ async function fetchStations() {
   console.log("[fetchStations] Attempting to fetch evacuation data from /api/evacuation");
 
   try {
-    const res = await fetch(`/api/evacuation`);
-    console.log(`[fetchStations] Response status: ${res.status}`);
+    // Try first with relative URL
+    let res = await fetch(`/api/evacuation`);
+    console.log(`[fetchStations] Response status from /api/evacuation: ${res.status}`);
 
-    const data = await res.json();
-    console.log("[fetchStations] Response JSON:", data);
+    if (!res.ok) {
+      throw new Error(`/api/evacuation returned status ${res.status}`);
+    }
 
-    if (res.ok && data.evacuationData) {
-      console.log(`[fetchStations] Successfully fetched ${data.evacuationData.length} stations`);
-      
+    let data = await res.json();
+    console.log("[fetchStations] Response JSON from /api/evacuation:", data);
+
+    if (data.evacuationData) {
       stations = data.evacuationData;
-
-      // Store fetched data in localStorage
       localStorage.setItem("evacuationStations", JSON.stringify(stations));
 
-      determineCurrentLocation();  // Set currentLocation here
-      
-      initMap(); // Initialize map only after stations are loaded
-
+      determineCurrentLocation();
+      initMap();
+      return; // Success, exit function
     } else {
-      console.error("[fetchStations] Failed to fetch evacuation data:", data.error || "Unknown error");
-      alert("Unable to load evacuation stations.");
+      throw new Error("Invalid data format from /api/evacuation");
+    }
 
-      // Try fallback from localStorage
+  } catch (err) {
+    console.warn(`[fetchStations] Failed to fetch from /api/evacuation: ${err.message}`);
+    console.log("[fetchStations] Trying fallback remote URL...");
+
+    try {
+      // Try fallback remote URL
+      let res = await fetch(remote_url);
+      console.log(`[fetchStations] Response status from remote_url: ${res.status}`);
+
+      if (!res.ok) {
+        throw new Error(`Remote URL returned status ${res.status}`);
+      }
+
+      let data = await res.json();
+      console.log("[fetchStations] Response JSON from remote_url:", data);
+
+      if (data.evacuationData) {
+        stations = data.evacuationData;
+        localStorage.setItem("evacuationStations", JSON.stringify(stations));
+
+        determineCurrentLocation();
+        initMap();
+        return; // Success, exit function
+      } else {
+        throw new Error("Invalid data format from remote URL");
+      }
+
+    } catch (fallbackErr) {
+      console.error(`[fetchStations] Failed to fetch from remote URL as well: ${fallbackErr.message}`);
+      alert("Unable to load evacuation stations from both local and remote sources.");
+
+      // Final fallback: load from localStorage
       loadStationsFromLocalStorage();
     }
-  } catch (err) {
-    console.error("[fetchStations] Network error while fetching stations:", err);
-    alert("Network error while loading evacuation stations.");
-
-    // Try fallback from localStorage
-    loadStationsFromLocalStorage();
   }
 }
+
+// async function fetchStations() {
+//   console.log("[fetchStations] Attempting to fetch evacuation data from /api/evacuation");
+
+//   try {
+//     const res = await fetch(`/api/evacuation`);
+//     console.log(`[fetchStations] Response status: ${res.status}`);
+
+//     const data = await res.json();
+//     console.log("[fetchStations] Response JSON:", data);
+
+//     if (res.ok && data.evacuationData) {
+//       console.log(`[fetchStations] Successfully fetched ${data.evacuationData.length} stations`);
+      
+//       stations = data.evacuationData;
+
+//       // Store fetched data in localStorage
+//       localStorage.setItem("evacuationStations", JSON.stringify(stations));
+
+//       determineCurrentLocation();  // Set currentLocation here
+
+//       initMap(); // Initialize map only after stations are loaded
+
+//     } else {
+//       console.error("[fetchStations] Failed to fetch evacuation data:", data.error || "Unknown error");
+//       alert("Unable to load evacuation stations.");
+
+//       // Try fallback from localStorage
+//       loadStationsFromLocalStorage();
+//     }
+//   } catch (err) {
+//     console.error("[fetchStations] Network error while fetching stations:", err);
+//     alert("Network error while loading evacuation stations.");
+
+//     // Try fallback from localStorage
+//     loadStationsFromLocalStorage();
+//   }
+// }
 
 // Load station data from localStorage fallback
 function loadStationsFromLocalStorage() {

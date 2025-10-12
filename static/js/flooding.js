@@ -5,6 +5,8 @@ let markers = [];
 let stations = [];
 let currentLocation;
 
+const remote_flooding_url = "https://baao-disaster-link.vercel.app/api/flooding"; // replace with your actual remote flooding URL
+
 
 function getStoredCoordinates() {
   try {
@@ -339,41 +341,103 @@ function loadGoogleMapsScript() {
 
 
 // Fetch station data from backend
-async function fetchStations() {
-  console.log("[fetchStations] Attempting to fetch flooding data from /api/flooding");
+async function fetchStations () {
+  console.log("[fetchFloodingStations] Attempting to fetch flooding data from /api/flooding");
 
   try {
-    const res = await fetch(`/api/flooding`);
-    console.log(`[fetchStations] Response status: ${res.status}`);
+    // Try relative URL first
+    let res = await fetch(`/api/flooding`);
+    console.log(`[fetchFloodingStations] Response status from /api/flooding: ${res.status}`);
 
-    const data = await res.json();
-    console.log("[fetchStations] Response JSON:", data);
+    if (!res.ok) {
+      throw new Error(`/api/flooding returned status ${res.status}`);
+    }
 
-    if (res.ok && data.floodingData) {
-      console.log(`[fetchStations] Successfully fetched ${data.floodingData.length} stations`);
-      
+    let data = await res.json();
+    console.log("[fetchFloodingStations] Response JSON from /api/flooding:", data);
+
+    if (data.floodingData) {
       stations = data.floodingData;
-
-      // Store fetched data in localStorage
       localStorage.setItem("floodingStations", JSON.stringify(stations));
+
       determineCurrentLocation();
-      initMap(); // Initialize map only after stations are loaded
-
+      initMap();
+      return; // Success
     } else {
-      console.error("[fetchStations] Failed to fetch flooding data:", data.error || "Unknown error");
-      alert("Unable to load flooding stations.");
+      throw new Error("Invalid data format from /api/flooding");
+    }
 
-      // Try fallback from localStorage
+  } catch (err) {
+    console.warn(`[fetchFloodingStations] Failed to fetch from /api/flooding: ${err.message}`);
+    console.log("[fetchFloodingStations] Trying fallback remote URL...");
+
+    try {
+      // Try fallback remote URL
+      let res = await fetch(remote_flooding_url);
+      console.log(`[fetchFloodingStations] Response status from remote_flooding_url: ${res.status}`);
+
+      if (!res.ok) {
+        throw new Error(`Remote URL returned status ${res.status}`);
+      }
+
+      let data = await res.json();
+      console.log("[fetchFloodingStations] Response JSON from remote URL:", data);
+
+      if (data.floodingData) {
+        stations = data.floodingData;
+        localStorage.setItem("floodingStations", JSON.stringify(stations));
+
+        determineCurrentLocation();
+        initMap();
+        return; // Success
+      } else {
+        throw new Error("Invalid data format from remote flooding URL");
+      }
+    } catch (fallbackErr) {
+      console.error(`[fetchFloodingStations] Failed to fetch from remote URL as well: ${fallbackErr.message}`);
+      alert("Unable to load flooding stations from both local and remote sources.");
+
+      // Final fallback
       loadStationsFromLocalStorage();
     }
-  } catch (err) {
-    console.error("[fetchStations] Network error while fetching stations:", err);
-    alert("Network error while loading flooding stations.");
-
-    // Try fallback from localStorage
-    loadStationsFromLocalStorage();
   }
 }
+
+// async function fetchStations() {
+//   console.log("[fetchStations] Attempting to fetch flooding data from /api/flooding");
+
+//   try {
+//     const res = await fetch(`/api/flooding`);
+//     console.log(`[fetchStations] Response status: ${res.status}`);
+
+//     const data = await res.json();
+//     console.log("[fetchStations] Response JSON:", data);
+
+//     if (res.ok && data.floodingData) {
+//       console.log(`[fetchStations] Successfully fetched ${data.floodingData.length} stations`);
+      
+//       stations = data.floodingData;
+
+//       // Store fetched data in localStorage
+//       localStorage.setItem("floodingStations", JSON.stringify(stations));
+//       determineCurrentLocation();
+//       initMap(); // Initialize map only after stations are loaded
+
+//     } else {
+//       console.error("[fetchStations] Failed to fetch flooding data:", data.error || "Unknown error");
+//       alert("Unable to load flooding stations.");
+
+//       // Try fallback from localStorage
+//       loadStationsFromLocalStorage();
+//     }
+//   } catch (err) {
+//     console.error("[fetchStations] Network error while fetching stations:", err);
+//     alert("Network error while loading flooding stations.");
+
+//     // Try fallback from localStorage
+//     loadStationsFromLocalStorage();
+//   }
+// }
 
 // Load station data from localStorage fallback
 function loadStationsFromLocalStorage() {
