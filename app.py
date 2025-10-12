@@ -1928,6 +1928,12 @@ def broadcast_sidepage():
 def forecast_sidepage():
     return render_template('page-content/forecast.html', active_page='forecast')
 
+@app.route('/page-content/typhoon-forecast')
+@login_required
+def typhoon_forecast_sidepage():
+    return render_template('page-content/typhoon-forecast.html', active_page='typhoon-forecast')
+
+
 @app.route('/page-content/settings')
 @login_required
 def settings_sidepage():
