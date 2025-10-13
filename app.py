@@ -1341,12 +1341,6 @@ def get_all_mobiles():
 #     return send_from_directory('static/images', 'typhoon.png')
 
 
-import requests
-from flask import Flask, send_file, jsonify
-from io import BytesIO
-
-app = Flask(__name__)
-
 @app.route('/api/image/typhoon', methods=['GET'])
 def get_typhoon_image():
     # The external server URL
