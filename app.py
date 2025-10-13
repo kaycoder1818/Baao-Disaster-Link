@@ -14,6 +14,7 @@ from flask_cors import CORS ## pip install flask-cors
 import json 
 import hashlib
 from functools import wraps
+from io import BytesIO
 
 
 
@@ -1326,10 +1327,38 @@ def get_all_mobiles():
         cursor.close()
 
 
+# @app.route('/api/image/typhoon', methods=['GET'])
+# def get_typhoon_image():
+#     return send_from_directory('static/images', 'typhoon.png')
+
+
+import requests
+from flask import Flask, send_file, jsonify
+from io import BytesIO
+
+app = Flask(__name__)
+
 @app.route('/api/image/typhoon', methods=['GET'])
 def get_typhoon_image():
-    return send_from_directory('static/images', 'typhoon.png')
-    
+    # The external server URL
+    external_url = 'http://104.248.11.135:5000/uploaded/typhoon.png'
+
+    try:
+        # Make a GET request to fetch the image from the external server
+        response = requests.get(external_url)
+
+        # If the request was successful (status code 200)
+        if response.status_code == 200:
+            # Return the image data
+            return send_file(BytesIO(response.content), mimetype='image/png')
+
+        else:
+            return jsonify({'status': 'failure', 'message': 'File not found on external server'}), 404
+    except requests.exceptions.RequestException as e:
+        # Handle network errors or other issues
+        return jsonify({'status': 'failure', 'message': f'Error fetching the image: {str(e)}'}), 500
+
+
 # @app.route("/weather_data", methods=["POST"])
 # def weather_data():
 #     # Ensure the request body is JSON
