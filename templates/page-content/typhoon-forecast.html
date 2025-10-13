@@ -51,11 +51,13 @@
       const extension = file.name.split('.').pop().toLowerCase();
 
       // Determine the new file name based on the extension
-      let newFileName = 'typhoon.jpg';  // Default to .jpg
-      if (extension === 'png') {
+      let newFileName = 'typhoon.png';  // Default to .jpg
+      if (extension === 'jpg') {
+        // newFileName = 'typhoon.jpg';
         newFileName = 'typhoon.png';
       } else if (extension === 'gif') {
-        newFileName = 'typhoon.gif';
+        // newFileName = 'typhoon.gif';
+        newFileName = 'typhoon.png';
       } else if (extension !== 'jpg' && extension !== 'jpeg') {
         showToast('Invalid file type. Only .jpg, .png, or .gif are allowed.', 'error');
         return;
@@ -70,7 +72,8 @@
 
       // Send the renamed file to the server
     //   fetch('http://104.248.11.135/api/file-upload/typhoon-forecast', {
-     fetch('https://getmomentumos.com/api/file-upload/typhoon-forecast', {
+    //  fetch('https://getmomentumos.com/api/file-upload/typhoon-forecast', {
+      fetch('https://baao-disaster-link.vercel.app//upload_image', {
         method: 'POST',
         body: formData,
       })

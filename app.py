@@ -15,6 +15,15 @@ import json
 import hashlib
 from functools import wraps
 from io import BytesIO
+from werkzeug.utils import secure_filename
+
+
+# Allowed file extensions
+ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png', 'gif'}
+
+# Function to check if the file is allowed
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 
@@ -1357,6 +1366,41 @@ def get_typhoon_image():
     except requests.exceptions.RequestException as e:
         # Handle network errors or other issues
         return jsonify({'status': 'failure', 'message': f'Error fetching the image: {str(e)}'}), 500
+
+
+
+@app.route('/upload_image', methods=['POST'])
+def upload_image():
+    if 'file' not in request.files:
+        return jsonify({'status': 'failure', 'message': 'No file part'}), 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'status': 'failure', 'message': 'No selected file'}), 400
+
+    if file and allowed_file(file.filename):
+        # Secure the filename to avoid directory traversal issues
+        filename = secure_filename(file.filename)
+
+        # Forward the file to the external server immediately
+        external_url = 'http://104.248.11.135:5000/upload_image'  # External server endpoint
+        files = {'file': (filename, file.stream)}
+
+        try:
+            # Send the file to the external server using a POST request
+            response = requests.post(external_url, files=files)
+
+            # Check if the upload to the external server was successful
+            if response.status_code == 200:
+                return jsonify({'status': 'success', 'message': 'File uploaded and forwarded successfully.'})
+            else:
+                return jsonify({'status': 'failure', 'message': 'Failed to forward the file to the external server.'}), 500
+
+        except requests.exceptions.RequestException as e:
+            return jsonify({'status': 'failure', 'message': f'Error forwarding file: {str(e)}'}), 500
+
+    else:
+        return jsonify({'status': 'failure', 'message': 'Invalid file type. Only .jpg, .png, .gif are allowed.'}), 400
 
 
 # @app.route("/weather_data", methods=["POST"])
